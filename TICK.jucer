@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="vfIUOx" name="TICK" displaySplashScreen="0" reportAppUsage="1"
+              splashScreenColour="Dark" projectType="audioplug" version="0.1.0"
+              bundleIdentifier="com.talaviram.Tick" includeBinaryInAppConfig="1"
+              buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
+              buildAAX="0" buildStandalone="1" enableIAA="0" pluginName="TICK"
+              pluginDesc="T:CK" pluginManufacturer="Tal Aviram" pluginManufacturerCode="Tala"
+              pluginCode="Tick" pluginChannelConfigs="" pluginIsSynth="0" pluginWantsMidiIn="0"
+              pluginProducesMidiOut="0" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="0"
+              pluginAUExportPrefix="TickAU" pluginRTASCategory="" aaxIdentifier="com.talaviram.Tick"
+              pluginAAXCategory="2048" pluginFormats="buildAU,buildStandalone,buildVST,buildVST3"
+              companyName="Tal Aviram" companyCopyright="Tal Aviram (c) 2019 - 2021"
+              companyWebsite="https://www.talaviram.com" companyEmail="me@talaviram.com"
+              pluginAUIsSandboxSafe="1" pluginVST3Category="Generator" pluginVSTCategory="kPlugCategGenerator"
+              projectLineFeed="&#10;" defines="JUCE_USE_DARK_SPLASH_SCREEN&#10;JUCE_DONT_AUTO_OPEN_MIDI_DEVICES_ON_MOBILE=1&#10;"
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              jucerFormatVersion="1" addUsingNamespaceToJuceHeader="0" headerPath="../../"
+              pluginAUMainType="'aumu'">
+  <MAINGROUP id="C2pL3d" name="TICK">
+    <FILE id="Qy9ZQb" name="factory_default.preset" compile="0" resource="1"
+          file="factory_default.preset"/>
+    <FILE id="aw7nZX" name="factory_samples.zip" compile="0" resource="1"
+          file="factory_samples.zip"/>
+    <GROUP id="{91EF27EE-B71F-B4FB-8FE2-4398585E9CC1}" name="Media">
+      <GROUP id="{914D3C79-8F0F-8F45-72F0-3DB324EE8FDB}" name="Fonts">
+        <FILE id="YhkZTc" name="KlokanTechNotoSans-Bold.ttf" compile="0" resource="1"
+              file="Media/Font/KlokanTechNotoSans-Bold.ttf"/>
+        <FILE id="EyjkfZ" name="KlokanTechNotoSans-Italic.ttf" compile="0"
+              resource="1" file="Media/Font/KlokanTechNotoSans-Italic.ttf"/>
+        <FILE id="O9sfNZ" name="KlokanTechNotoSans-Regular.ttf" compile="0"
+              resource="1" file="Media/Font/KlokanTechNotoSans-Regular.ttf"/>
+        <FILE id="dlwqCU" name="KlokanTechNotoSansCJK-Bold.otf" compile="0"
+              resource="1" file="Media/Font/KlokanTechNotoSansCJK-Bold.otf"/>
+        <FILE id="BIwkR4" name="KlokanTechNotoSansCJK-Regular.otf" compile="0"
+              resource="1" file="Media/Font/KlokanTechNotoSansCJK-Regular.otf"/>
+      </GROUP>
+      <FILE id="n3gl9R" name="arrow_back_ios-24px.svg" compile="0" resource="1"
+            file="Media/arrow_back_ios-24px.svg"/>
+      <FILE id="G8DxkM" name="background.png" compile="0" resource="1" file="Media/background.png"/>
+      <FILE id="GWCU1k" name="check_circle-24px.svg" compile="0" resource="1"
+            file="Media/check_circle-24px.svg"/>
+      <FILE id="g4Pari" name="cog_fa.svg" compile="0" resource="1" file="Media/cog_fa.svg"/>
+      <FILE id="I3zpD8" name="create_new_folder-24px.svg" compile="0" resource="1"
+            file="Media/create_new_folder-24px.svg"/>
+      <FILE id="Ut2rlQ" name="delete-24px.svg" compile="0" resource="1" file="Media/delete-24px.svg"/>
+      <FILE id="SoeUo6" name="edit-24px.svg" compile="0" resource="1" file="Media/edit-24px.svg"/>
+      <FILE id="Lkgl7N" name="edit-icon.svg" compile="0" resource="1" file="Media/edit-icon.svg"/>
+      <FILE id="nbixpW" name="expand_less-24px.svg" compile="0" resource="1"
+            file="Media/expand_less-24px.svg"/>
+      <FILE id="xLLI05" name="expand_more-24px.svg" compile="0" resource="1"
+            file="Media/expand_more-24px.svg"/>
+      <FILE id="LVZoPf" name="fad-filter-lowpass.svg" compile="0" resource="1"
+            file="Media/fad-filter-lowpass.svg"/>
+      <FILE id="bDdCAV" name="folder_open-24px.svg" compile="0" resource="1"
+            file="Media/folder_open-24px.svg"/>
+      <FILE id="aRmCnY" name="link-24px.svg" compile="0" resource="1" file="Media/link-24px.svg"/>
+      <FILE id="GcznxA" name="lock_clock-24px.svg" compile="0" resource="1"
+            file="Media/lock_clock-24px.svg"/>
+      <FILE id="xIWCxW" name="menu-24px.svg" compile="0" resource="1" file="Media/menu-24px.svg"/>
+      <FILE id="FRm04k" name="metronome.svg" compile="0" resource="1" file="Media/metronome.svg"/>
+      <FILE id="JFSJ0Z" name="more_horiz-24px.svg" compile="0" resource="1"
+            file="Media/more_horiz-24px.svg"/>
+      <FILE id="g0t4gg" name="more_vert-24px.svg" compile="0" resource="1"
+            file="Media/more_vert-24px.svg"/>
+      <FILE id="APDzEM" name="play-button.svg" compile="0" resource="1" file="Media/play-button.svg"/>
+      <FILE id="hbP9bY" name="sample-icon.svg" compile="0" resource="1" file="Media/sample-icon.svg"/>
+      <FILE id="SyERXa" name="save_alt-24px.svg" compile="0" resource="1"
+            file="Media/save_alt-24px.svg"/>
+      <FILE id="MeY3Af" name="stop-button.svg" compile="0" resource="1" file="Media/stop-button.svg"/>
+      <FILE id="xwAcl7" name="ticklogo.svg" compile="0" resource="1" file="Media/ticklogo.svg"/>
+      <FILE id="n8H2XT" name="ticklogo_ios.svg" compile="0" resource="1"
+            file="Media/ticklogo_ios.svg"/>
+    </GROUP>
+    <GROUP id="{0D2B1C20-8A81-25F8-AC24-2631FF22881A}" name="Source">
+      <GROUP id="{989582A5-4D33-5BD3-00DE-D6DD3D84F70C}" name="deps">
+        <GROUP id="{EBC3910A-E3F5-9F6C-A603-3CEE3A331783}" name="JUX">
+          <GROUP id="{57941A3A-F19D-D94C-A1A2-FF6B2F6248D0}" name="components">
+            <FILE id="dW6wcj" name="ListBox.cpp" compile="1" resource="0" file="JUX/components/ListBox.cpp"/>
+            <FILE id="gcfuRT" name="ListBox.h" compile="0" resource="0" file="JUX/components/ListBox.h"/>
+            <FILE id="QwK4oh" name="ListBoxMenu.cpp" compile="1" resource="0" file="JUX/components/ListBoxMenu.cpp"/>
+            <FILE id="D1csQn" name="ListBoxMenu.h" compile="0" resource="0" file="JUX/components/ListBoxMenu.h"/>
+            <FILE id="trCmwS" name="SwitchButton.h" compile="0" resource="0" file="JUX/components/SwitchButton.h"/>
+          </GROUP>
+          <FILE id="V0p85B" name="utils.h" compile="0" resource="0" file="JUX/utils.h"/>
+        </GROUP>
+        <GROUP id="{BA5EADD1-335E-30A3-0232-A920B74C5324}" name="libsamplerate">
+          <FILE id="NDTwGn" name="config.h" compile="0" resource="0" file="Source/config.h"/>
+          <GROUP id="{0BDDE550-55C0-C785-9682-627C6D9DAF2F}" name="doc">
+            <FILE id="uAV9I8" name="api.html" compile="0" resource="1" file="libsamplerate/doc/api.html"/>
+            <FILE id="lTuFg0" name="api_callback.html" compile="0" resource="1"
+                  file="libsamplerate/doc/api_callback.html"/>
+            <FILE id="Vhn5Xv" name="api_full.html" compile="0" resource="1" file="libsamplerate/doc/api_full.html"/>
+            <FILE id="LNHKzL" name="api_misc.html" compile="0" resource="1" file="libsamplerate/doc/api_misc.html"/>
+            <FILE id="BIFula" name="api_simple.html" compile="0" resource="1" file="libsamplerate/doc/api_simple.html"/>
+            <FILE id="qX5OiH" name="bugs.html" compile="0" resource="1" file="libsamplerate/doc/bugs.html"/>
+            <FILE id="RhZf3p" name="download.html" compile="0" resource="1" file="libsamplerate/doc/download.html"/>
+            <FILE id="iOvP4k" name="faq.html" compile="0" resource="1" file="libsamplerate/doc/faq.html"/>
+            <FILE id="zuHa59" name="foo_dsp_src9.png" compile="0" resource="1"
+                  file="libsamplerate/doc/foo_dsp_src9.png"/>
+            <FILE id="S38uzV" name="history.html" compile="0" resource="1" file="libsamplerate/doc/history.html"/>
+            <FILE id="y21l9Z" name="index.html" compile="0" resource="1" file="libsamplerate/doc/index.html"/>
+            <FILE id="UxcTvB" name="license.html" compile="0" resource="1" file="libsamplerate/doc/license.html"/>
+            <FILE id="AozRnw" name="lists.html" compile="0" resource="1" file="libsamplerate/doc/lists.html"/>
+            <FILE id="ldCRnD" name="paypal.png" compile="0" resource="1" file="libsamplerate/doc/paypal.png"/>
+            <FILE id="VwKKOy" name="quality.html" compile="0" resource="1" file="libsamplerate/doc/quality.html"/>
+            <FILE id="hncMNS" name="SRC.css" compile="0" resource="1" file="libsamplerate/doc/SRC.css"/>
+            <FILE id="NbJzCb" name="SRC.png" compile="0" resource="1" file="libsamplerate/doc/SRC.png"/>
+            <FILE id="RgH724" name="win32.html" compile="0" resource="1" file="libsamplerate/doc/win32.html"/>
+          </GROUP>
+          <GROUP id="{A9E4DB00-DE44-6F1D-C616-C24923CC438C}" name="src">
+            <FILE id="cIiUqg" name="check_asm.sh" compile="0" resource="1" file="libsamplerate/src/check_asm.sh"/>
+            <FILE id="e5vI24" name="common.h" compile="0" resource="0" file="libsamplerate/src/common.h"/>
+            <FILE id="jQj3c1" name="fastest_coeffs.h" compile="0" resource="0"
+                  file="libsamplerate/src/fastest_coeffs.h"/>
+            <FILE id="M821Fz" name="float_cast.h" compile="0" resource="0" file="libsamplerate/src/float_cast.h"/>
+            <FILE id="ut2dTP" name="high_qual_coeffs.h" compile="0" resource="0"
+                  file="libsamplerate/src/high_qual_coeffs.h"/>
+            <FILE id="UzO8dj" name="mid_qual_coeffs.h" compile="0" resource="0"
+                  file="libsamplerate/src/mid_qual_coeffs.h"/>
+            <FILE id="LBImXF" name="samplerate.c" compile="1" resource="0" file="libsamplerate/src/samplerate.c"/>
+            <FILE id="gW9Jc6" name="samplerate.h" compile="0" resource="0" file="libsamplerate/src/samplerate.h"/>
+            <FILE id="l46jMZ" name="src_linear.c" compile="1" resource="0" file="libsamplerate/src/src_linear.c"/>
+            <FILE id="vTQ05t" name="src_sinc.c" compile="1" resource="0" file="libsamplerate/src/src_sinc.c"/>
+            <FILE id="wcEXMM" name="src_zoh.c" compile="1" resource="0" file="libsamplerate/src/src_zoh.c"/>
+            <FILE id="XRPTy1" name="Version_script.in" compile="0" resource="1"
+                  file="libsamplerate/src/Version_script.in"/>
+          </GROUP>
+          <FILE id="BgBJJJ" name="AUTHORS" compile="0" resource="1" file="libsamplerate/AUTHORS"/>
+          <FILE id="sC9mIh" name="ChangeLog" compile="0" resource="1" file="libsamplerate/ChangeLog"/>
+          <FILE id="k70ccV" name="COPYING" compile="0" resource="1" file="libsamplerate/COPYING"/>
+          <FILE id="ajg3RU" name="INSTALL" compile="0" resource="1" file="libsamplerate/INSTALL"/>
+          <FILE id="ed37BX" name="NEWS" compile="0" resource="1" file="libsamplerate/NEWS"/>
+          <FILE id="alhg8P" name="README" compile="0" resource="1" file="libsamplerate/README"/>
+        </GROUP>
+      </GROUP>
+      <GROUP id="{5B338A06-556D-01A7-7D4A-3EBFA49E1192}" name="utils">
+        <FILE id="FFXxDs" name="SamplesPaint.cpp" compile="1" resource="0"
+              file="Source/utils/SamplesPaint.cpp"/>
+        <FILE id="Hx6bKo" name="SamplesPaint.h" compile="0" resource="0" file="Source/utils/SamplesPaint.h"/>
+        <FILE id="N2pg0t" name="TickSplash.cpp" compile="1" resource="0" file="Source/utils/TickSplash.cpp"/>
+        <FILE id="RfUf0j" name="TickSplash.h" compile="0" resource="0" file="Source/utils/TickSplash.h"/>
+        <FILE id="w83WXp" name="UtilityFunctions.cpp" compile="1" resource="0"
+              file="Source/utils/UtilityFunctions.cpp"/>
+        <FILE id="mEK5cs" name="UtilityFunctions.h" compile="0" resource="0"
+              file="Source/utils/UtilityFunctions.h"/>
+      </GROUP>
+      <GROUP id="{34DB7F8E-02FF-974C-F434-34813CFCA0B9}" name="components">
+        <FILE id="F0ZGB7" name="DialogComponent.cpp" compile="1" resource="0"
+              file="Source/components/DialogComponent.cpp"/>
+        <FILE id="iBpcXa" name="DialogComponent.h" compile="0" resource="0"
+              file="Source/components/DialogComponent.h"/>
+        <FILE id="xpSaVj" name="EditBeatView.cpp" compile="1" resource="0"
+              file="Source/components/EditBeatView.cpp"/>
+        <FILE id="ynEfSr" name="EditBeatView.h" compile="0" resource="0" file="Source/components/EditBeatView.h"/>
+        <FILE id="djMtoB" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/components/LookAndFeel.cpp"/>
+        <FILE id="ApX7bM" name="LookAndFeel.h" compile="0" resource="0" file="Source/components/LookAndFeel.h"/>
+        <FILE id="c7fqMq" name="ManageSamplesView.cpp" compile="1" resource="0"
+              file="Source/components/ManageSamplesView.cpp"/>
+        <FILE id="j1cpfN" name="ManageSamplesView.h" compile="0" resource="0"
+              file="Source/components/ManageSamplesView.h"/>
+        <FILE id="fCAVWQ" name="PerformView.cpp" compile="1" resource="0" file="Source/components/PerformView.cpp"/>
+        <FILE id="rpEVPd" name="PerformView.h" compile="0" resource="0" file="Source/components/PerformView.h"/>
+        <FILE id="S1b1Vt" name="PresetsView.cpp" compile="1" resource="0" file="Source/components/PresetsView.cpp"/>
+        <FILE id="u5KpTh" name="PresetsView.h" compile="0" resource="0" file="Source/components/PresetsView.h"/>
+        <FILE id="I07786" name="TopBar.cpp" compile="1" resource="0" file="Source/components/TopBar.cpp"/>
+        <FILE id="zaxdt4" name="TopBar.h" compile="0" resource="0" file="Source/components/TopBar.h"/>
+      </GROUP>
+      <GROUP id="{25670950-CE15-21A9-CE3D-4FEEAC9EDE28}" name="model">
+        <FILE id="bhaPy3" name="JuceState.h" compile="0" resource="0" file="Source/model/JuceState.h"/>
+        <FILE id="ooJcfs" name="TickModel.cpp" compile="1" resource="0" file="Source/model/TickModel.cpp"/>
+        <FILE id="avYeWX" name="TickModel.h" compile="0" resource="0" file="Source/model/TickModel.h"/>
+      </GROUP>
+      <FILE id="BFLDLi" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="x8y9Ge" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="gf8A27" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="pw6RMd" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" vstLegacyFolder="../../SDKs/VST2_SDK"
+               hardenedRuntime="1" smallIcon="n8H2XT" bigIcon="n8H2XT" iosPushNotifications="1">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="TICK" osxCompatibility="10.7 SDK"
+                       headerPath="../../Source"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="TICK"
+                       osxCompatibility="10.7 SDK" headerPath="../../Source"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <ANDROIDSTUDIO targetFolder="Builds/Android" androidPushNotifications="0" androidAdditionalResourceFolders="../../Included Samples"
+                   androidExtraAssetsFolder="Included Samples" androidTheme="@android:style/Theme.NoTitleBar">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" headerPath="../../Source" targetName="TICK"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="TICK"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_opengl" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="JUCE/modules"/>
+      </MODULEPATHS>
+    </ANDROIDSTUDIO>
+    <XCODE_IPHONE targetFolder="Builds/iOS" UIFileSharingEnabled="1" UISupportsDocumentBrowser="1"
+                  iosDevelopmentTeamID="2PW93SFVCT" iosBackgroundAudio="1" smallIcon="n8H2XT"
+                  bigIcon="n8H2XT" duplicateAppExResourcesFolder="0" iosScreenOrientation="UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown"
+                  iosBluetoothPermissionNeeded="1" iosBackgroundBle="1" UIRequiresFullScreen="0"
+                  iPadScreenOrientation="UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight,UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" headerPath="../../Source" targetName="TICK"/>
+        <CONFIGURATION isDebug="0" name="Release" headerPath="../../Source" targetName="TICK"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_opengl" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_IPHONE>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_USE_MP3AUDIOFORMAT="1" JUCE_USE_LAME_AUDIO_FORMAT="1"
+               JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_WEB_BROWSER="0" JUCE_STANDALONE_FILTER_WINDOW_USE_KIOSK_MODE="0"/>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
