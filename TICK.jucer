@@ -206,8 +206,9 @@
         <MODULEPATH id="juce_audio_utils" path="JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <ANDROIDSTUDIO targetFolder="Builds/Android" androidPushNotifications="0" androidAdditionalResourceFolders="../../Included Samples"
-                   androidExtraAssetsFolder="Included Samples" androidTheme="@android:style/Theme.NoTitleBar">
+    <ANDROIDSTUDIO targetFolder="Builds/Android" androidPushNotifications="0" androidExtraAssetsFolder="Included Samples"
+                   androidTheme="@android:style/Theme.NoTitleBar" smallIcon="xwAcl7"
+                   bigIcon="xwAcl7" androidScreenOrientation="portrait" androidEnableContentSharing="1">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" headerPath="../../Source" targetName="TICK"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="TICK"/>

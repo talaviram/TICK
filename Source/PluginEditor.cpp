@@ -98,7 +98,8 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addCustomItem (222, std::move (slider));
         settings.addSeparator();
         settings.addItem ("About", {});
-        settings.showAt (&settingsButton);
+        settings.showMenuAsync (PopupMenu::Options().withMinimumWidth (100).withMaximumNumColumns (3).withTargetComponent (&settingsButton));
+
     };
 
     addAndMakeVisible (mainArea);

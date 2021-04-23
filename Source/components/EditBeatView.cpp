@@ -278,7 +278,7 @@ bool EditBeatView::SamplesModel::SampleOption::hitTest (int x, int y)
 
 inline bool EditBeatView::SamplesModel::isLastRow (int row) const
 {
-    return row == owner.ticks.getNumOfTicks();
+    return row >= owner.ticks.getNumOfTicks();
 }
 
 void EditBeatView::SamplesModel::listBoxItemClicked (int row, const juce::MouseEvent& e)

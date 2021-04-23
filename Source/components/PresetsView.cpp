@@ -303,7 +303,7 @@ void PresetsView::savePreset (juce::File presetNameToSave, const bool discardTra
     if (outStream.openedOk())
         state.saveToArchive (outStream, ticks, discardTransport);
     else
-        juce::NativeMessageBox::showMessageBox (juce::AlertWindow::WarningIcon, "Saving Failed", "Cannot write preset!\nMake sure permissions are correct.");
+        juce::NativeMessageBox::showMessageBoxAsync (juce::AlertWindow::WarningIcon, "Saving Failed", "Cannot write preset!\nMake sure permissions are correct.");
 }
 
 void PresetsView::paint (juce::Graphics& g)
