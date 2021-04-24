@@ -35,6 +35,7 @@
         <FILE id="BIwkR4" name="KlokanTechNotoSansCJK-Regular.otf" compile="0"
               resource="1" file="Media/Font/KlokanTechNotoSansCJK-Regular.otf"/>
       </GROUP>
+      <FILE id="dHLYH2" name="about_text.txt" compile="0" resource="1" file="Media/about_text.txt"/>
       <FILE id="n3gl9R" name="arrow_back_ios-24px.svg" compile="0" resource="1"
             file="Media/arrow_back_ios-24px.svg"/>
       <FILE id="G8DxkM" name="background.png" compile="0" resource="1" file="Media/background.png"/>
@@ -146,6 +147,7 @@
               file="Source/utils/UtilityFunctions.h"/>
       </GROUP>
       <GROUP id="{34DB7F8E-02FF-974C-F434-34813CFCA0B9}" name="components">
+        <FILE id="IyHKNg" name="AboutView.h" compile="0" resource="0" file="Source/components/AboutView.h"/>
         <FILE id="F0ZGB7" name="DialogComponent.cpp" compile="1" resource="0"
               file="Source/components/DialogComponent.cpp"/>
         <FILE id="iBpcXa" name="DialogComponent.h" compile="0" resource="0"

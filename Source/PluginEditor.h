@@ -96,6 +96,7 @@ private:
 
     std::unique_ptr<SamplesPaint> samplesPaint;
 
+    std::unique_ptr<Component> aboutView;
     // Settings
     std::unique_ptr<jux::ListBoxMenu> settingsMenu;
 

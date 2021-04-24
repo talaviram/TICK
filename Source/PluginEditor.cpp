@@ -11,6 +11,7 @@
 #include "PluginEditor.h"
 #include "PluginProcessor.h"
 
+#include "components/AboutView.h"
 #include "components/ManageSamplesView.h"
 #include "components/PresetsView.h"
 
@@ -97,7 +98,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addSectionHeader ("Low-Pass Filter");
         settings.addCustomItem (222, std::move (slider));
         settings.addSeparator();
-        settings.addItem ("About", {});
+        settings.addItem ("About", [this] {
+            aboutView->setVisible (true);
+        });
         settings.showMenuAsync (PopupMenu::Options().withMinimumWidth (100).withMaximumNumColumns (3).withTargetComponent (&settingsButton));
 
     };
@@ -128,6 +131,10 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 
     presetsView.reset (new PresetsView (processor.getState(), processor.getTicks()));
     mainArea.addAndMakeVisible (*presetsView);
+
+    aboutView.reset (new AboutView());
+    addChildComponent (aboutView.get());
+    aboutView->setAlwaysOnTop (true);
 
     // register view state notifications
     processor.getState().view.isEdit.addListener (this);
@@ -203,6 +210,7 @@ void TickAudioProcessorEditor::resized()
     topBar.setBounds (mainArea.getLocalBounds().removeFromTop (TickLookAndFeel::barHeight));
     performView->setBounds (performViewArea);
     presetsView->setBounds (mainArea.getLocalBounds().translated (0, (bool) processor.getState().view.showPresetsView.getValue() == true ? 0 : getHeight()));
+    aboutView->setBounds (getLocalBounds());
 }
 
 void TickAudioProcessorEditor::valueChanged (juce::Value& value)
