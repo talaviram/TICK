@@ -151,8 +151,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     setResizable (true, true);
     //    375 x 667 iPhone 6
 #if JUCE_WINDOWS || JUCE_MAC || JUCE_LINUX
+    const auto size = VariantConverter<ViewDiemensions>::fromVar (state.view.windowSize.getValue());
+    setSize (size.x, size.y);
     setResizeLimits (280, 500, 2048, 4096);
-    setSize (280, 500);
 #else
     setSize (375, 667);
 #endif
@@ -188,6 +189,9 @@ void TickAudioProcessorEditor::paint (juce::Graphics& g)
 
 void TickAudioProcessorEditor::resized()
 {
+#if ! JUCE_IOS || ! JUCE_ANDROID
+    processor.getState().view.windowSize.setValue (String (getWidth()) + "," + String (getHeight()));
+#endif
 #if JUCE_IOS
     // Modern iOS/iPadOS device fill 'all screen'...
     // nasty way detecting older devices...

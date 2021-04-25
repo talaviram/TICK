@@ -23,6 +23,8 @@ namespace IDs
     DECLARE_ID (presetName)
     DECLARE_ID (uuid)
 
+    DECLARE_ID (viewSize)
+
     DECLARE_ID (useHostTransport)
     DECLARE_ID (filterCutoff)
     DECLARE_ID (showWaveform)
@@ -42,6 +44,29 @@ namespace IDs
 
 #undef DECLARE_ID
 } // namespace IDs
+
+constexpr int defaultWidth = 280;
+constexpr int defaultHeight = 500;
+typedef juce::Point<int> ViewDiemensions;
+
+template <>
+struct juce::VariantConverter<ViewDiemensions>
+{
+    static ViewDiemensions fromVar (const juce::var& v)
+    {
+        const auto asStr = v.toString().trim();
+        const auto sep = asStr.indexOf (",");
+        if (! asStr.containsAnyOf ("0123456789") || (sep <= 0 || (sep > 0 && asStr.lastIndexOf (",") != sep)))
+            return { defaultWidth, defaultHeight };
+
+        return { std::stoi (asStr.substring (0, sep).toStdString()), std::stoi (asStr.substring (sep + 1).toStdString()) };
+    }
+
+    static juce::var toVar (const ViewDiemensions& v)
+    {
+        return juce::String::formatted ("%d,%d", v.getX(), v.getY());
+    }
+};
 
 template <typename Type, typename Constrainer>
 struct ConstrainerWrapper
@@ -274,7 +299,7 @@ private:
 
 struct View
 {
-    // TODO: ViewSize
+    juce::Value windowSize; // desktop only
     juce::Value isEdit;
     juce::Value showEditSamples;
     juce::Value showPresetsView;
@@ -333,7 +358,7 @@ public:
     // The settings are basically and XML
     // And each sample (tick) is a 32bit/44.1khz mono WAVE
     // with metadata for start/end and name.
-    void saveToArchive (juce::OutputStream& streamToWrite, TicksHolder& ticks, const bool discardTransport = false)
+    void saveToArchive (juce::OutputStream& streamToWrite, TicksHolder& ticks, const bool discardTransport = false, const bool isPreset = true)
     {
         auto stateToStore = state.createCopy();
         if (discardTransport)
@@ -349,6 +374,12 @@ public:
             stateToStore.setProperty (IDs::uuid, uuid.toDashedString(), nullptr);
         else
             stateToStore.setProperty (IDs::uuid, presetHash, nullptr);
+
+        // don't store host state in preset.
+        if (isPreset)
+        {
+            stateToStore.removeProperty (IDs::viewSize, nullptr);
+        }
 
         juce::String stateUuid = stateToStore.getProperty (IDs::uuid);
         jassert (stateUuid.isNotEmpty());
@@ -372,7 +403,7 @@ public:
         streamToWrite.flush();
     }
 
-    void loadFromArchive (juce::ZipFile& archive, TicksHolder& ticks)
+    void loadFromArchive (juce::ZipFile& archive, TicksHolder& ticks, const bool isPreset = true)
     {
         if (archive.getNumEntries() == 0)
         {
@@ -459,6 +490,7 @@ public:
         presetHash = stateToLoad.getProperty (IDs::uuid);
         presetName.setValue (stateToLoad.getProperty (IDs::presetName), nullptr);
         numOfTicks.setValue (stateToLoad.getProperty (IDs::numOfTicks), nullptr);
+        view.windowSize.setValue (stateToLoad.getProperty (IDs::viewSize));
 
         // only use this if transport data existed
         const bool loadedUseHostState = stateToLoad.getProperty (IDs::useHostTransport);
@@ -572,6 +604,7 @@ private:
             showWaveform.referTo (state, IDs::showWaveform, nullptr, false);
             cutoffFilter.referTo (state, IDs::filterCutoff, nullptr, 20000.0f);
             numOfTicks.referTo (state, IDs::numOfTicks, nullptr, 0);
+            view.windowSize.referTo (state.getPropertyAsValue (IDs::viewSize, nullptr));
         }
 
         for (auto child : state)

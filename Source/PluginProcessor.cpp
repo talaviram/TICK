@@ -305,14 +305,14 @@ void TickAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
     // save
     MemoryOutputStream writeStream (destData, false);
-    settings.saveToArchive (writeStream, ticks);
+    settings.saveToArchive (writeStream, ticks, false, false);
 }
 
 void TickAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     auto* stream = new MemoryInputStream (data, sizeInBytes, false);
     ZipFile archive (stream, true);
-    settings.loadFromArchive (archive, ticks);
+    settings.loadFromArchive (archive, ticks, false);
 }
 
 double TickAudioProcessor::getCurrentBeatPos()
