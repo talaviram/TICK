@@ -86,7 +86,14 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addItem ("Internal", true, ! transport.get(), [&transport] {
             transport.setValue (false, nullptr);
         });
-        settings.addItem ("External (Host)", true, transport.get(), [&transport] {
+        const bool canExternal =
+#if JUCE_DEBUG
+            true
+#else
+            processor.wrapperType != AudioProcessor::wrapperType_Standalone
+#endif
+            ;
+        settings.addItem ("External (Host)", canExternal, transport.get(), [&transport] {
             transport.setValue (true, nullptr);
         });
         settings.addSeparator();
