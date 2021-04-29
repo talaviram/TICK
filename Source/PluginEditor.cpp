@@ -109,7 +109,6 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
             aboutView->setVisible (true);
         });
         settings.showMenuAsync (PopupMenu::Options().withMinimumWidth (100).withMaximumNumColumns (3).withTargetComponent (&settingsButton));
-
     };
 
     addAndMakeVisible (mainArea);
