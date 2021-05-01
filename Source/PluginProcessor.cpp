@@ -305,6 +305,7 @@ void TickAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
     // save
     MemoryOutputStream writeStream (destData, false);
+    settings.cutoffFilter.setValue (filterCutoff->load(), nullptr);
     settings.saveToArchive (writeStream, ticks, false, false);
 }
 
@@ -313,6 +314,8 @@ void TickAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
     auto* stream = new MemoryInputStream (data, sizeInBytes, false);
     ZipFile archive (stream, true);
     settings.loadFromArchive (archive, ticks, false);
+    auto* cutOff = parameters.getParameter (IDs::filterCutoff);
+    cutOff->setValueNotifyingHost (cutOff->convertTo0to1 (settings.cutoffFilter.get()));
 }
 
 double TickAudioProcessor::getCurrentBeatPos()

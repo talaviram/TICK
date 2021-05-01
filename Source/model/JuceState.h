@@ -380,6 +380,8 @@ public:
         {
             stateToStore.removeProperty (IDs::showWaveform, nullptr);
             stateToStore.removeProperty (IDs::viewSize, nullptr);
+            // we don't really use APVTS so we manually add it
+            stateToStore.removeProperty (IDs::filterCutoff, nullptr);
         }
 
         juce::String stateUuid = stateToStore.getProperty (IDs::uuid);
@@ -492,6 +494,7 @@ public:
         presetName.setValue (stateToLoad.getProperty (IDs::presetName), nullptr);
         numOfTicks.setValue (stateToLoad.getProperty (IDs::numOfTicks), nullptr);
         showWaveform.setValue (stateToLoad.getProperty (IDs::showWaveform, false), nullptr);
+        cutoffFilter.setValue (stateToLoad.getProperty (IDs::filterCutoff, cutoffFilter.getDefault()), nullptr);
         view.windowSize.setValue (stateToLoad.getProperty (IDs::viewSize));
 
         // only use this if transport data existed
