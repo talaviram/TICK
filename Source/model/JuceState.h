@@ -378,6 +378,7 @@ public:
         // don't store host state in preset.
         if (isPreset)
         {
+            stateToStore.removeProperty (IDs::showWaveform, nullptr);
             stateToStore.removeProperty (IDs::viewSize, nullptr);
         }
 
@@ -490,6 +491,7 @@ public:
         presetHash = stateToLoad.getProperty (IDs::uuid);
         presetName.setValue (stateToLoad.getProperty (IDs::presetName), nullptr);
         numOfTicks.setValue (stateToLoad.getProperty (IDs::numOfTicks), nullptr);
+        showWaveform.setValue (stateToLoad.getProperty (IDs::showWaveform, false), nullptr);
         view.windowSize.setValue (stateToLoad.getProperty (IDs::viewSize));
 
         // only use this if transport data existed
