@@ -190,6 +190,8 @@ void EditBeatView::SamplesModel::SampleOption::mouseDown (const juce::MouseEvent
         menu.addItem (1, "Edit Sample...");
         menu.addItem (2, "Replace Sample...");
         menu.addItem (3, "Delete Sample...");
+        menu.addSeparator();
+        menu.addItem (4, "Set sample to this beat and onward...");
         auto options = juce::PopupMenu::Options().withTargetScreenArea (getScreenBounds().removeFromRight (getHeight()));
         menu.showMenuAsync (options, [this] (int value) {
             switch (value)
@@ -218,6 +220,12 @@ void EditBeatView::SamplesModel::SampleOption::mouseDown (const juce::MouseEvent
                 case 3:
                     owner.ticks.removeTick (row);
                     break;
+                case 4:
+                {
+                    const auto currentSelection = owner.selection[0];
+                    for (auto i = currentSelection; i < TickSettings::kMaxBeatAssignments; ++i)
+                        owner.state.beatAssignments[i].tickIdx = row;
+                }
                 default:
                     break;
             }
