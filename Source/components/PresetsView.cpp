@@ -171,6 +171,25 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
 
     auto userDataFolder = TickUtils::getUserFolder();
     // TODO: handle failure!
+#if JUCE_MAC
+    if (! userDataFolder.isDirectory())
+    {
+        auto didSucceed = userDataFolder.createDirectory();
+        if (! didSucceed.wasOk())
+        {
+            // TODO: notify user
+            jassertfalse;
+        }
+    }
+
+    if (! userDataFolder.getChildFile ("Factory").isDirectory())
+    {
+        // tried to copy from installer shared
+        auto factory = File::getSpecialLocation (File::commonDocumentsDirectory).getChildFile ("Tal Aviram/" JucePlugin_Name);
+        if (factory.isDirectory())
+            factory.copyDirectoryTo (userDataFolder);
+    }
+#endif
 
     timesliceThread.startThread();
 
