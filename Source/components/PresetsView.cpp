@@ -206,6 +206,7 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
 
 PresetsView::~PresetsView()
 {
+    directoryContents.reset();
     timesliceThread.stopThread (1000);
 }
 
