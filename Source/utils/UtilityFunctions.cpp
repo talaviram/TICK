@@ -16,9 +16,11 @@ const char* TickUtils::kPresetExtension = ".preset";
 
 File TickUtils::getUserFolder()
 {
-    return File::getSpecialLocation (File::userDocumentsDirectory)
+    return
 #if ! JUCE_IOS
-        .getChildFile (String (JucePlugin_Name))
+        File::getSpecialLocation(File::commonDocumentsDirectory).getChildFile(String(JucePlugin_Manufacturer)).getChildFile(String(JucePlugin_Name)).getChildFile("Presets")
+#else
+        File::getSpecialLocation (File::userDocumentsDirectory)
 #endif
         ;
 }
