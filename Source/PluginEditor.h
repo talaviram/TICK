@@ -101,9 +101,7 @@ private:
     std::unique_ptr<jux::ListBoxMenu> settingsMenu;
 
     TickAudioProcessor& processor;
-
-    std::unique_ptr<TickSplash> splash_unique;
-    Component::SafePointer<TickSplash> splash;
+    std::unique_ptr<TickSplash> splash;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TickAudioProcessorEditor)
 };

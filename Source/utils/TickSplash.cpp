@@ -36,8 +36,8 @@ void TickSplash::paint (Graphics& g)
 
 void TickSplash::timerCallback()
 {
-    if (Time::getMillisecondCounter() >= splashDisplayTime + (uint32) millisecondsToDisplaySplash)
-        delete this;
+    if (getParentComponent() != nullptr && Time::getMillisecondCounter() >= splashDisplayTime + (uint32) millisecondsToDisplaySplash)
+        getParentComponent()->removeChildComponent (this);
 }
 
 void TickSplash::parentSizeChanged()

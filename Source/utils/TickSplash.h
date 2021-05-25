@@ -4,8 +4,7 @@
 
 using namespace juce;
 class TickSplash : public Component,
-                   private Timer,
-                   private DeletedAtShutdown
+                   private Timer
 {
 public:
     TickSplash (Component& parentToAddTo);

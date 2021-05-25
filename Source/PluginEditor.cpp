@@ -150,8 +150,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     if (! didShowSplashOnce)
     {
         didShowSplashOnce = true;
-        splash_unique.reset (new TickSplash (*this));
-        splash = splash_unique.get();
+        splash.reset (new TickSplash (*this));
     }
 
     setResizable (true, true);
