@@ -222,6 +222,17 @@ void TickAudioProcessorEditor::resized()
     aboutView->setBounds (getLocalBounds());
 }
 
+bool TickAudioProcessorEditor::keyPressed (const juce::KeyPress& key)
+{
+    if (! processor.getState().useHostTransport.get() && key.getKeyCode() == juce::KeyPress::spaceKey)
+    {
+        auto& transport = bottomBar.transportButton;
+        transport.setToggleState (! transport.getToggleState(), dontSendNotification);
+        return true;
+    }
+    return false;
+}
+
 void TickAudioProcessorEditor::valueChanged (juce::Value& value)
 {
     auto& state = processor.getState();
@@ -275,6 +286,11 @@ void TickAudioProcessorEditor::timerCallback()
     if (useHostTransport)
     {
         bottomBar.transportPosition.setText (TickUtils::generateTimecodeDisplay (processor.lastKnownPosition_), dontSendNotification);
+    }
+    else if (isVisible())
+    {
+        // When plug-in is self controlled, we want spacebar to work
+        grabKeyboardFocus();
     }
 }
 

@@ -40,6 +40,8 @@ public:
     void resized() override;
     void timerCallback() override;
 
+    bool keyPressed (const juce::KeyPress&) override;
+
 #if JUCE_DEBUG
     void paintOverChildren (juce::Graphics& g) override
     {
