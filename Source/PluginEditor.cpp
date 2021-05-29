@@ -23,7 +23,9 @@ static bool didShowSplashOnce { false };
 TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     : AudioProcessorEditor (&p), samplesButton ("Sounds", juce::DrawableButton::ButtonStyle::ImageFitted), settingsButton ("settingsButton", juce::DrawableButton::ImageFitted), processor (p)
 {
-#if JUCE_DEBUG
+// splash is a 'nicer way' to make JUCE splash requirement for non-GPL builds.
+// this is needed for any non-GPL compliant build...
+#if ! JUCE_DISPLAY_SPLASH_SCREEN
     didShowSplashOnce = true;
 #endif
     auto& state = processor.getState();
