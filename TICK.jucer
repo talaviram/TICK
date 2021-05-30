@@ -13,7 +13,7 @@
               companyName="Tal Aviram" companyCopyright="Tal Aviram (c) 2019 - 2021"
               companyWebsite="https://www.talaviram.com" companyEmail="me@talaviram.com"
               pluginAUIsSandboxSafe="1" pluginVST3Category="Generator" pluginVSTCategory="kPlugCategGenerator"
-              projectLineFeed="&#10;" defines="JUCE_USE_DARK_SPLASH_SCREEN&#10;JUCE_DONT_AUTO_OPEN_MIDI_DEVICES_ON_MOBILE=1&#10;"
+              projectLineFeed="&#10;" defines="JUCE_COREGRAPHICS_DRAW_ASYNC&#10;JUCE_DONT_AUTO_OPEN_MIDI_DEVICES_ON_MOBILE=1&#10;"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               jucerFormatVersion="1" addUsingNamespaceToJuceHeader="0" headerPath="../../;&#10;../../Source"
               pluginAUMainType="'aumu'">
