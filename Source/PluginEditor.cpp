@@ -18,7 +18,6 @@
 #include "JUX/components/ListBoxMenu.h"
 #include "utils/UtilityFunctions.h"
 
-static bool didShowSplashOnce { false };
 //==============================================================================
 TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     : AudioProcessorEditor (&p), samplesButton ("Sounds", juce::DrawableButton::ButtonStyle::ImageFitted), settingsButton ("settingsButton", juce::DrawableButton::ImageFitted), processor (p)
@@ -26,7 +25,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 // splash is a 'nicer way' to make JUCE splash requirement for non-GPL builds.
 // this is needed for any non-GPL compliant build...
 #if ! JUCE_DISPLAY_SPLASH_SCREEN
-    didShowSplashOnce = true;
+    TickSplash::didShowSplashOnce = true;
 #endif
     auto& state = processor.getState();
     background.setBufferedToImage (true);
@@ -149,11 +148,8 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     processor.getState().view.showEditSamples.addListener (this);
     processor.getState().view.showPresetsView.addListener (this);
 
-    if (! didShowSplashOnce)
-    {
-        didShowSplashOnce = true;
+    if (! TickSplash::didShowSplashOnce)
         splash.reset (new TickSplash (*this));
-    }
 
     setResizable (true, true);
     //    375 x 667 iPhone 6

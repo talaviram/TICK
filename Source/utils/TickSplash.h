@@ -9,6 +9,8 @@ class TickSplash : public Component,
 public:
     TickSplash (Component& parentToAddTo);
 
+    static bool didShowSplashOnce;
+
 private:
     void paint (Graphics&) override;
     void timerCallback() override;

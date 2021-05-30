@@ -1,6 +1,9 @@
 #include "TickSplash.h"
 
-static const int millisecondsToDisplaySplash = 3000;
+bool TickSplash::didShowSplashOnce = false;
+
+// consider JUCE splash...
+static const int millisecondsToDisplaySplash = 2 * 2000;
 static uint32 splashDisplayTime = 0;
 
 TickSplash::TickSplash (Component& parent)
@@ -17,6 +20,7 @@ TickSplash::TickSplash (Component& parent)
 
 void TickSplash::paint (Graphics& g)
 {
+    TickSplash::didShowSplashOnce = true;
     auto area = getLocalBounds();
     g.fillAll (Colours::black);
     g.setFont (Font (15.0f));
