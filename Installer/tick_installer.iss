@@ -36,6 +36,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 Source: "..\Builds\VisualStudio2019\x64\Release\Standalone Plugin\TICK.exe"; DestDir: "{autopf}\{#MyAppName}"; Flags: ignoreversion; Components: standalone
 Source: "..\Builds\VisualStudio2019\x64\Release\VST3\TICK.vst3"; DestDir: "{commoncf}\VST3"; Flags: ignoreversion; Components: vst3
+Source: "..\Builds\VisualStudio2019\x64\Release\VST\TICK.dll"; DestDir: "{code:GetVST2_64bit_Dir}"; Flags: ignoreversion; Components: vst2
 Source: "Factory\*"; DestDir: "{commondocs}\Tal Aviram\TICK\Presets\Factory"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
@@ -46,5 +47,30 @@ Name: "{group}\Uninstall My Program"; Filename: "{uninstallexe}"
 Filename: "{autopf}\{#MyAppName}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Components]
-Name: "standalone"; Description: "Standalone"; Types: full custom;
-Name: "vst3"; Description: "VST3"; Types: full custom;
+Name: "standalone"; Description: "Standalone"; Types: full custom
+Name: "vst3"; Description: "VST3"; Types: full custom
+Name: "vst2"; Description: "VST"; Types: custom
+
+[Code]
+var
+  VST2_64bit_InputDirPage: TInputDirWizardPage;
+
+procedure InitializeWizard;
+begin
+  VST2_64bit_InputDirPage :=
+    CreateInputDirPage(wpSelectComponents, 'VST2 Folder', 'VST2 Folder', 'Select folder used by your host for VST2. This can differ between hosts.', False, '');
+  VST2_64bit_InputDirPage.Add('');
+  VST2_64bit_InputDirPage.Values[0] := ExpandConstant('{commoncf}\VST2');
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  Result := False;
+  if PageID = VST2_64bit_InputDirPage.ID then
+    Result := not IsComponentSelected('vst2');
+end;
+
+function GetVST2_64bit_Dir(Param: String): String;
+begin
+  Result := VST2_64bit_InputDirPage.Values[0];
+end;
