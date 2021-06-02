@@ -4,12 +4,12 @@
               splashScreenColour="Dark" projectType="audioplug" version="0.1.0"
               bundleIdentifier="com.talaviram.Tick" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
-              buildAAX="0" buildStandalone="1" enableIAA="0" pluginName="TICK"
+              buildAAX="1" buildStandalone="1" enableIAA="0" pluginName="TICK"
               pluginDesc="T:CK" pluginManufacturer="Tal Aviram" pluginManufacturerCode="Tala"
               pluginCode="Tick" pluginChannelConfigs="" pluginIsSynth="0" pluginWantsMidiIn="0"
               pluginProducesMidiOut="0" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="TickAU" pluginRTASCategory="" aaxIdentifier="com.talaviram.Tick"
-              pluginAAXCategory="2048" pluginFormats="buildAU,buildStandalone,buildVST,buildVST3"
+              pluginAAXCategory="2048" pluginFormats="buildAAX,buildAU,buildStandalone,buildVST,buildVST3"
               companyName="Tal Aviram" companyCopyright="Tal Aviram (c) 2019 - 2021"
               companyWebsite="https://www.talaviram.com" companyEmail="me@talaviram.com"
               pluginAUIsSandboxSafe="1" pluginVST3Category="Generator" pluginVSTCategory="kPlugCategGenerator"
@@ -184,7 +184,8 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" vstLegacyFolder="../../SDKs/VST2_SDK"
-               hardenedRuntime="1" smallIcon="n8H2XT" bigIcon="n8H2XT" iosPushNotifications="1">
+               hardenedRuntime="1" smallIcon="n8H2XT" bigIcon="n8H2XT" iosPushNotifications="1"
+               aaxFolder="../../SDKs/AAX_SDK">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="TICK" osxCompatibility="10.7 SDK"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="TICK"
@@ -207,7 +208,8 @@
         <MODULEPATH id="juce_audio_utils" path="JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2019 targetFolder="Builds/VisualStudio2019" vstLegacyFolder="../../SDKs/VST2_SDK">
+    <VS2019 targetFolder="Builds/VisualStudio2019" vstLegacyFolder="../../SDKs/VST2_SDK"
+            aaxFolder="../../SDKs/AAX_SDK">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" useRuntimeLibDLL="0"/>
         <CONFIGURATION isDebug="0" name="Release" alwaysGenerateDebugSymbols="1" debugInformationFormat="ProgramDatabase"
