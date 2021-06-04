@@ -63,7 +63,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     samplesButton.setClickingTogglesState (true);
     samplesButton.setColour (DrawableButton::backgroundOnColourId, Colours::transparentBlack);
     samplesButton.getToggleStateValue().referTo (state.view.showEditSamples);
-    headerArea.addAndMakeVisible (editModeButton);
+    addAndMakeVisible (editModeButton);
 
     auto samplesIcon = juce::DrawablePath::createFromImageData (BinaryData::sampleicon_svg, BinaryData::sampleicon_svgSize);
     samplesIcon->replaceColour (juce::Colours::black, juce::Colours::white);
