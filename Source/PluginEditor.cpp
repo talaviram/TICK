@@ -199,17 +199,19 @@ void TickAudioProcessorEditor::resized()
     // Modern iOS/iPadOS device fill 'all screen'...
     // nasty way detecting older devices...
     static const int safeBottom = juce::SystemStats::getDeviceDescription().contains ("iPad") || getParentHeight() < 670 ? 0 : 20;
+    constexpr auto reducePixels = 8;
 #else
     static const int safeBottom = 0;
+    constexpr auto reducePixels = 5;
 #endif
     const auto availableArea = getLocalBounds().withTrimmedBottom (safeBottom);
     auto topArea = availableArea;
     headerArea.setBounds (topArea.removeFromTop (TickLookAndFeel::toolbarHeight));
     bottomBar.setBounds (topArea.removeFromBottom (TickLookAndFeel::toolbarHeight));
     editModeButton.setBounds (headerArea.getBounds().removeFromRight (60));
-    samplesButton.setBounds (headerArea.getBounds().removeFromLeft (headerArea.getHeight()).reduced (5));
+    samplesButton.setBounds (headerArea.getBounds().removeFromLeft (headerArea.getHeight()).reduced (reducePixels));
 
-    settingsButton.setBounds (samplesButton.getBounds().reduced (5));
+    settingsButton.setBounds (samplesButton.getBounds().reduced (reducePixels));
     mainArea.setBounds (topArea);
 
     background.setBounds (getLocalBounds());
