@@ -21,10 +21,12 @@ public:
     static constexpr int barHeight = 40;
     static constexpr int tabBarHeight = 40;
     static constexpr int toolbarHeight = 60;
+    static constexpr int reducePixels = 10;
 #else
     static constexpr int barHeight = 40;
     static constexpr int tabBarHeight = 40;
     static constexpr int toolbarHeight = 40;
+    static constexpr int reducePixels = 5;
 #endif
 
     struct Colours

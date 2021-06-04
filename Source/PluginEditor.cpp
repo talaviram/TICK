@@ -190,28 +190,30 @@ void TickAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillAll (TickLookAndFeel::Colours::backgroundColour);
 }
 
+void TickAudioProcessorEditor::parentHierarchyChanged()
+{
+#if JUCE_IOS
+    // safe area only valid after view is visible.
+    resized();
+#endif
+}
+
 void TickAudioProcessorEditor::resized()
 {
 #if ! JUCE_IOS || ! JUCE_ANDROID
     processor.getState().view.windowSize.setValue (String (getWidth()) + "," + String (getHeight()));
 #endif
-#if JUCE_IOS
-    // Modern iOS/iPadOS device fill 'all screen'...
-    // nasty way detecting older devices...
-    static const int safeBottom = juce::SystemStats::getDeviceDescription().contains ("iPad") || getParentHeight() < 670 ? 0 : 20;
-    constexpr auto reducePixels = 8;
-#else
-    static const int safeBottom = 0;
-    constexpr auto reducePixels = 5;
-#endif
-    const auto availableArea = getLocalBounds().withTrimmedBottom (safeBottom);
+    auto safeArea = Desktop::getInstance().getDisplays().getPrimaryDisplay()->safeAreaInsets;
+    const auto safeTop = safeArea.getTop();
+    const auto safeBottom = safeArea.getBottom();
+    const auto availableArea = getLocalBounds().withTrimmedBottom (safeBottom).withTrimmedTop (safeTop);
     auto topArea = availableArea;
     headerArea.setBounds (topArea.removeFromTop (TickLookAndFeel::toolbarHeight));
     bottomBar.setBounds (topArea.removeFromBottom (TickLookAndFeel::toolbarHeight));
     editModeButton.setBounds (headerArea.getBounds().removeFromRight (60));
-    samplesButton.setBounds (headerArea.getBounds().removeFromLeft (headerArea.getHeight()).reduced (reducePixels));
+    samplesButton.setBounds (headerArea.getBounds().removeFromLeft (headerArea.getHeight()).reduced (TickLookAndFeel::reducePixels));
 
-    settingsButton.setBounds (samplesButton.getBounds().reduced (reducePixels));
+    settingsButton.setBounds (samplesButton.getBounds().reduced (TickLookAndFeel::reducePixels));
     mainArea.setBounds (topArea);
 
     background.setBounds (getLocalBounds());
