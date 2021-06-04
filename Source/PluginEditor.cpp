@@ -27,6 +27,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 #if ! JUCE_DISPLAY_SPLASH_SCREEN
     TickSplash::didShowSplashOnce = true;
 #endif
+    initAppProperties();
     auto& state = processor.getState();
     background.setBufferedToImage (true);
     addAndMakeVisible (background);
@@ -106,6 +107,15 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addSectionHeader ("Low-Pass Filter");
         settings.addCustomItem (222, std::move (slider));
         settings.addSeparator();
+#if ! JUCE_IOS && ! JUCE_ANDROID
+        const auto useOpenGL = appProperties.getUserSettings()->getBoolValue ("opengl", true);
+        settings.addItem ("OpenGL Renderer", true, useOpenGL, [this, useOpenGL] {
+            appProperties.getUserSettings()->setValue ("opengl", ! useOpenGL);
+            appProperties.getUserSettings()->saveIfNeeded();
+            juce::AlertWindow::showNativeDialogBox ("Graphic Renderer Changed", "Please re-open UI to apply new renderer.", false);
+        });
+#endif
+        settings.addSeparator();
         settings.addItem ("About", [this] {
             aboutView->setVisible (true);
         });
@@ -147,6 +157,12 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     processor.getState().view.isEdit.addListener (this);
     processor.getState().view.showEditSamples.addListener (this);
     processor.getState().view.showPresetsView.addListener (this);
+
+#if ! JUCE_IOS
+    auto useOpenGL = appProperties.getUserSettings()->getBoolValue ("opengl", true);
+    if (useOpenGL)
+        openglContext.attachTo (*this);
+#endif
 
     if (! TickSplash::didShowSplashOnce)
         splash.reset (new TickSplash (*this));
@@ -295,6 +311,24 @@ void TickAudioProcessorEditor::timerCallback()
         // When plug-in is self controlled, we want spacebar to work
         grabKeyboardFocus();
     }
+}
+
+void TickAudioProcessorEditor::initAppProperties()
+{
+    // this is copied from juce standalone filter
+    // we 'reuse' this for our opengl toggle.
+    PropertiesFile::Options options;
+
+    options.applicationName = JucePlugin_Name;
+    options.filenameSuffix = ".settings";
+    options.osxLibrarySubFolder = "Application Support";
+#if JUCE_LINUX || JUCE_BSD
+    options.folderName = "~/.config";
+#else
+    options.folderName = "";
+#endif
+
+    appProperties.setStorageParameters (options);
 }
 
 TickAudioProcessorEditor::BottomBar::BottomBar()

@@ -61,6 +61,8 @@ public:
     void valueChanged (juce::Value&) override;
 
 private:
+    void initAppProperties();
+
     class Background : public juce::Component
     {
     public:
@@ -103,6 +105,8 @@ private:
     std::unique_ptr<Component> aboutView;
     // Settings
     std::unique_ptr<jux::ListBoxMenu> settingsMenu;
+    juce::ApplicationProperties appProperties;
+    juce::OpenGLContext openglContext;
 
     TickAudioProcessor& processor;
     std::unique_ptr<TickSplash> splash;
