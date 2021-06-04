@@ -170,7 +170,14 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
     }
 
     auto userDataFolder = TickUtils::getUserFolder();
-    // TODO: handle failure!
+
+#if JUCE_IOS
+    if (! TickUtils::getUserFolder().getChildFile ("Factory").isDirectory())
+    {
+        // TODO: background/async? though it's tiny...
+        File::getSpecialLocation (File::SpecialLocationType::currentApplicationFile).getChildFile ("Factory").copyDirectoryTo (TickUtils::getUserFolder().getChildFile ("Factory"));
+    }
+#endif
 
     timesliceThread.startThread();
 
