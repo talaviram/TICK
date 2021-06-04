@@ -13,6 +13,7 @@ public:
         about.setColour (TextEditor::outlineColourId, Colours::transparentBlack);
         about.setColour (TextEditor::focusedOutlineColourId, Colours::transparentBlack);
         about.setLineNumbersShown (false);
+        about.setWantsKeyboardFocus (false);
         about.setReadOnly (true);
         aboutText.replaceAllContent (BinaryData::about_text_txt);
         addAndMakeVisible (about);
