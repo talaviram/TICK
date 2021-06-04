@@ -188,6 +188,14 @@ public:
         return convertAudioToTick (file.getFileNameWithoutExtension(), reader.get());
     }
 
+    Tick* importURL (juce::URL url)
+    {
+        std::unique_ptr<juce::InputStream> stream (juce::URLInputSource (url).createInputStream());
+        jassert (stream != nullptr);
+        std::unique_ptr<juce::AudioFormatReader> reader (formatManager.createReaderFor (std::move (stream)));
+        return convertAudioToTick (url.getLocalFile().getFileNameWithoutExtension(), reader.get());
+    }
+
     Tick* importAudioStream (const juce::String& name, std::unique_ptr<juce::InputStream> stream)
     {
         std::unique_ptr<juce::AudioFormatReader> reader (formatManager.createReaderFor (std::move (stream)));

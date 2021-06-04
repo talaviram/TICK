@@ -257,10 +257,12 @@
       </MODULEPATHS>
     </ANDROIDSTUDIO>
     <XCODE_IPHONE targetFolder="Builds/iOS" UIFileSharingEnabled="1" UISupportsDocumentBrowser="1"
-                  iosDevelopmentTeamID="2PW93SFVCT" iosBackgroundAudio="1" smallIcon="n8H2XT"
-                  bigIcon="n8H2XT" duplicateAppExResourcesFolder="0" iosScreenOrientation="UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown"
+                  iosBackgroundAudio="1" smallIcon="n8H2XT" bigIcon="n8H2XT" duplicateAppExResourcesFolder="0"
+                  iosScreenOrientation="UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown"
                   iosBluetoothPermissionNeeded="1" iosBackgroundBle="1" UIRequiresFullScreen="0"
-                  iPadScreenOrientation="UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight,UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown">
+                  iPadScreenOrientation="UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight,UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown"
+                  iCloudPermissions="1" extraDefs="JUCE_DISPLAY_SPLASH_SCREEN=1"
+                  iosDevelopmentTeamID="2PW93SFVCT">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="TICK"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="TICK"/>

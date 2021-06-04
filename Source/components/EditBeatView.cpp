@@ -265,7 +265,11 @@ juce::PopupMenu EditBeatView::getAddSamplesMenu (const int replaceIndex)
                                  [this, replaceIndex] (const FileChooser& chooser) {
                                      if (chooser.getResult().existsAsFile())
                                      {
+#if JUCE_IOS
+                                         auto newTick = std::unique_ptr<Tick> (ticks.importURL (chooser.getURLResult()));
+#else
                                          auto newTick = std::unique_ptr<Tick> (ticks.importAudioFile (chooser.getResult()));
+#endif
                                          if (replaceIndex == -1)
                                              ticks.addTick (std::move (newTick));
                                          else
