@@ -103,7 +103,6 @@ private:
 
     std::unique_ptr<Component> aboutView;
     // Settings
-    std::unique_ptr<jux::ListBoxMenu> settingsMenu;
     juce::ApplicationProperties appProperties;
     juce::OpenGLContext openglContext;
 
