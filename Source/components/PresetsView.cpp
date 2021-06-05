@@ -127,7 +127,7 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
             menu.addItem ("Create Empty Preset", [this] {
                 state.clear();
             });
-            menu.addItem ("Save", [this] {
+            menu.addItem ("Save as...", [this] {
                 const auto fileToSave = directoryContents->getDirectory().getChildFile (state.presetName.get() + TickUtils::kPresetExtension);
                 auto* aw = new DialogComponent ("Save Preset",
                                                 juce::String(),
