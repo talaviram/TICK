@@ -51,7 +51,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     addAndMakeVisible (headerArea);
     headerName.setColour (juce::Label::ColourIds::textColourId, juce::Colours::skyblue);
 
-    headerArea.setColour (juce::Label::ColourIds::backgroundColourId, juce::Colours::black.withAlpha (0.3f));
+    headerArea.setColour (juce::Label::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
     editModeButton.setButtonText ("Edit");
     editModeButton.setClickingTogglesState (true);
     editModeButton.setColour (juce::TextButton::ColourIds::buttonOnColourId, juce::Colours::transparentBlack);
@@ -356,13 +356,6 @@ TickAudioProcessorEditor::BottomBar::BottomBar()
     transportPosition.setJustificationType (juce::Justification::centred);
     transportPosition.setText ("0|0|000", juce::dontSendNotification);
     addAndMakeVisible (transportPosition);
-}
-
-void TickAudioProcessorEditor::BottomBar::paint (Graphics& g)
-{
-    ColourGradient gradient (Colours::grey.withAlpha (0.2f), 0, 0, Colours::darkgrey.withAlpha (0.4f), 0, getLocalBounds().getBottom(), false);
-    g.setGradientFill (gradient);
-    g.fillAll();
 }
 
 void TickAudioProcessorEditor::BottomBar::resized()

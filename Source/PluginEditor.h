@@ -88,7 +88,6 @@ private:
     struct BottomBar : juce::Component
     {
         BottomBar();
-        void paint (juce::Graphics&) override;
         void resized() override;
         juce::DrawableButton transportButton;
         juce::DrawableButton syncIndicator;
