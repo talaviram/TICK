@@ -264,7 +264,8 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
         {
             editModeButton.setButtonText ("Done");
             performView->setEditMode (true);
-            state.view.showPresetsView.setValue (false);
+            if (static_cast<bool> (state.view.showPresetsView.getValue()) == true)
+                state.view.showPresetsView.setValue (false);
         }
         else
         {
