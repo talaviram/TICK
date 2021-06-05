@@ -34,6 +34,7 @@ public:
 private:
     void changeListenerCallback (juce::ChangeBroadcaster*) override;
     juce::PopupMenu getAddSamplesMenu (int indexToReplace = -1);
+    void setNewImportedSample (int replaceIndex, std::unique_ptr<Tick> newTick);
 
     struct SamplesModel : juce::ListBoxModel
     {

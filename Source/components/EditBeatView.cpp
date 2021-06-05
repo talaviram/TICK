@@ -248,14 +248,7 @@ juce::PopupMenu EditBeatView::getAddSamplesMenu (const int replaceIndex)
             auto samples = TickUtils::getFactorySamples();
             auto* entry = samples->getEntry (sampleName + ".wav");
             auto newTick = std::unique_ptr<Tick> (ticks.importAudioStream (sampleName, std::unique_ptr<InputStream> (samples->createStreamForEntry (*entry))));
-            if (replaceIndex == -1)
-            {
-                ticks.addTick (std::move (newTick));
-                state.beatAssignments[selection.front()].tickIdx = { static_cast<int> (ticks.getNumOfTicks() - 1) };
-                updateSelection (selection);
-            }
-            else
-                ticks.replaceTick (replaceIndex, std::move (newTick));
+            setNewImportedSample (replaceIndex, std::move (newTick));
             removeChildComponent (listboxMenu.get());
         });
     }
@@ -270,14 +263,24 @@ juce::PopupMenu EditBeatView::getAddSamplesMenu (const int replaceIndex)
 #else
                                          auto newTick = std::unique_ptr<Tick> (ticks.importAudioFile (chooser.getResult()));
 #endif
-                                         if (replaceIndex == -1)
-                                             ticks.addTick (std::move (newTick));
-                                         else
-                                             ticks.replaceTick (replaceIndex, std::move (newTick));
+                                         setNewImportedSample (replaceIndex, std::move (newTick));
                                      }
                                  });
     });
     return menu;
+}
+
+void EditBeatView::setNewImportedSample (const int replaceIndex, std::unique_ptr<Tick> newTick)
+{
+    if (replaceIndex == -1)
+    {
+        ticks.addTick (std::move (newTick));
+        state.beatAssignments[selection.front()].tickIdx = { static_cast<int> (ticks.getNumOfTicks() - 1) };
+        updateSelection (selection);
+    }
+    else
+        ticks.replaceTick (replaceIndex, std::move (newTick));
+    removeChildComponent (listboxMenu.get());
 }
 
 bool EditBeatView::SamplesModel::SampleOption::hitTest (int x, int y)
