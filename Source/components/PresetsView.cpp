@@ -266,7 +266,7 @@ void PresetsView::deleteFileWithConfirmation (juce::File file)
         message += "entire set?";
     else
         message += "preset?";
-    auto* aw = new DialogComponent ("Delete",
+    auto* aw = new DialogComponent ("Delete \"" + file.getFileNameWithoutExtension() + "\"",
                                     message,
                                     this);
     aw->addButton (TRANS ("Delete"), 1, juce::KeyPress (juce::KeyPress::returnKey));
