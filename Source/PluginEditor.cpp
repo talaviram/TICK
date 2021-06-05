@@ -313,7 +313,7 @@ void TickAudioProcessorEditor::timerCallback()
         if (! Process::isForegroundProcess() && ! processor.lastKnownPosition_.isPlaying)
         {
             // if we're stopped, close app to not use resources!
-            JUCEApplicationBase::quit();
+            JUCEApplication::getInstance()->systemRequestedQuit();
         }
 #endif
         // When plug-in is self controlled, we want spacebar to work
