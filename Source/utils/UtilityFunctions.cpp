@@ -59,3 +59,35 @@ void TickUtils::setDrawableFromSVG (juce::DrawableButton* btn, juce::Drawable* b
     std::unique_ptr<Drawable> downOn = replaceColourAndReturnCopy (baseImage, TickLookAndFeel::Colours::secondaryColour.darker());
     btn->setImages (normal.get(), over.get(), down.get(), disabled.get(), normalOn.get(), overOn.get(), downOn.get());
 }
+
+bool TickUtils::isValidPreset (const juce::File& file, bool deep)
+{
+    if (! file.exists() || file.isDirectory())
+        return false;
+
+    // 2MB of preset?!?
+    if (file.getSize() > 1024 * 1024 * 2)
+        return false;
+
+    ZipFile archive (file);
+    if (archive.getNumEntries() == 0)
+        return false;
+
+    const auto idx = archive.getIndexOfFileName (INFO_FILE_NAME);
+    if (idx == -1)
+        return false;
+
+    if (archive.getEntry (idx)->uncompressedSize > 512 * 1000)
+        return false;
+
+    // shallow test indicates a preset
+    if (! deep)
+        return true;
+
+    auto data = std::unique_ptr<InputStream> (archive.createStreamForEntry (idx));
+    auto info = ValueTree::fromXml (data->readString());
+    if (! info.hasType (IDs::TICK_SETTINGS))
+        return false;
+
+    return true;
+}

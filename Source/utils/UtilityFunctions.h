@@ -50,6 +50,8 @@ struct TickUtils
         return String::formatted ("%d|%d|%03d", bar, beat, ticks);
     }
 
+    static bool isValidPreset (const juce::File& file, bool deep = false);
+
     static File getUserFolder();
 
     class TextEditorItem : public PopupMenu::CustomComponent
