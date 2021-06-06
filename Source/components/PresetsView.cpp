@@ -170,12 +170,21 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
     }
 
     auto userDataFolder = TickUtils::getUserFolder();
-
 #if JUCE_IOS
     if (! TickUtils::getUserFolder().getChildFile ("Factory").isDirectory())
     {
         // TODO: background/async? though it's tiny...
         File::getSpecialLocation (File::SpecialLocationType::currentApplicationFile).getChildFile ("Factory").copyDirectoryTo (TickUtils::getUserFolder().getChildFile ("Factory"));
+    }
+#else
+    if (! userDataFolder.isDirectory())
+    {
+        auto result = userDataFolder.createDirectory();
+        if (! result.wasOk())
+        {
+            juce::AlertWindow::showMessageBoxAsync (juce::AlertWindow::AlertIconType::WarningIcon, "Invalid Preset Folder!", "Try reinstalling TICK.");
+            return;
+        }
     }
 #endif
 
