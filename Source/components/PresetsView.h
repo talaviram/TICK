@@ -88,6 +88,7 @@ private:
     };
 
     juce::ListBox list;
+    juce::FileChooser fileChooser;
 
     std::unique_ptr<TopBar> topBar;
 

@@ -91,7 +91,7 @@ static void deleteFileCallback (int modalResult, PresetsView* view, juce::Compon
 }
 
 PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
-    : state (stateRef), ticks (ticksRef), timesliceThread ("PresetScannerThread"), presetModel (*this)
+    : state (stateRef), ticks (ticksRef), timesliceThread ("PresetScannerThread"), presetModel (*this), fileChooser ("Import Audio", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*.preset", juce::FileChooser::isPlatformDialogAvailable())
 {
     using namespace juce;
 
@@ -150,7 +150,28 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
                 });
             });
 #if JUCE_IOS || JUCE_ANDROID
-            // no equivalent
+            menu.addItem ("Import...", true, false, [this] {
+                fileChooser.launchAsync (FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles,
+                                         [this] (const FileChooser& chooser) {
+                                             if (! chooser.getURLResult().isEmpty())
+                                             {
+                                                 std::unique_ptr<juce::InputStream> stream (juce::URLInputSource (chooser.getURLResult()).createInputStream());
+                                                 jassert (stream != nullptr);
+                                                 FileOutputStream output (TickUtils::getUserFolder().getChildFile (chooser.getURLResult().getFileName()));
+                                                 if (output.openedOk())
+                                                 {
+                                                     output.setPosition (0);
+                                                     output.truncate();
+                                                     output.writeFromInputStream (*stream, 1024 * 512);
+                                                     output.flush();
+                                                 }
+                                                 if (TickUtils::isValidPreset (output.getFile(), true))
+                                                     refresh();
+                                                 else
+                                                     output.getFile().deleteFile();
+                                             }
+                                         });
+            });
 #else
             String fileManagerName;
 #if JUCE_MAC
