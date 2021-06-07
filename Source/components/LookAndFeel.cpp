@@ -134,7 +134,7 @@ juce::Typeface::Ptr TickLookAndFeel::getTypeface (const juce::String& name)
 juce::Font TickLookAndFeel::getPopupMenuFont()
 {
 #if JUCE_IOS || JUCE_ANDROID
-    return juce::Font (35.0);
+    return juce::Font (25.0);
 #else
     return juce::Font (20.0);
 #endif
