@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "LookAndFeel.h"
 
 class TopBar : public juce::Component
 {
@@ -21,7 +22,7 @@ public:
             using namespace juce;
             auto img = Drawable::createFromImageData (isOpen ? BinaryData::expand_more24px_svg : BinaryData::menu24px_svg, isOpen ? BinaryData::expand_more24px_svgSize : BinaryData::menu24px_svgSize);
             img->replaceColour (Colours::black, Colours::white);
-            img->drawWithin (g, getLocalBounds().removeFromLeft (getHeight()).reduced (10).toFloat(), RectanglePlacement::centred, 1.0f);
+            img->drawWithin (g, getLocalBounds().removeFromLeft (getHeight()).reduced (TickLookAndFeel::reducePixels * 2).toFloat(), RectanglePlacement::centred, 1.0f);
             auto alpha = isEnabled() ? 1.0f : 0.5f;
             auto& laf = getLookAndFeel();
             const Font font (laf.getLabelFont (*this));

@@ -353,7 +353,7 @@ void PresetsView::paint (juce::Graphics& g)
 void PresetsView::resized()
 {
     auto bounds = getLocalBounds();
-    topBar->setBounds (bounds.removeFromTop (TickLookAndFeel::barHeight));
+    topBar->setBounds (bounds.removeFromTop (TickLookAndFeel::toolbarHeight));
     bounds.removeFromBottom (2 * TickLookAndFeel::barHeight);
     list.setBounds (bounds);
     clickGrabber.setBounds (getLocalBounds());

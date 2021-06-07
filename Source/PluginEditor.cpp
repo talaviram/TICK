@@ -138,7 +138,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         const bool value = showPresetValue.getValue();
         showPresetValue.setValue (! value);
     };
-    mainArea.addAndMakeVisible (topBar);
+    addAndMakeVisible (topBar);
+    settingsButton.toFront (false);
+    editModeButton.toFront (false);
 
     bottomBar.transportButton.getToggleStateValue().referTo (state.transport.isPlaying.getPropertyAsValue());
     addAndMakeVisible (bottomBar);
@@ -147,7 +149,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     mainArea.addAndMakeVisible (*performView);
 
     presetsView.reset (new PresetsView (processor.getState(), processor.getTicks()));
-    mainArea.addAndMakeVisible (*presetsView);
+    addAndMakeVisible (*presetsView);
 
     aboutView.reset (new AboutView());
     addChildComponent (aboutView.get());
@@ -234,7 +236,7 @@ void TickAudioProcessorEditor::resized()
 
     background.setBounds (getLocalBounds());
     auto performViewArea = mainArea.getLocalBounds();
-    topBar.setBounds (mainArea.getLocalBounds().removeFromTop (TickLookAndFeel::barHeight));
+    topBar.setBounds (headerArea.getBounds());
     performView->setBounds (performViewArea);
     presetsView->setBounds (mainArea.getLocalBounds().translated (0, (bool) processor.getState().view.showPresetsView.getValue() == true ? 0 : getHeight()));
     aboutView->setBounds (getLocalBounds());
@@ -288,8 +290,9 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
     }
     else if (value.refersToSameSourceAs (state.view.showPresetsView))
     {
-        presetsView->setBounds (value.getValue() ? getLocalBounds().translated (0, getHeight()) : getLocalBounds());
-        const auto to = value.getValue() ? getLocalBounds() : getLocalBounds().translated (0, getHeight());
+        const auto safeBounds = topBar.getBounds().withBottom (getLocalBounds().getBottom());
+        presetsView->setBounds (value.getValue() ? getLocalBounds().translated (0, getHeight()) : safeBounds);
+        const auto to = value.getValue() ? safeBounds : getLocalBounds().translated (0, getHeight());
         juce::Desktop::getInstance().getAnimator().animateComponent (presetsView.get(), to, 1.0f, 200, false, 1.0, 1.0);
         presetsView->toFront (false);
         topBar.centerLabel.setColour (juce::Label::ColourIds::textColourId, (bool) value.getValue() == true ? juce::Colours::skyblue : juce::Colours::white);
