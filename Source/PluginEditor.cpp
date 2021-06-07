@@ -290,9 +290,9 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
         samplesView->updateSelection (state.selectedEdit);
         if (value.getValue())
             samplesView->toFront (false);
-        const auto baseBounds = performView->getBounds().reduced (4, 0).withTrimmedTop (250);
+        const auto baseBounds = performView->getBounds().reduced (4, 0).withTrimmedTop (mainArea.getHeight() - 180);
         samplesView->setBounds (value.getValue() ? baseBounds.translated (0, getHeight()) : baseBounds);
-        const auto to = value.getValue() ? baseBounds : baseBounds.translated (0, getHeight());
+        const auto to = value.getValue() ? baseBounds : baseBounds.translated (0, mainArea.getHeight());
         juce::Desktop::getInstance().getAnimator().animateComponent (samplesView.get(), to, 1.0f, 200, false, 1.0, 1.0);
     }
     else if (value.refersToSameSourceAs (state.view.showPresetsView))
