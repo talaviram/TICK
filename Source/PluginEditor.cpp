@@ -198,6 +198,12 @@ TickAudioProcessorEditor::Background::Background()
     addAndMakeVisible (bgImage.get());
 }
 
+void TickAudioProcessorEditor::Background::paintOverChildren (juce::Graphics& g)
+{
+    g.setColour (Colours::white.withAlpha (0.1f));
+    g.drawHorizontalLine (separatorLineY, 0, getWidth());
+}
+
 void TickAudioProcessorEditor::Background::resized()
 {
     bgImage->setBounds (getLocalBounds());
@@ -227,6 +233,7 @@ void TickAudioProcessorEditor::resized()
     const auto availableArea = getLocalBounds().withTrimmedBottom (safeBottom).withTrimmedTop (safeTop);
     auto topArea = availableArea;
     headerArea.setBounds (topArea.removeFromTop (TickLookAndFeel::toolbarHeight));
+    background.separatorLineY = headerArea.getBottom() + 1;
     bottomBar.setBounds (topArea.removeFromBottom (TickLookAndFeel::toolbarHeight));
     editModeButton.setBounds (headerArea.getBounds().removeFromRight (60));
     samplesButton.setBounds (headerArea.getBounds().removeFromLeft (headerArea.getHeight()).reduced (TickLookAndFeel::reducePixels));

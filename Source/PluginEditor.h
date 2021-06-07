@@ -67,7 +67,9 @@ private:
     {
     public:
         Background();
+        void paintOverChildren (juce::Graphics&) override;
         void resized() override;
+        int separatorLineY { 0 };
 
     private:
         std::unique_ptr<juce::Drawable> bgImage;
