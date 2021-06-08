@@ -41,7 +41,6 @@
       <FILE id="G8DxkM" name="background.png" compile="0" resource="1" file="Media/background.png"/>
       <FILE id="GWCU1k" name="check_circle-24px.svg" compile="0" resource="1"
             file="Media/check_circle-24px.svg"/>
-      <FILE id="g4Pari" name="cog_fa.svg" compile="0" resource="1" file="Media/cog_fa.svg"/>
       <FILE id="I3zpD8" name="create_new_folder-24px.svg" compile="0" resource="1"
             file="Media/create_new_folder-24px.svg"/>
       <FILE id="Ut2rlQ" name="delete-24px.svg" compile="0" resource="1" file="Media/delete-24px.svg"/>
@@ -55,10 +54,8 @@
             file="Media/fad-filter-lowpass.svg"/>
       <FILE id="bDdCAV" name="folder_open-24px.svg" compile="0" resource="1"
             file="Media/folder_open-24px.svg"/>
-      <FILE id="aRmCnY" name="link-24px.svg" compile="0" resource="1" file="Media/link-24px.svg"/>
       <FILE id="GcznxA" name="lock_clock-24px.svg" compile="0" resource="1"
             file="Media/lock_clock-24px.svg"/>
-      <FILE id="xIWCxW" name="menu-24px.svg" compile="0" resource="1" file="Media/menu-24px.svg"/>
       <FILE id="FRm04k" name="metronome.svg" compile="0" resource="1" file="Media/metronome.svg"/>
       <FILE id="JFSJ0Z" name="more_horiz-24px.svg" compile="0" resource="1"
             file="Media/more_horiz-24px.svg"/>
@@ -68,10 +65,14 @@
       <FILE id="hbP9bY" name="sample-icon.svg" compile="0" resource="1" file="Media/sample-icon.svg"/>
       <FILE id="SyERXa" name="save_alt-24px.svg" compile="0" resource="1"
             file="Media/save_alt-24px.svg"/>
+      <FILE id="dBapor" name="settings_black_24dp.svg" compile="0" resource="1"
+            file="Media/settings_black_24dp.svg"/>
       <FILE id="MeY3Af" name="stop-button.svg" compile="0" resource="1" file="Media/stop-button.svg"/>
       <FILE id="xwAcl7" name="ticklogo.svg" compile="0" resource="1" file="Media/ticklogo.svg"/>
       <FILE id="n8H2XT" name="ticklogo_ios.svg" compile="0" resource="1"
             file="Media/ticklogo_ios.svg"/>
+      <FILE id="jQtmNI" name="unfold_more_black_24dp.svg" compile="0" resource="1"
+            file="Media/unfold_more_black_24dp.svg"/>
     </GROUP>
     <GROUP id="{0D2B1C20-8A81-25F8-AC24-2631FF22881A}" name="Source">
       <GROUP id="{989582A5-4D33-5BD3-00DE-D6DD3D84F70C}" name="deps">

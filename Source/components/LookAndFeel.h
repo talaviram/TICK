@@ -17,10 +17,11 @@ class DialogComponent;
 class TickLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
+    static constexpr int topBarTextSize = 20;
 #if JUCE_IOS || JUCE_ANDROID
     static constexpr int barHeight = 40;
     static constexpr int tabBarHeight = 40;
-    static constexpr int toolbarHeight = 60;
+    static constexpr int toolbarHeight = 70;
     static constexpr int reducePixels = 10;
 #else
     static constexpr int barHeight = 40;

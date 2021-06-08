@@ -73,7 +73,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     samplesButton.setImages (samplesIcon.get(), nullptr, nullptr, nullptr, backIcon.get());
     headerArea.addChildComponent (samplesButton);
 
-    auto settingsOff = juce::Drawable::createFromImageData (BinaryData::cog_fa_svg, BinaryData::cog_fa_svgSize);
+    auto settingsOff = juce::Drawable::createFromImageData (BinaryData::settings_black_24dp_svg, BinaryData::settings_black_24dp_svgSize);
     auto settingsOn = settingsOff->createCopy();
     settingsOn->replaceColour (juce::Colours::black, TickLookAndFeel::Colours::peach);
     settingsOff->replaceColour (juce::Colours::black, juce::Colours::white);
