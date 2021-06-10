@@ -319,13 +319,6 @@ void TickAudioProcessorEditor::timerCallback()
     }
     else if (isVisible())
     {
-#if JUCE_IOS || JUCE_ANDROID
-        if (! Process::isForegroundProcess() && ! processor.lastKnownPosition_.isPlaying)
-        {
-            // if we're stopped, close app to not use resources!
-            JUCEApplication::getInstance()->systemRequestedQuit();
-        }
-#endif
         // When plug-in is self controlled, we want spacebar to work
         grabKeyboardFocus();
     }

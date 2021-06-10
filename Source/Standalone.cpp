@@ -26,6 +26,8 @@
 #include <JuceHeader.h>
 #include <juce_audio_plugin_client/Standalone/juce_StandaloneFilterWindow.h>
 
+#include "PluginProcessor.h"
+
 using namespace juce;
 
 //==============================================================================
@@ -99,6 +101,30 @@ public:
         appProperties.saveIfNeeded();
     }
 
+    void suspended() override
+    {
+        systemSuspended = true;
+#if JUCE_IOS || JUCE_ANDROID
+        mainWindow->pluginHolder->savePluginState();
+        if (static_cast<TickAudioProcessor*> (mainWindow->getAudioProcessor())->lastKnownPosition_.isPlaying)
+            return;
+        Timer::callAfterDelay (5000, [this]() {
+            // only after 5secs
+            if (! systemSuspended)
+                return;
+            if (auto app = JUCEApplicationBase::getInstance())
+            {
+                app->systemRequestedQuit();
+            }
+        });
+#endif
+    }
+
+    void resumed() override
+    {
+        systemSuspended = false;
+    }
+
     //==============================================================================
     void systemRequestedQuit() override
     {
@@ -121,6 +147,9 @@ public:
 protected:
     ApplicationProperties appProperties;
     std::unique_ptr<StandaloneFilterWindow> mainWindow;
+
+private:
+    bool systemSuspended { false };
 };
 
 #if JucePlugin_Build_Standalone && JUCE_IOS

@@ -45,7 +45,6 @@ Upcoming
 - Finish all the corner cases.
 - Clean/refactor ugly code.
 - Refactor to background thread for some nasty file operations.
-- Optimize on mobile devices. quit app if metronome isn't playing.
 - Tap, make tap great again!
 - Tomper (nice idea to be explained in the future)
 - Ableton Link.
