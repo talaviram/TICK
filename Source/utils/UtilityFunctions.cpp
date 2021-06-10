@@ -12,17 +12,17 @@
 #include "components/LookAndFeel.h"
 #include "model/JuceState.h"
 
-const char* TickUtils::kPresetExtension = ".preset";
+const char* TickUtils::kPresetExtension = ".tickpreset";
 
 File TickUtils::getUserFolder()
 {
     return
 #if ! JUCE_IOS
-        File::getSpecialLocation(File::commonDocumentsDirectory).getChildFile(String(JucePlugin_Manufacturer)).getChildFile(String(JucePlugin_Name)).getChildFile("Presets")
+        File::getSpecialLocation (File::commonDocumentsDirectory).getChildFile (String (JucePlugin_Manufacturer)).getChildFile (String (JucePlugin_Name)).getChildFile ("Presets")
 #else
         File::getSpecialLocation (File::userDocumentsDirectory)
 #endif
-        ;
+            ;
 }
 
 String TickUtils::getPresetHash (InputStream& zipSource)

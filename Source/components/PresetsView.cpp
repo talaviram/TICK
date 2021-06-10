@@ -91,7 +91,7 @@ static void deleteFileCallback (int modalResult, PresetsView* view, juce::Compon
 }
 
 PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
-    : state (stateRef), ticks (ticksRef), timesliceThread ("PresetScannerThread"), presetModel (*this), fileChooser ("Import Audio", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*.preset", juce::FileChooser::isPlatformDialogAvailable())
+    : state (stateRef), ticks (ticksRef), timesliceThread ("PresetScannerThread"), presetModel (*this), fileChooser ("Import Audio", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*" + juce::String (TickUtils::kPresetExtension), juce::FileChooser::isPlatformDialogAvailable())
 {
     using namespace juce;
 
@@ -211,7 +211,8 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
 
     timesliceThread.startThread();
 
-    filter.reset (new WildcardFileFilter (String ("*.preset;"), String ("*.*"), "Presets"));
+    const auto preset = String ("*") + String (TickUtils::kPresetExtension) + ";";
+    filter.reset (new WildcardFileFilter (preset, String ("*.*"), "Presets"));
     directoryContents.reset (new DirectoryContentsList (filter.get(), timesliceThread));
     directoryContents->addChangeListener (this);
     directoryContents->setDirectory (userDataFolder, true, true);
