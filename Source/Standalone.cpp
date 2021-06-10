@@ -87,6 +87,7 @@ public:
     void initialise (const String&) override
     {
         mainWindow.reset (createWindow());
+        mainWindow->setColour (ResizableWindow::backgroundColourId, Colours::transparentBlack);
 
 #if JUCE_STANDALONE_FILTER_WINDOW_USE_KIOSK_MODE
         Desktop::getInstance().setKioskModeComponent (mainWindow.get(), false);
