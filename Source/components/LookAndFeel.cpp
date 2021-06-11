@@ -11,6 +11,8 @@
 #include "LookAndFeel.h"
 #include "DialogComponent.h"
 
+constexpr auto roundCorner = 5.0f;
+
 const juce::Colour TickLookAndFeel::Colours::defaultHighlight = juce::Colours::skyblue;
 const juce::Colour TickLookAndFeel::Colours::secondaryColour = juce::Colours::skyblue;
 const juce::Colour TickLookAndFeel::Colours::buttonSoftBackground = juce::Colours::darkgrey.withAlpha (0.4f);
@@ -138,6 +140,96 @@ juce::Font TickLookAndFeel::getPopupMenuFont()
 #else
     return juce::Font (20.0);
 #endif
+}
+
+void TickLookAndFeel::drawPopupMenuBackground (juce::Graphics& g, int width, int height)
+{
+    g.setColour (findColour (juce::PopupMenu::backgroundColourId));
+    g.fillRoundedRectangle (0, 0, width, height, roundCorner);
+}
+
+void TickLookAndFeel::drawPopupMenuItem (juce::Graphics& g, const juce::Rectangle<int>& area, const bool isSeparator, const bool isActive, const bool isHighlighted, const bool isTicked, const bool hasSubMenu, const juce::String& text, const juce::String& shortcutKeyText, const juce::Drawable* icon, const juce::Colour* const textColourToUse)
+{
+    using namespace juce;
+    if (isSeparator)
+    {
+        auto r = area.reduced (5, 0);
+        r.removeFromTop (roundToInt (((float) r.getHeight() * 0.5f) - 0.5f));
+
+        g.setColour (findColour (PopupMenu::textColourId).withAlpha (0.3f));
+        g.fillRect (r.removeFromTop (1));
+    }
+    else
+    {
+        auto textColour = (textColourToUse == nullptr ? findColour (PopupMenu::textColourId)
+                                                      : *textColourToUse);
+
+        auto r = area.reduced (3);
+
+        if (isHighlighted && isActive)
+        {
+            g.setColour (findColour (PopupMenu::highlightedBackgroundColourId));
+            g.fillRoundedRectangle (r.toFloat(), 3.0f);
+
+            g.setColour (findColour (PopupMenu::highlightedTextColourId));
+        }
+        else
+        {
+            g.setColour (textColour.withMultipliedAlpha (isActive ? 1.0f : 0.5f));
+        }
+
+        r.reduce (jmin (5, area.getWidth() / 20), 0);
+
+        auto font = getPopupMenuFont();
+
+        auto maxFontHeight = (float) r.getHeight() / 1.3f;
+
+        if (font.getHeight() > maxFontHeight)
+            font.setHeight (maxFontHeight);
+
+        g.setFont (font);
+
+        auto iconArea = r.removeFromLeft (roundToInt (maxFontHeight)).toFloat();
+
+        if (icon != nullptr)
+        {
+            icon->drawWithin (g, iconArea, RectanglePlacement::centred | RectanglePlacement::onlyReduceInSize, 1.0f);
+            r.removeFromLeft (roundToInt (maxFontHeight * 0.5f));
+        }
+        else if (isTicked)
+        {
+            auto tick = getTickShape (1.0f);
+            g.fillPath (tick, tick.getTransformToScaleToFit (iconArea.reduced (iconArea.getWidth() / 5, 0).toFloat(), true));
+        }
+
+        if (hasSubMenu)
+        {
+            auto arrowH = 0.6f * getPopupMenuFont().getAscent();
+
+            auto x = static_cast<float> (r.removeFromRight ((int) arrowH).getX());
+            auto halfH = static_cast<float> (r.getCentreY());
+
+            Path path;
+            path.startNewSubPath (x, halfH - arrowH * 0.5f);
+            path.lineTo (x + arrowH * 0.6f, halfH);
+            path.lineTo (x, halfH + arrowH * 0.5f);
+
+            g.strokePath (path, PathStrokeType (2.0f));
+        }
+
+        r.removeFromRight (3);
+        g.drawFittedText (text, r, Justification::centredLeft, 1);
+
+        if (shortcutKeyText.isNotEmpty())
+        {
+            auto f2 = font;
+            f2.setHeight (f2.getHeight() * 0.75f);
+            f2.setHorizontalScale (0.95f);
+            g.setFont (f2);
+
+            g.drawText (shortcutKeyText, r, Justification::centredRight, true);
+        }
+    }
 }
 
 void TickLookAndFeel::drawLinearSlider (juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle style, juce::Slider& s)
