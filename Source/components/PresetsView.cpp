@@ -220,7 +220,6 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
     list.setModel (&presetModel);
     list.setRowHeight (50);
     addAndMakeVisible (list);
-    addChildComponent (clickGrabber);
 }
 
 PresetsView::~PresetsView()
@@ -356,7 +355,6 @@ void PresetsView::resized()
     auto bounds = getLocalBounds();
     topBar->setBounds (bounds.removeFromTop (TickLookAndFeel::toolbarHeight));
     list.setBounds (bounds);
-    clickGrabber.setBounds (getLocalBounds());
 }
 
 bool PresetsView::isRoot()
@@ -437,7 +435,6 @@ juce::Component* PresetsView::PresetModel::refreshComponentForRow (int rowNumber
         component->index = rowNumber;
         component->isSelected = isRowSelected;
         component->presetsView = &owner;
-        component->clickGrabber = &owner.clickGrabber;
 
         // TODO: this should be async!
         owner.queryPreset (owner.directoryContents->getFile (rowNumber), component->data);
@@ -473,7 +470,6 @@ PresetsView::PresetView::PresetView()
     setInterceptsMouseClicks (false, true);
 
     moreOptions.onClick = [this] {
-        clickGrabber->setVisible (true);
         juce::PopupMenu p;
         auto editIcon = juce::Drawable::createFromImageData (BinaryData::edit24px_svg, BinaryData::edit24px_svgSize);
         editIcon->replaceColour (juce::Colours::black, juce::Colours::white);
@@ -509,7 +505,6 @@ PresetsView::PresetView::PresetView()
                 default:
                     break;
             };
-            clickGrabber->setVisible (false);
         });
     };
 }

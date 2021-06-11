@@ -44,15 +44,6 @@ private:
     juce::TimeSliceThread timesliceThread;
     std::unique_ptr<juce::ImageComponent> transitionBackground;
 
-    // Allow clicking in order to dismiss from 'modals' (Popup/etc) to avoid interacting with list.
-    struct ClickGrabber : juce::Component
-    {
-        void mouseUp (const juce::MouseEvent&)
-        {
-            setVisible (false);
-        }
-    } clickGrabber;
-
     void transitionList();
 
     class PresetModel : public juce::ListBoxModel
@@ -82,7 +73,6 @@ private:
 
         juce::DrawableButton moreOptions;
         juce::Label name;
-        ClickGrabber* clickGrabber { nullptr };
         PresetsView* presetsView { nullptr };
         PresetData data;
     };
