@@ -475,10 +475,14 @@ PresetsView::PresetView::PresetView()
         editIcon->replaceColour (juce::Colours::black, juce::Colours::white);
         auto deleteIcon = juce::Drawable::createFromImageData (BinaryData::delete24px_svg, BinaryData::delete24px_svgSize);
         deleteIcon->replaceColour (juce::Colours::black, juce::Colours::white);
+        auto shareIcon = juce::Drawable::createFromImageData (BinaryData::ios_share_black_24dp_svg, BinaryData::ios_share_black_24dp_svgSize);
+        shareIcon->replaceColour (juce::Colours::black, juce::Colours::white);
         p.addItem (1, "Rename..", true, false, std::move (editIcon));
         p.addItem (2, "Delete", true, false, std::move (deleteIcon));
         p.addSeparator();
-        p.addItem (3, "Export..", true, false);
+#if JUCE_IOS || JUCE_ANDROID
+        p.addItem (3, "Share", true, false, std::move (shareIcon));
+#endif
         auto options = juce::PopupMenu::Options().withParentComponent (getParentComponent()->getParentComponent()->getParentComponent()).withTargetComponent (moreOptions);
         p.showMenuAsync (options, [this] (int value) {
             switch (value)

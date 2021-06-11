@@ -54,6 +54,8 @@
             file="Media/fad-filter-lowpass.svg"/>
       <FILE id="bDdCAV" name="folder_open-24px.svg" compile="0" resource="1"
             file="Media/folder_open-24px.svg"/>
+      <FILE id="BFmIo2" name="ios_share_black_24dp.svg" compile="0" resource="1"
+            file="Media/ios_share_black_24dp.svg"/>
       <FILE id="GcznxA" name="lock_clock-24px.svg" compile="0" resource="1"
             file="Media/lock_clock-24px.svg"/>
       <FILE id="FRm04k" name="metronome.svg" compile="0" resource="1" file="Media/metronome.svg"/>
