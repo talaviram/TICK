@@ -18,11 +18,12 @@ File TickUtils::getUserFolder()
 {
     return
 #if ! JUCE_IOS
-        File::getSpecialLocation (File::commonDocumentsDirectory).getChildFile (String (JucePlugin_Manufacturer)).getChildFile (String (JucePlugin_Name)).getChildFile ("Presets")
+        File::getSpecialLocation (File::commonDocumentsDirectory).getChildFile (String (JucePlugin_Manufacturer)).getChildFile (String (JucePlugin_Name))
 #else
-        File::getSpecialLocation (File::userDocumentsDirectory)
+        // hardcoded but ideally should be queried from single place.
+        getAppGroupContainerLocation ("group.talaviram.TICKPresets")
 #endif
-            ;
+            .getChildFile ("Presets");
 }
 
 String TickUtils::getPresetHash (InputStream& zipSource)

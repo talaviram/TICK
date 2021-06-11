@@ -110,4 +110,10 @@ struct TickUtils
 
                     return juce::jlimit (start, end, FloatType (juce::roundToInt (value))); });
     }
+
+#if JUCE_IOS
+
+    static juce::File getAppGroupContainerLocation (const juce::String& appGroupID);
+
+#endif
 };
