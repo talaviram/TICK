@@ -119,7 +119,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addItem ("About", [this] {
             aboutView->setVisible (true);
         });
-        settings.showMenuAsync (PopupMenu::Options().withMinimumWidth (100).withMaximumNumColumns (3).withTargetComponent (&settingsButton));
+        settings.showMenuAsync (PopupMenu::Options().withParentComponent (this).withMinimumWidth (100).withMaximumNumColumns (3).withTargetComponent (&settingsButton));
     };
 
     addAndMakeVisible (mainArea);

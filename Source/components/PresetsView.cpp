@@ -185,7 +185,7 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
             });
 #endif
             menu.showMenuAsync (
-                juce::PopupMenu::Options().withMinimumWidth (40).withMaximumNumColumns (3).withTargetComponent (&topBar->rightButton));
+                juce::PopupMenu::Options().withMinimumWidth (40).withMaximumNumColumns (3).withParentComponent (this).withTargetComponent (&topBar->rightButton));
             // TODO: iOS Import/Export
         };
     }
@@ -479,7 +479,7 @@ PresetsView::PresetView::PresetView()
         p.addItem (2, "Delete", true, false, std::move (deleteIcon));
         p.addSeparator();
         p.addItem (3, "Export..", true, false);
-        auto options = juce::PopupMenu::Options().withTargetComponent (moreOptions);
+        auto options = juce::PopupMenu::Options().withParentComponent (getParentComponent()->getParentComponent()->getParentComponent()).withTargetComponent (moreOptions);
         p.showMenuAsync (options, [this] (int value) {
             switch (value)
             {
