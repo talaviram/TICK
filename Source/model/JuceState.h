@@ -547,39 +547,6 @@ public:
         numOfTicks.setValue (static_cast<int> (ticksHolder.getNumOfTicks()), nullptr);
     }
 
-    static const auto kTapsMemory = 16;
-
-    void tapTempo()
-    {
-        const auto tapTime = juce::Time::getMillisecondCounter();
-        const double tapLengthInMillis = tapTime - lastTapTime;
-        // support 2000millis = 30bpm
-        if (tapLengthInMillis < 2000)
-        {
-            taps[tapPos] = tapLengthInMillis;
-            tapPos++;
-            tapSize++;
-            tapSize = std::min<int> (tapSize, 16);
-            tapPos %= kTapsMemory;
-            if (tapPos > 1)
-            {
-                int sum = 0;
-                for (auto i = 0; i < tapSize; i++)
-                    sum += taps[i];
-                double avg = (sum / tapSize / 1000.0);
-                const auto bpm = (60.0 / avg);
-                // nasty workaround for rounding errors with CachedValue...
-                transport.bpm.getPropertyAsValue().setValue (juce::String (bpm, 2));
-            }
-        }
-        else
-        {
-            tapPos = tapSize = 0;
-            memset (taps, 0, kTapsMemory);
-        }
-        lastTapTime = tapTime;
-    }
-
     BeatAssignment beatAssignments[kMaxBeatAssignments];
     juce::CachedValue<juce::String> presetName;
 
@@ -599,11 +566,6 @@ public:
     std::atomic_bool isDirty { false };
 
 private:
-    // tap to bpm
-    juce::uint32 lastTapTime { 0 };
-    int tapPos, tapSize { 0 };
-    int taps[kTapsMemory];
-
     juce::String getMeterAsText()
     {
         return juce::String (transport.numerator.get()) + "/" + juce::String (transport.denumerator.get());
