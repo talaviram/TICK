@@ -33,6 +33,7 @@ PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, S
     addAndMakeVisible (topBar);
 
     beatsView.addMouseListener (this, false);
+    topBar.tapMode.addMouseListener (this, true);
 
     editView->setAlwaysOnTop (true);
     addChildComponent (editView.get());
@@ -193,10 +194,30 @@ void PerformView::BeatView::paint (juce::Graphics& g)
         owner.samplesPaint.drawTick (g, getLocalBounds().reduced (10), tickIndex, assignment.gain.get(), juce::Colours::white.withAlpha (isCurrent ? 1.0f : isSelected ? 0.7f : 0.3f));
 }
 
+void PerformView::mouseDown (const juce::MouseEvent& e)
+{
+    if (e.originalComponent == &topBar.tapMode)
+    {
+        topBar.tapMode.setColour (juce::Label::backgroundColourId, TickLookAndFeel::Colours::wood);
+        tapModel.pushTap (e.eventTime);
+        if (tapModel.getLastDetectedBPM() > 0)
+            state.transport.bpm.setValue (tapModel.getLastDetectedBPM(), nullptr);
+        return;
+    }
+}
+
 void PerformView::mouseUp (const juce::MouseEvent& e)
 {
     if (e.originalComponent == &beatsView && isEditMode)
+    {
         state.view.isEdit.setValue (false);
+        return;
+    }
+
+    if (e.originalComponent == &topBar.tapMode)
+    {
+        topBar.tapMode.setColour (juce::Label::backgroundColourId, juce::Colours::transparentBlack);
+    }
 }
 
 void PerformView::BeatView::mouseDown (const juce::MouseEvent& e)
@@ -226,7 +247,7 @@ PerformView::TopBar::TopBar()
     tempoLabel.setText ("BPM", juce::dontSendNotification);
     tempoLabel.setFont (juce::Font (30.0));
     tempoLabel.setJustificationType (juce::Justification::centred);
-    tempo.setKeyboardType (juce::TextEditor::VirtualKeyboardType::phoneNumberKeyboard);
+    tempo.setKeyboardType (juce::TextEditor::VirtualKeyboardType::numericKeyboard);
     tempo.setFont (juce::Font (30.0));
     tempo.setJustificationType (juce::Justification::centred);
     tempo.onEditorShow = [this] {
@@ -242,6 +263,10 @@ PerformView::TopBar::TopBar()
     setupSigLabel (denum);
     sigDivider.setText ("/", juce::dontSendNotification);
 
+    tapMode.setFont (juce::Font (30.0));
+    tapMode.setJustificationType (juce::Justification::centred);
+    tapMode.setText ("TAP", juce::dontSendNotification);
+
     tempo.setEditable (true);
     num.setEditable (true);
     denum.setEditable (true);
@@ -251,6 +276,7 @@ PerformView::TopBar::TopBar()
     addAndMakeVisible (sigDivider);
     addAndMakeVisible (num);
     addAndMakeVisible (denum);
+    addAndMakeVisible (tapMode);
 }
 
 void PerformView::TopBar::resized()
@@ -263,6 +289,9 @@ void PerformView::TopBar::resized()
     num.setBounds (signatureArea.removeFromLeft (sigWidth));
     denum.setBounds (signatureArea.removeFromRight (sigWidth));
     sigDivider.setBounds (signatureArea.expanded (30, 0));
+    constexpr auto kWidth = 100;
+    auto tapBounds = juce::Rectangle<int> (getLocalBounds().getCentreX() - kWidth / 2, 0, kWidth, getHeight());
+    tapMode.setBounds (tapBounds.reduced (0, 4));
 }
 
 void PerformView::changeListenerCallback (juce::ChangeBroadcaster*)

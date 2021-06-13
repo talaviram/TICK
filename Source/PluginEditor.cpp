@@ -244,6 +244,7 @@ void TickAudioProcessorEditor::resized()
     background.setBounds (getLocalBounds());
     auto performViewArea = mainArea.getLocalBounds();
     topBar.setBounds (headerArea.getBounds());
+
     performView->setBounds (performViewArea);
     presetsView->setBounds (mainArea.getLocalBounds().translated (0, (bool) processor.getState().view.showPresetsView.getValue() == true ? 0 : getHeight()));
     aboutView->setBounds (getLocalBounds());

@@ -85,6 +85,8 @@ private:
     juce::DrawableButton samplesButton;
     juce::DrawableButton settingsButton;
 
+    juce::LookAndFeel_V4 plainLaF;
+
     TopBar topBar;
 
     struct BottomBar : juce::Component

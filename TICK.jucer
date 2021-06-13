@@ -175,6 +175,8 @@
       </GROUP>
       <GROUP id="{25670950-CE15-21A9-CE3D-4FEEAC9EDE28}" name="model">
         <FILE id="bhaPy3" name="JuceState.h" compile="0" resource="0" file="Source/model/JuceState.h"/>
+        <FILE id="h1fDHG" name="TapModel.cpp" compile="1" resource="0" file="Source/model/TapModel.cpp"/>
+        <FILE id="wCFZud" name="TapModel.h" compile="0" resource="0" file="Source/model/TapModel.h"/>
         <FILE id="ooJcfs" name="TickModel.cpp" compile="1" resource="0" file="Source/model/TickModel.cpp"/>
         <FILE id="avYeWX" name="TickModel.h" compile="0" resource="0" file="Source/model/TickModel.h"/>
       </GROUP>

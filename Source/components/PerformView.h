@@ -11,6 +11,7 @@
 #pragma once
 
 #include "PluginProcessor.h"
+#include "model/TapModel.h"
 
 class EditBeatView;
 class SamplesPaint;
@@ -26,6 +27,7 @@ public:
     void setEditMode (bool);
     void update (double currentPos);
 
+    void mouseDown (const juce::MouseEvent&) override;
     void mouseUp (const juce::MouseEvent&) override;
 
     // ChangeListener
@@ -41,6 +43,7 @@ private:
 
         juce::Label tempo, num, denum;
         juce::Label tempoLabel, sigDivider;
+        juce::Label tapMode;
     } topBar;
 
     struct BeatView : juce::Slider
@@ -65,6 +68,7 @@ private:
     juce::Viewport viewport;
     juce::Component beatsView;
     std::unique_ptr<EditBeatView> editView;
+    TapModel tapModel;
 
     std::vector<std::unique_ptr<BeatView>> beats;
     int beatsInRow = 4;
