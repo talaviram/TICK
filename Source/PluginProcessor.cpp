@@ -256,7 +256,6 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
         {
             ppqPosInBuf = 0.0;
         }
-        int i = 0;
 
         if (ticks.getNumOfTicks() == 0)
         {
@@ -266,7 +265,6 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
 
         while (ppqToBufEnd > ppqPosInBuf)
         {
-            i++;
             jassert (ppqToBufEnd >= ppqPosInBuf);
             // add tick(s) to current buffer
             currentSampleToTick = roundToInt (ppqPosInBuf * bpSmp);
