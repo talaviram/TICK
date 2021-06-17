@@ -15,7 +15,7 @@
 #include "utils/SamplesPaint.h"
 
 PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, SamplesPaint& samplesPaint)
-    : state (stateToLink), ticks (ticksToLink), samplesPaint (samplesPaint), editView (std::make_unique<EditBeatView> (state, ticks)), transportButton ("TransportButton", juce::DrawableButton::ImageFitted)
+    : state (stateToLink), ticks (ticksToLink), samplesPaint (samplesPaint), editView (std::make_unique<EditBeatView> (state, ticks))
 {
     using namespace juce;
 
@@ -43,11 +43,6 @@ PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, S
 PerformView::~PerformView()
 {
     juce::Desktop::getInstance().getAnimator().removeChangeListener (this);
-}
-
-void PerformView::updateTransportButtonVisibility()
-{
-    transportButton.setVisible (! isEditMode && ! state.useHostTransport.get());
 }
 
 void PerformView::selectionChanged (const int index)
@@ -89,8 +84,6 @@ void PerformView::resized()
                           .withMargin (juce::FlexItem::Margin (kMargin)));
     }
     fb.performLayout (beatsView.getLocalBounds());
-
-    transportButton.setBounds (juce::RectanglePlacement (juce::RectanglePlacement::centred | juce::RectanglePlacement::doNotResize).appliedTo ({ 0, 0, (int) beatSize, (int) beatSize }, area));
 }
 
 void PerformView::update (double currentPos)
@@ -146,7 +139,6 @@ void PerformView::setEditMode (const bool newMode)
     }
     editView->updateSelection ({});
     editView->setVisible (isEditMode);
-    updateTransportButtonVisibility();
     juce::Rectangle<int> hidden (0, getBottom(), getWidth(), 200);
     juce::Rectangle<int> showing (0, getBottom() - 200, getWidth(), 200);
     editView->setBounds (isEditMode ? hidden : showing);

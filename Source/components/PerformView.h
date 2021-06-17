@@ -33,7 +33,6 @@ public:
 
 private:
     void selectionChanged (int index);
-    void updateTransportButtonVisibility();
 
     struct TopBar : juce::Component
     {
@@ -66,8 +65,6 @@ private:
     juce::Viewport viewport;
     juce::Component beatsView;
     std::unique_ptr<EditBeatView> editView;
-
-    juce::DrawableButton transportButton;
 
     std::vector<std::unique_ptr<BeatView>> beats;
     int beatsInRow = 4;
