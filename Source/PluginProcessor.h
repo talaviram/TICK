@@ -102,7 +102,7 @@ private:
     juce::IIRFilter lpfFilter;
     //==============================================================================
     // Parameters
-    std::atomic<float>* tickMultiplier;
+    std::atomic<float> tickMultiplier {1.0f};
     std::atomic<float>* filterCutoff;
     juce::AudioProcessorValueTreeState parameters;
     //==============================================================================

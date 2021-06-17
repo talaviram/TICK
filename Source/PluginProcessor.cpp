@@ -40,10 +40,6 @@ TickAudioProcessor::TickAudioProcessor()
       settings (ticks),
       parameters (*this, nullptr, Identifier (JucePlugin_Name),
                   {
-                      std::make_unique<AudioParameterFloat> ("multiplier", // parameter ID
-                                                             "Tick Multiplier", // parameter name
-                                                             NormalisableRange<float> (0.25f, 4.0f, 0.25),
-                                                             1.0f), // default value
                       std::make_unique<AudioParameterFloat> (IDs::filterCutoff.toString(), // parameter ID
                                                              "Filter Cutoff", // parameter name
                                                              TickUtils::makeLogarithmicRange<float> (100.0, 20000.0f),
@@ -59,7 +55,6 @@ TickAudioProcessor::TickAudioProcessor()
     ticks.clear();
 
     filterCutoff = parameters.getRawParameterValue (IDs::filterCutoff.toString());
-    tickMultiplier = parameters.getRawParameterValue ("multiplier");
 
     // load default preset
     setStateInformation (BinaryData::factory_default_preset, BinaryData::factory_default_presetSize);
@@ -235,7 +230,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
         const auto bps = lastKnownPosition_.bpm / 60.0;
         const auto bpSmp = getSampleRate() / bps;
         const auto ttq = (4.0 / lastKnownPosition_.timeSigDenominator); // tick to quarter
-        const auto tickAt = ttq / tickMultiplier->load(); // tick every (1.0 = 1/4, 0.5 = 1/8, ...)
+        const auto tickAt = ttq / tickMultiplier; // tick every (1.0 = 1/4, 0.5 = 1/8, ...)
         const auto tickLengthInSamples = tickAt * bpSmp;
 
         const auto ppqFromBufStart = fmod (pos, tickAt);
