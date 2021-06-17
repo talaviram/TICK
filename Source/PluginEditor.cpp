@@ -314,6 +314,7 @@ void TickAudioProcessorEditor::timerCallback()
     bottomBar.syncIndicator.setVisible (useHostTransport);
     bottomBar.transportButton.setVisible (! useHostTransport);
     bottomBar.transportPosition.setVisible (useHostTransport);
+    performView->setTapVisibility (! useHostTransport);
     if (useHostTransport)
     {
         bottomBar.transportPosition.setText (TickUtils::generateTimecodeDisplay (processor.lastKnownPosition_), dontSendNotification);

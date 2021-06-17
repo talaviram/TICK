@@ -33,6 +33,8 @@ public:
     // ChangeListener
     void changeListenerCallback (juce::ChangeBroadcaster*) override;
 
+    void setTapVisibility (bool isVisible) { topBar.tapMode.setVisible (isVisible); }
+
 private:
     void selectionChanged (int index);
 
