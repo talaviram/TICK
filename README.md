@@ -45,7 +45,6 @@ Upcoming
 - Finish all the corner cases.
 - Clean/refactor ugly code.
 - Refactor to background thread for some nasty file operations.
-- Tap, make tap great again!
 - Tomper (nice idea to be explained in the future)
 - Ableton Link.
 - Desktop drag-and-drop support, drag-and-drop to reorganize samples.
