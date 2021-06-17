@@ -92,3 +92,17 @@ bool TickUtils::isValidPreset (const juce::File& file, bool deep)
 
     return true;
 }
+
+void TickUtils::processClip (juce::AudioBuffer<float>& buf)
+{
+    for (auto ch = 0; ch < buf.getNumChannels(); ++ch)
+        FloatVectorOperations::clip (buf.getWritePointer (ch), buf.getReadPointer (ch), -1.0f, 1.0f, buf.getNumSamples());
+}
+
+void TickUtils::fadeOut (juce::AudioBuffer<float>& buf)
+{
+    constexpr auto desiredLength = 20;
+    const auto testLength = buf.getNumSamples() - desiredLength;
+    const auto actualLength = testLength > 0 ? desiredLength : desiredLength - testLength;
+    buf.applyGainRamp (buf.getNumSamples() - actualLength, actualLength, 1.0f, 0.0f);
+}

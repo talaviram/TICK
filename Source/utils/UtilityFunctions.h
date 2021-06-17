@@ -30,6 +30,10 @@ struct TickUtils
         return std::make_unique<ZipFile> (new MemoryInputStream (BinaryData::factory_samples_zip, BinaryData::factory_samples_zipSize, false), true);
     }
 
+    static void processClip (juce::AudioBuffer<float>&);
+
+    static void fadeOut (juce::AudioBuffer<float>&);
+
     // bluntly taken from juce demo. might need to add branches for different hosts/PPQ resolution
     // if possible
     static String generateTimecodeDisplay (const AudioPlayHead::CurrentPositionInfo& pos)
