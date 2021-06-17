@@ -298,7 +298,7 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
     }
     else if (value.refersToSameSourceAs (state.view.showPresetsView))
     {
-        const auto safeBounds = topBar.getBounds().withBottom (getLocalBounds().getBottom());
+        const auto safeBounds = topBar.getBounds().withBottom (getLocalBounds().getBottom() - bottomBar.getHeight());
         presetsView->setBounds (value.getValue() ? getLocalBounds().translated (0, getHeight()) : safeBounds);
         const auto to = value.getValue() ? safeBounds : getLocalBounds().translated (0, getHeight());
         juce::Desktop::getInstance().getAnimator().animateComponent (presetsView.get(), to, 1.0f, 200, false, 1.0, 1.0);
