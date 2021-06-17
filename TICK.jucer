@@ -35,6 +35,18 @@
         <FILE id="BIwkR4" name="KlokanTechNotoSansCJK-Regular.otf" compile="0"
               resource="1" file="Media/Font/KlokanTechNotoSansCJK-Regular.otf"/>
       </GROUP>
+      <GROUP id="{3934F31C-AD7D-DDF8-ADC1-A7CF3665A527}" name="Logo">
+        <FILE id="VOhaiJ" name="tick_icon.png" compile="0" resource="0" file="Media/Logo/tick_icon.png"/>
+        <FILE id="CbfJcE" name="tick_icon.svg" compile="0" resource="1" file="Media/Logo/tick_icon.svg"/>
+        <FILE id="OKPwIG" name="tick_icon_iOS.png" compile="0" resource="0"
+              file="Media/Logo/tick_icon_iOS.png"/>
+        <FILE id="FLUr1i" name="tick_icon_macOS.png" compile="0" resource="0"
+              file="Media/Logo/tick_icon_macOS.png"/>
+        <FILE id="mbci4Q" name="tick_icon_with_text.svg" compile="0" resource="1"
+              file="Media/Logo/tick_icon_with_text.svg"/>
+        <FILE id="BVUsrZ" name="tick_logo.svg" compile="0" resource="1" file="Media/Logo/tick_logo.svg"/>
+        <FILE id="yXnk5e" name="tick_text.svg" compile="0" resource="1" file="Media/Logo/tick_text.svg"/>
+      </GROUP>
       <FILE id="dHLYH2" name="about_text.txt" compile="0" resource="1" file="Media/about_text.txt"/>
       <FILE id="n3gl9R" name="arrow_back_ios-24px.svg" compile="0" resource="1"
             file="Media/arrow_back_ios-24px.svg"/>
@@ -58,7 +70,8 @@
             file="Media/ios_share_black_24dp.svg"/>
       <FILE id="GcznxA" name="lock_clock-24px.svg" compile="0" resource="1"
             file="Media/lock_clock-24px.svg"/>
-      <FILE id="FRm04k" name="metronome.svg" compile="0" resource="1" file="Media/metronome.svg"/>
+      <FILE id="kmGvtq" name="metro_tick_icon.svg" compile="0" resource="1"
+            file="Media/metro_tick_icon.svg"/>
       <FILE id="JFSJ0Z" name="more_horiz-24px.svg" compile="0" resource="1"
             file="Media/more_horiz-24px.svg"/>
       <FILE id="g0t4gg" name="more_vert-24px.svg" compile="0" resource="1"
@@ -70,9 +83,6 @@
       <FILE id="dBapor" name="settings_black_24dp.svg" compile="0" resource="1"
             file="Media/settings_black_24dp.svg"/>
       <FILE id="MeY3Af" name="stop-button.svg" compile="0" resource="1" file="Media/stop-button.svg"/>
-      <FILE id="xwAcl7" name="ticklogo.svg" compile="0" resource="1" file="Media/ticklogo.svg"/>
-      <FILE id="n8H2XT" name="ticklogo_ios.svg" compile="0" resource="1"
-            file="Media/ticklogo_ios.svg"/>
       <FILE id="jQtmNI" name="unfold_more_black_24dp.svg" compile="0" resource="1"
             file="Media/unfold_more_black_24dp.svg"/>
     </GROUP>
@@ -192,12 +202,13 @@
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" vstLegacyFolder="../../SDKs/VST2_SDK"
-               hardenedRuntime="1" smallIcon="n8H2XT" bigIcon="n8H2XT" iosPushNotifications="1"
+               hardenedRuntime="1" smallIcon="FLUr1i" bigIcon="FLUr1i" iosPushNotifications="1"
                aaxFolder="../../SDKs/AAX_SDK">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="TICK" osxCompatibility="10.7 SDK"/>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="TICK" osxCompatibility="10.7 SDK"
+                       macOSDeploymentTarget="10.7"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="TICK"
-                       osxCompatibility="10.7 SDK"/>
+                       osxCompatibility="10.7 SDK" macOSDeploymentTarget="10.7"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="JUCE/modules"/>
@@ -217,7 +228,7 @@
       </MODULEPATHS>
     </XCODE_MAC>
     <VS2019 targetFolder="Builds/VisualStudio2019" vstLegacyFolder="../../SDKs/VST2_SDK"
-            aaxFolder="../../SDKs/AAX_SDK">
+            aaxFolder="../../SDKs/AAX_SDK" bigIcon="CbfJcE">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" useRuntimeLibDLL="0"/>
         <CONFIGURATION isDebug="0" name="Release" alwaysGenerateDebugSymbols="1" debugInformationFormat="ProgramDatabase"
@@ -241,8 +252,8 @@
       </MODULEPATHS>
     </VS2019>
     <ANDROIDSTUDIO targetFolder="Builds/Android" androidPushNotifications="0" androidExtraAssetsFolder="Included Samples"
-                   androidTheme="@android:style/Theme.NoTitleBar" smallIcon="xwAcl7"
-                   bigIcon="xwAcl7" androidScreenOrientation="portrait" androidEnableContentSharing="1">
+                   androidTheme="@android:style/Theme.NoTitleBar" smallIcon="CbfJcE"
+                   bigIcon="CbfJcE" androidScreenOrientation="portrait" androidEnableContentSharing="1">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="TICK"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="TICK"/>
@@ -265,7 +276,7 @@
       </MODULEPATHS>
     </ANDROIDSTUDIO>
     <XCODE_IPHONE targetFolder="Builds/iOS" UIFileSharingEnabled="1" UISupportsDocumentBrowser="1"
-                  iosBackgroundAudio="1" smallIcon="n8H2XT" bigIcon="n8H2XT" duplicateAppExResourcesFolder="0"
+                  iosBackgroundAudio="1" smallIcon="OKPwIG" bigIcon="OKPwIG" duplicateAppExResourcesFolder="0"
                   iosScreenOrientation="UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown"
                   iosBluetoothPermissionNeeded="1" iosBackgroundBle="1" UIRequiresFullScreen="0"
                   iPadScreenOrientation="UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight,UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown"

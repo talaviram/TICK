@@ -108,7 +108,7 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
             backToParent();
         };
         topBar->centerLabel.isOpen = true;
-        topBar->centerLabel.setColour (juce::Label::textColourId, juce::Colours::skyblue);
+        topBar->centerLabel.setColour (juce::Label::textColourId, TickLookAndFeel::Colours::mint);
         topBar->centerLabel.getTextValue().referTo (state.presetName.getPropertyAsValue());
         topBar->centerLabel.onClick = [this] {
             state.view.showPresetsView.setValue (false);
@@ -346,8 +346,7 @@ void PresetsView::savePreset (juce::File presetNameToSave, const bool discardTra
 
 void PresetsView::paint (juce::Graphics& g)
 {
-    juce::ColourGradient (juce::Colours::black.withAlpha (0.7f), 0, 0, juce::Colours::black.brighter().withAlpha (0.9f), 0, getBottom(), false);
-    g.fillAll();
+    g.fillAll (Colour (19, 67, 62));
 }
 
 void PresetsView::resized()
@@ -557,15 +556,15 @@ void PresetsView::PresetView::paint (juce::Graphics& g)
     if (! isReady)
         return;
 
-    auto image = juce::Drawable::createFromImageData (data.isFolder ? BinaryData::folder_open24px_svg : BinaryData::metronome_svg, data.isFolder ? BinaryData::folder_open24px_svgSize : BinaryData::metronome_svgSize);
+    auto image = juce::Drawable::createFromImageData (data.isFolder ? BinaryData::folder_open24px_svg : BinaryData::metro_tick_icon_svg, data.isFolder ? BinaryData::folder_open24px_svgSize : BinaryData::metro_tick_icon_svgSize);
 
     moreOptions.setToggleState (isSelected, juce::dontSendNotification);
     const auto isCurrent = presetsView->state.presetHash == data.uuid;
 
     if (isSelected)
-        g.fillAll (isCurrent ? juce::Colours::skyblue : juce::Colours::white);
+        g.fillAll (isCurrent ? TickLookAndFeel::Colours::mint : juce::Colours::white);
 
-    const auto textColor = isSelected ? juce::Colours::black : isCurrent ? juce::Colours::skyblue : juce::Colours::white;
+    const auto textColor = isSelected ? juce::Colours::black : isCurrent ? TickLookAndFeel::Colours::mint : juce::Colours::white;
     name.setColour (juce::Label::textColourId, textColor);
     name.setColour (juce::Label::textWhenEditingColourId, textColor);
     image->replaceColour (juce::Colours::black, textColor);

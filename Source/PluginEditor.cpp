@@ -33,12 +33,13 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     addAndMakeVisible (background);
     juce::LookAndFeel::setDefaultLookAndFeel (&lookAndFeel);
 
-    lookAndFeel.setColour (juce::PopupMenu::ColourIds::highlightedTextColourId, juce::Colours::skyblue);
+    lookAndFeel.setColour (juce::PopupMenu::highlightedTextColourId, juce::Colours::white);
+    lookAndFeel.setColour (juce::PopupMenu::highlightedBackgroundColourId, TickLookAndFeel::Colours::mint.withAlpha (0.6f));
     lookAndFeel.setColour (juce::TextEditor::backgroundColourId, juce::Colours::transparentBlack);
     lookAndFeel.setColour (juce::AlertWindow::outlineColourId, juce::Colours::white.withAlpha (0.2f));
     lookAndFeel.setColour (juce::AlertWindow::backgroundColourId, juce::Colours::darkgrey.withAlpha (0.9f));
     lookAndFeel.setColour (juce::ListBox::ColourIds::backgroundColourId, juce::Colours::black.withAlpha (0.6f));
-    lookAndFeel.setColour (juce::PopupMenu::ColourIds::backgroundColourId, juce::Colours::darkgrey.withAlpha (0.6f));
+    lookAndFeel.setColour (juce::PopupMenu::ColourIds::backgroundColourId, TickLookAndFeel::Colours::grey.withAlpha (0.6f));
     lookAndFeel.setColour (juce::ResizableWindow::ColourIds::backgroundColourId, TickLookAndFeel::Colours::backgroundColour);
     lookAndFeel.setColour (juce::Slider::trackColourId, juce::Colours::lightgrey);
     lookAndFeel.setColour (juce::Slider::thumbColourId, juce::Colours::white);
@@ -49,16 +50,16 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     lookAndFeel.setColour (juce::Slider::ColourIds::rotarySliderFillColourId, TickLookAndFeel::Colours::defaultHighlight);
 
     addAndMakeVisible (headerArea);
-    headerName.setColour (juce::Label::ColourIds::textColourId, juce::Colours::skyblue);
+    headerName.setColour (juce::Label::ColourIds::textColourId, TickLookAndFeel::Colours::mint);
 
     headerArea.setColour (juce::Label::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
     editModeButton.setButtonText ("Edit");
     editModeButton.setClickingTogglesState (true);
     editModeButton.setColour (juce::TextButton::ColourIds::buttonOnColourId, juce::Colours::transparentBlack);
     editModeButton.setColour (juce::TextButton::ColourIds::buttonColourId, juce::Colours::transparentBlack);
-    editModeButton.setColour (juce::TextButton::ColourIds::textColourOffId, juce::Colours::skyblue);
-    editModeButton.setColour (juce::TextButton::ColourIds::textColourOnId, juce::Colours::skyblue);
-    editModeButton.setColour (juce::TextButton::ColourIds::textColourOffId, juce::Colours::skyblue);
+    editModeButton.setColour (juce::TextButton::ColourIds::textColourOffId, TickLookAndFeel::Colours::mint);
+    editModeButton.setColour (juce::TextButton::ColourIds::textColourOnId, TickLookAndFeel::Colours::mint);
+    editModeButton.setColour (juce::TextButton::ColourIds::textColourOffId, TickLookAndFeel::Colours::mint);
     editModeButton.setToggleState (static_cast<bool> (state.view.isEdit.getValue()), juce::dontSendNotification);
     editModeButton.getToggleStateValue().referTo (state.view.isEdit);
     samplesButton.setClickingTogglesState (true);
@@ -195,6 +196,7 @@ TickAudioProcessorEditor::~TickAudioProcessorEditor()
 TickAudioProcessorEditor::Background::Background()
 {
     bgImage = juce::Drawable::createFromImageData (BinaryData::background_png, BinaryData::background_pngSize);
+    bgImage->setAlpha (0.6f);
     addAndMakeVisible (bgImage.get());
 }
 
@@ -206,7 +208,7 @@ void TickAudioProcessorEditor::Background::paintOverChildren (juce::Graphics& g)
 
 void TickAudioProcessorEditor::Background::resized()
 {
-    bgImage->setBounds (getLocalBounds());
+    bgImage->setTransformToFit (getLocalBounds().toFloat(), RectanglePlacement::stretchToFit);
 }
 
 void TickAudioProcessorEditor::paint (juce::Graphics& g)
@@ -303,7 +305,7 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
         const auto to = value.getValue() ? safeBounds : getLocalBounds().translated (0, getHeight());
         juce::Desktop::getInstance().getAnimator().animateComponent (presetsView.get(), to, 1.0f, 200, false, 1.0, 1.0);
         presetsView->toFront (false);
-        topBar.centerLabel.setColour (juce::Label::ColourIds::textColourId, (bool) value.getValue() == true ? juce::Colours::skyblue : juce::Colours::white);
+        topBar.centerLabel.setColour (juce::Label::ColourIds::textColourId, (bool) value.getValue() == true ? TickLookAndFeel::Colours::mint : juce::Colours::white);
     }
 }
 

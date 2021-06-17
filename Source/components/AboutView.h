@@ -8,6 +8,8 @@ public:
     AboutView() : about (aboutText, nullptr)
     {
         using namespace juce;
+        background = Drawable::createFromImageData (BinaryData::background_png, BinaryData::background_pngSize);
+        addAndMakeVisible (*background);
         about.setColour (TextEditor::textColourId, Colours::white);
         about.setColour (TextEditor::backgroundColourId, Colours::white.withAlpha (0.1f));
         about.setColour (TextEditor::outlineColourId, Colours::transparentBlack);
@@ -17,7 +19,7 @@ public:
         about.setReadOnly (true);
         aboutText.replaceAllContent (BinaryData::about_text_txt);
         addAndMakeVisible (about);
-        logo = Drawable::createFromImageData (BinaryData::ticklogo_svg, BinaryData::ticklogo_svgSize);
+        logo = Drawable::createFromImageData (BinaryData::tick_icon_with_text_svg, BinaryData::tick_icon_with_text_svgSize);
     }
 
     void mouseUp (const juce::MouseEvent&) override
@@ -28,27 +30,23 @@ public:
     void resized() override
     {
         auto area = getLocalBounds();
+        background->setTransformToFit (area.toFloat(), RectanglePlacement());
         area.removeFromTop (150);
         area.removeFromBottom (50);
         about.setBounds (area.reduced (10));
     }
 
-    void paint (juce::Graphics& g) override
+    void paintOverChildren (juce::Graphics& g) override
     {
-        g.fillAll (juce::Colours::darkgrey.darker (3));
-
         auto area = getLocalBounds().removeFromTop (150);
-        g.fillAll (Colours::black);
+        logo->drawWithin (g, area.toFloat(), RectanglePlacement(), 1.0f);
         g.setFont (Font (15.0f));
         g.setColour (Colours::white);
-        logo->drawWithin (g, getLocalBounds().toFloat(), juce::RectanglePlacement(), 0.5f);
-        g.drawFittedText (JucePlugin_Manufacturer ", Copyright 2019-2021", area.removeFromBottom (40), Justification::centredBottom, 1);
-        g.setFont (Font (40.0f));
-        g.drawFittedText (JucePlugin_Desc, area.removeFromBottom (40), Justification::centredTop, 1);
+        g.drawFittedText (JucePlugin_Manufacturer ", Copyright 2019-2021", getLocalBounds().removeFromBottom (40), Justification::centred, 1);
     }
 
 private:
-    std::unique_ptr<juce::Drawable> logo;
+    std::unique_ptr<juce::Drawable> logo, background;
     juce::CodeDocument aboutText;
     juce::CodeEditorComponent about;
 };

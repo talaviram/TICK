@@ -13,8 +13,8 @@
 
 constexpr auto roundCorner = 5.0f;
 
-const juce::Colour TickLookAndFeel::Colours::defaultHighlight = juce::Colours::skyblue;
-const juce::Colour TickLookAndFeel::Colours::secondaryColour = juce::Colours::skyblue;
+const juce::Colour TickLookAndFeel::Colours::defaultHighlight = Colours::grey;
+const juce::Colour TickLookAndFeel::Colours::secondaryColour = Colours::grey;
 const juce::Colour TickLookAndFeel::Colours::buttonSoftBackground = juce::Colours::darkgrey.withAlpha (0.4f);
 const juce::Colour TickLookAndFeel::Colours::tickNameColour = juce::Colours::transparentBlack.darker();
 const juce::Colour TickLookAndFeel::Colours::backgroundColour = juce::Colours::black;
