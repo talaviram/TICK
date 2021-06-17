@@ -67,3 +67,7 @@ SOFTWARE.
 JUCE (https://juce.com/) Framework.
 TICK might use JUCE GPLv3 or indie license depends on format.
 (Eg. VST2 required Indie License with Splash Screen)
+
+Additional Thanks goes to:
+- Sound Radix (Nir, Yair, Dan)
+- The JUCE team.
