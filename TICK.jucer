@@ -45,7 +45,6 @@
         <FILE id="mbci4Q" name="tick_icon_with_text.svg" compile="0" resource="1"
               file="Media/Logo/tick_icon_with_text.svg"/>
         <FILE id="BVUsrZ" name="tick_logo.svg" compile="0" resource="1" file="Media/Logo/tick_logo.svg"/>
-        <FILE id="yXnk5e" name="tick_text.svg" compile="0" resource="1" file="Media/Logo/tick_text.svg"/>
       </GROUP>
       <FILE id="dHLYH2" name="about_text.txt" compile="0" resource="1" file="Media/about_text.txt"/>
       <FILE id="n3gl9R" name="arrow_back_ios-24px.svg" compile="0" resource="1"
@@ -281,7 +280,7 @@
                   iosBluetoothPermissionNeeded="1" iosBackgroundBle="1" UIRequiresFullScreen="0"
                   iPadScreenOrientation="UIInterfaceOrientationLandscapeLeft,UIInterfaceOrientationLandscapeRight,UIInterfaceOrientationPortrait,UIInterfaceOrientationPortraitUpsideDown"
                   iCloudPermissions="1" extraDefs="JUCE_DISPLAY_SPLASH_SCREEN=1"
-                  iosDevelopmentTeamID="2PW93SFVCT" customXcodeResourceFolders="Installer/Factory"
+                  iosDevelopmentTeamID="7P7G2A8U54" customXcodeResourceFolders="Installer/Factory"
                   customPList="&lt;plist&gt;&#10; &lt;dict&gt;&#10;&lt;key&gt;UTExportedTypeDeclarations&lt;/key&gt;&#10;&#9;&lt;array&gt;&#10;&#9;&#9;&lt;dict&gt;&#10;&#9;&#9;&#9;&lt;key&gt;UTTypeConformsTo&lt;/key&gt;&#10;&#9;&#9;&#9;&lt;array&gt;&#10;&#9;&#9;&#9;&#9;&lt;string&gt;public.data&lt;/string&gt;&#10;&#9;&#9;&#9;&lt;/array&gt;&#10;&#9;&#9;&#9;&lt;key&gt;UTTypeIdentifier&lt;/key&gt;&#10;&#9;&#9;&#9;&lt;string&gt;com.talaviram.Tick.preset&lt;/string&gt;&#10;&#9;&#9;&#9;&lt;key&gt;UTTypeTagSpecification&lt;/key&gt;&#10;&#9;&#9;&#9;&lt;dict&gt;&#10;&#9;&#9;&#9;&#9;&lt;key&gt;public.filename-extension&lt;/key&gt;&#10;&#9;&#9;&#9;&#9;&lt;string&gt;tickpreset&lt;/string&gt;&#10;&#9;&#9;&#9;&#9;&lt;key&gt;public.mime-type&lt;/key&gt;&#10;&#9;&#9;&#9;&#9;&lt;string&gt;applications/tickpreset&lt;/string&gt;&#10;&#9;&#9;&#9;&lt;/dict&gt;&#10;&#9;&#9;&lt;/dict&gt;&#10;&#9;&lt;/array&gt;&#10;&lt;/dict&gt;&#10;&lt;/plist&gt;"
                   iosAppGroups="1" iosAppGroupsId="group.talaviram.TICKPresets">
       <CONFIGURATIONS>
