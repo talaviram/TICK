@@ -4,3 +4,4 @@
 /Installer/build
 /Installer/Output
 /result
+/private # things not to commit (not open-sourced / eg - signing AAX)
