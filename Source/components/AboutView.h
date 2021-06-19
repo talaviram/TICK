@@ -1,11 +1,12 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "utils/git_version.h"
 
 class AboutView : public juce::Component
 {
 public:
-    AboutView() : about (aboutText, nullptr)
+    AboutView (String wrapperType) : about (aboutText, nullptr), wrapperType (wrapperType)
     {
         using namespace juce;
         background = Drawable::createFromImageData (BinaryData::background_png, BinaryData::background_pngSize);
@@ -32,21 +33,39 @@ public:
         auto area = getLocalBounds();
         background->setTransformToFit (area.toFloat(), RectanglePlacement());
         area.removeFromTop (150);
-        area.removeFromBottom (50);
+        area.removeFromBottom (80);
         about.setBounds (area.reduced (10));
     }
 
     void paintOverChildren (juce::Graphics& g) override
     {
+        juce::String arch = " ["
+#if JUCE_ARM
+                            "arm"
+#if JUCE_64BIT
+                            "64"
+#endif
+#elif JUCE_INTEL
+                            "x86"
+#if JUCE_64BIT
+                            "_64"
+#endif
+#else
+#error "Unexpected Arch!"
+#endif
+                            "]\n";
+
         auto area = getLocalBounds().removeFromTop (150);
         logo->drawWithin (g, area.toFloat(), RectanglePlacement(), 1.0f);
         g.setFont (Font (15.0f));
         g.setColour (Colours::white);
-        g.drawFittedText (JucePlugin_Manufacturer ", Copyright 2019-2021", getLocalBounds().removeFromBottom (40), Justification::centred, 1);
+        juce::String version = JucePlugin_VersionString " (" + juce::String (GIT_COMMIT) + ")\n";
+        g.drawFittedText (version + wrapperType + arch + (JucePlugin_Manufacturer ", Copyright 2019-2021"), getLocalBounds().removeFromBottom (80), Justification::centred, 1);
     }
 
 private:
     std::unique_ptr<juce::Drawable> logo, background;
     juce::CodeDocument aboutText;
     juce::CodeEditorComponent about;
+    juce::String wrapperType {};
 };

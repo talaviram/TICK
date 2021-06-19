@@ -152,7 +152,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     presetsView.reset (new PresetsView (processor.getState(), processor.getTicks()));
     addAndMakeVisible (*presetsView);
 
-    aboutView.reset (new AboutView());
+    aboutView.reset (new AboutView (AudioProcessor::getWrapperTypeDescription (processor.wrapperType)));
     addChildComponent (aboutView.get());
     aboutView->setAlwaysOnTop (true);
 

@@ -148,6 +148,8 @@
         </GROUP>
       </GROUP>
       <GROUP id="{5B338A06-556D-01A7-7D4A-3EBFA49E1192}" name="utils">
+        <FILE id="uqWkIn" name="git_version.cpp" compile="1" resource="0" file="Source/utils/git_version.cpp"/>
+        <FILE id="HyAq3F" name="git_version.h" compile="0" resource="0" file="Source/utils/git_version.h"/>
         <FILE id="FFXxDs" name="SamplesPaint.cpp" compile="1" resource="0"
               file="Source/utils/SamplesPaint.cpp"/>
         <FILE id="Hx6bKo" name="SamplesPaint.h" compile="0" resource="0" file="Source/utils/SamplesPaint.h"/>
@@ -202,7 +204,7 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" vstLegacyFolder="../../SDKs/VST2_SDK"
                hardenedRuntime="1" smallIcon="FLUr1i" bigIcon="FLUr1i" iosPushNotifications="1"
-               aaxFolder="../../SDKs/AAX_SDK">
+               aaxFolder="../../SDKs/AAX_SDK" prebuildCommand="python3 $SRCROOT/../../get_git_rev.py $SRCROOT/../../Source/utils/git_version.cpp">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="TICK" osxCompatibility="10.7 SDK"
                        macOSDeploymentTarget="10.7"/>
@@ -229,9 +231,9 @@
     <VS2019 targetFolder="Builds/VisualStudio2019" vstLegacyFolder="../../SDKs/VST2_SDK"
             aaxFolder="../../SDKs/AAX_SDK" bigIcon="CbfJcE">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" useRuntimeLibDLL="0"/>
+        <CONFIGURATION isDebug="1" name="Debug" useRuntimeLibDLL="0" prebuildCommand="python3 $(ProjectDir)\..\..\get_git_rev.py $(ProjectDir)\..\..\Source\utils/git_version.cpp"/>
         <CONFIGURATION isDebug="0" name="Release" alwaysGenerateDebugSymbols="1" debugInformationFormat="ProgramDatabase"
-                       useRuntimeLibDLL="0"/>
+                       useRuntimeLibDLL="0" prebuildCommand="python3 $(ProjectDir)\..\..\get_git_rev.py $(ProjectDir)\..\..\Source\utils/git_version.cpp"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_opengl" path="JUCE/modules"/>

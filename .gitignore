@@ -1,7 +1,10 @@
 .DS_Store
 /Builds
-/JuceLibraryCode
 /Installer/build
 /Installer/Output
+/JuceLibraryCode
+# things not to commit (not open-sourced / eg - signing AAX)
+/private
 /result
-/private # things not to commit (not open-sourced / eg - signing AAX)
+# auto-generated each build
+Source/utils/git_version.cpp
