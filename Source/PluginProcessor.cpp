@@ -70,6 +70,11 @@ TickAudioProcessor::~TickAudioProcessor()
     ticks.clear();
 }
 
+void TickAudioProcessor::setExternalProps (juce::PropertySet* s)
+{
+    static_cast<TickAudioProcessorEditor*> (getActiveEditor())->standaloneProps = s;
+}
+
 //==============================================================================
 const String TickAudioProcessor::getName() const
 {

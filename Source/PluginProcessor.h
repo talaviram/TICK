@@ -72,6 +72,8 @@ public:
 
     juce::AudioProcessorValueTreeState& getAPVTS() { return parameters; };
 
+    void setExternalProps (juce::PropertySet* s);
+
 private:
     double ppqEndVal;
 

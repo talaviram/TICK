@@ -60,6 +60,8 @@ public:
     // Value::Listener
     void valueChanged (juce::Value&) override;
 
+    juce::PropertySet* standaloneProps { nullptr };
+
 private:
     void initAppProperties();
 

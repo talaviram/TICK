@@ -109,9 +109,12 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addCustomItem (222, std::move (slider));
         settings.addSeparator();
 #if ! JUCE_IOS && ! JUCE_ANDROID
-        const auto useOpenGL = appProperties.getUserSettings()->getBoolValue ("opengl", true);
-        settings.addItem ("OpenGL Renderer", true, useOpenGL, [this, useOpenGL] {
-            appProperties.getUserSettings()->setValue ("opengl", ! useOpenGL);
+        // for standalone props needs to come from it.
+        auto props = standaloneProps != nullptr ? standaloneProps : appProperties.getUserSettings();
+        const auto useOpenGL = props->getBoolValue ("opengl", true);
+        settings.addItem ("OpenGL Renderer", true, useOpenGL, [this, useOpenGL, props] {
+            props->setValue ("opengl", ! useOpenGL);
+            // this is redundant / do nothing on standalone.
             appProperties.getUserSettings()->saveIfNeeded();
             juce::AlertWindow::showNativeDialogBox ("Graphic Renderer Changed", "Please re-open UI to apply new renderer.", false);
         });
