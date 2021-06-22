@@ -109,8 +109,8 @@ public:
         mainWindow->pluginHolder->savePluginState();
         if (static_cast<TickAudioProcessor*> (mainWindow->getAudioProcessor())->lastKnownPosition_.isPlaying)
             return;
-        Timer::callAfterDelay (5000, [this]() {
-            // only after 5secs
+        Timer::callAfterDelay (60 * 1000, [this]() {
+            // only after 1min
             if (! systemSuspended)
                 return;
             if (auto app = JUCEApplicationBase::getInstance())
