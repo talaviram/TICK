@@ -234,7 +234,7 @@ void TickAudioProcessorEditor::resized()
 #endif
     auto safeArea = Desktop::getInstance().getDisplays().getPrimaryDisplay()->safeAreaInsets;
     const auto safeTop = safeArea.getTop();
-    const auto safeBottom = safeArea.getBottom();
+    const auto safeBottom = safeArea.getBottom() + safeTop > 20 ? 40 : 0;
     const auto availableArea = getLocalBounds().withTrimmedBottom (safeBottom).withTrimmedTop (safeTop);
     auto topArea = availableArea;
     headerArea.setBounds (topArea.removeFromTop (TickLookAndFeel::toolbarHeight));
