@@ -3,17 +3,19 @@ TICK - Professional Open-Source Metronome
 
 CURRENT STATE:
 --------------
-Since I do this in my spare (which become more limited with COVID19, small kids), This is still WIP.
+Since I do this in my spare (which became more limited with COVID19, small kids), This is on-going WIP.
 
 I do it too slowly. (mostly fiddeling with responsive UI to be good enough for mobile and desktop).
-But the basic metronome does work.
+
+Having said that, the metronome plug-in been used on-stage for a while now.
+And it's still very usable.
 
 
 Background:
 -----------
 If you ever worked with more than one host (DAW), you've discovered each one got their own built-in metronome.
-Those greatly differ in available sounds and routing cabilities.
-While many hosts allow sending metronome as MIDI, this requires tidious set-up.
+Those greatly differ in available sounds and routing capabilities.
+While many hosts allow sending metronome as MIDI, this requires tedious set-up.
 
 TICK is tailored made to make a small portable Metronome plug-in.
 It can also work in standalone mode, meaning it can have agnostic time to the host itself.
@@ -22,12 +24,12 @@ It can also work in standalone mode, meaning it can have agnostic time to the ho
 Features:
 ---------
 - Sample-Accurate Metronome.
-- Customizable - You choose exactly how your metronome sounds. Including ability to do basic edits inside Tick.
-- Portable - TICK is self-contained. As a plug-in, your audio samples are saved in the preset that can easily exported and imported.
+- Customizable - You choose exactly how your metronome sounds. Including ability to do basic edits within TICK.
+- Portable - TICK is self-contained. As a plug-in, your audio samples are saved in the preset that is part of your audio session/project.
 - Low Pass Filter - avoid bleeds while recording.
 - True Cross-Platform - TICK ~~is~~ will be available as an audio plug-in or a standalone app for Mac, Windows, Linux, iOS & Android as an app.
 - Open-Source.
-- Open-Standards - Tick preset format is a zip archive with plain WAVE files (containing metadata) along a simple readable XML.
+- Open-Standards - TICK preset format is a zip archive with plain WAVE files (containing metadata) along a simple readable XML.
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -48,8 +50,14 @@ Upcoming
 - Tomper (nice idea to be explained in the future)
 - Ableton Link.
 - Desktop drag-and-drop support, drag-and-drop to reorganize samples.
-- Full Screen / Tablet UI, use available real-estate properly.
+- Improve Full Screen / Tablet UI, use available real-estate properly.
 
+Builds
+------
+In order to comply with different restrictions,
+Some binaries are built/distributed as GPLv3, some are closed source to comply with restrictions (eg. AAX/VST2/iOS).
+
+The TICK codebase though is fully open of course.
 
 License and Binaries
 --------------------
