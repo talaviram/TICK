@@ -257,7 +257,7 @@ void TickAudioProcessorEditor::resized()
 
 bool TickAudioProcessorEditor::keyPressed (const juce::KeyPress& key)
 {
-    if (! processor.getState().useHostTransport.get() && key.getKeyCode() == juce::KeyPress::spaceKey)
+    if (processor.wrapperType == AudioProcessor::wrapperType_Standalone && ! processor.getState().useHostTransport.get() && key.getKeyCode() == juce::KeyPress::spaceKey)
     {
         auto& transport = bottomBar.transportButton;
         transport.setToggleState (! transport.getToggleState(), dontSendNotification);
