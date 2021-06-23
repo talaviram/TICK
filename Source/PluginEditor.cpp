@@ -39,7 +39,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     lookAndFeel.setColour (juce::AlertWindow::outlineColourId, juce::Colours::white.withAlpha (0.2f));
     lookAndFeel.setColour (juce::AlertWindow::backgroundColourId, juce::Colours::darkgrey.withAlpha (0.9f));
     lookAndFeel.setColour (juce::ListBox::ColourIds::backgroundColourId, juce::Colours::black.withAlpha (0.6f));
-    lookAndFeel.setColour (juce::PopupMenu::ColourIds::backgroundColourId, TickLookAndFeel::Colours::grey.withAlpha (0.6f));
+    lookAndFeel.setColour (juce::PopupMenu::ColourIds::backgroundColourId, TickLookAndFeel::Colours::grey.withAlpha (0.75f));
     lookAndFeel.setColour (juce::ResizableWindow::ColourIds::backgroundColourId, TickLookAndFeel::Colours::backgroundColour);
     lookAndFeel.setColour (juce::Slider::trackColourId, juce::Colours::lightgrey);
     lookAndFeel.setColour (juce::Slider::thumbColourId, juce::Colours::white);
