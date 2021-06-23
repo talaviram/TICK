@@ -113,6 +113,11 @@ void EditBeatView::updateSelection (const std::vector<int>& newSelection)
         samplesList.selectRow (assignment.tickIdx.get());
         beatLabel.setVisible (true);
         beatVolume.setVisible (true);
+        if (state.view.showEditSamples.getValue())
+        {
+            state.view.showEditSamples.setValue (false);
+            state.view.showEditSamples.setValue (true);
+        }
     }
     else
     {
