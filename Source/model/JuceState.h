@@ -102,9 +102,12 @@ struct ConstrainerWrapper
 
 struct BPMConstrainer
 {
+    static constexpr auto minBPM = 1.0f;
+    static constexpr auto maxBPM = 999.0f;
+
     static float constrain (const float& v)
     {
-        return juce::Range<float> (1.0f, 999.0f).clipValue (v);
+        return juce::Range<float> (minBPM, maxBPM).clipValue (v);
     }
 };
 
