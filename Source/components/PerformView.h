@@ -30,6 +30,8 @@ public:
     void mouseDown (const juce::MouseEvent&) override;
     void mouseUp (const juce::MouseEvent&) override;
 
+    void mouseDrag (const juce::MouseEvent&) override;
+
     // ChangeListener
     void changeListenerCallback (juce::ChangeBroadcaster*) override;
 
@@ -37,6 +39,25 @@ public:
 
 private:
     void selectionChanged (int index);
+
+    struct DragStep
+    {
+        void handleDrag (const juce::MouseEvent& e)
+        {
+            const auto newstep = e.getDistanceFromDragStartY();
+            ;
+            if (std::abs (newstep - dragStep) > 1)
+            {
+                if (newstep - dragStep > 0)
+                    onStep (false);
+                else
+                    onStep (true);
+                dragStep = newstep;
+            }
+        }
+        std::function<void (bool isUp)> onStep {};
+        int dragStep { 0 };
+    };
 
     struct TopBar : juce::Component
     {
@@ -75,6 +96,8 @@ private:
     std::vector<std::unique_ptr<BeatView>> beats;
     int beatsInRow = 4;
     bool isEditMode = false;
+    // used for mouse 'stepping'/dragging musical bpm/signature
+    DragStep tempoDrag, numDrag, denumDrag;
 
     static constexpr int kMargin = 4;
 };

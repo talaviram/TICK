@@ -34,6 +34,28 @@ PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, S
 
     beatsView.addMouseListener (this, false);
     topBar.tapMode.addMouseListener (this, true);
+    // draggable labels...
+    tempoDrag.onStep = [this] (bool isUp) {
+        const float bpm = state.transport.bpm.get();
+        const int step = isUp ? +1 : -1;
+        state.transport.bpm.setValue (bpm + step, nullptr);
+    };
+
+    numDrag.onStep = [this] (bool isUp) {
+        const int num = state.transport.numerator.get();
+        const int step = isUp ? +1 : -1;
+        state.transport.numerator.setValue (jlimit (1, TickSettings::kMaxBeatAssignments, num + step), nullptr);
+    };
+
+    denumDrag.onStep = [this] (bool isUp) {
+        const int denum = state.transport.denumerator.get();
+        const int step = isUp ? +1 : -1;
+        state.transport.denumerator.setValue (jlimit (1, 128, denum + step), nullptr);
+    };
+
+    topBar.tempo.addMouseListener (this, true);
+    topBar.num.addMouseListener (this, true);
+    topBar.denum.addMouseListener (this, true);
 
     editView->setAlwaysOnTop (true);
     addChildComponent (editView.get());
@@ -204,6 +226,24 @@ void PerformView::mouseDown (const juce::MouseEvent& e)
             state.transport.bpm.setValue (tapModel.getLastDetectedBPM(), nullptr);
         return;
     }
+
+    if (e.originalComponent == &topBar.tempo)
+    {
+        tempoDrag.dragStep = 0;
+        return;
+    }
+
+    if (e.originalComponent == &topBar.num)
+    {
+        numDrag.dragStep = 0;
+        return;
+    }
+
+    if (e.originalComponent == &topBar.denum)
+    {
+        denumDrag.dragStep = 0;
+        return;
+    }
 }
 
 void PerformView::mouseUp (const juce::MouseEvent& e)
@@ -217,6 +257,25 @@ void PerformView::mouseUp (const juce::MouseEvent& e)
     if (e.originalComponent == &topBar.tapMode)
     {
         topBar.tapMode.setColour (juce::Label::backgroundColourId, juce::Colours::transparentBlack);
+    }
+}
+
+void PerformView::mouseDrag (const juce::MouseEvent& e)
+{
+    if (e.originalComponent == &topBar.tempo)
+    {
+        tempoDrag.handleDrag (e);
+        return;
+    }
+    if (e.originalComponent == &topBar.num)
+    {
+        numDrag.handleDrag (e);
+        return;
+    }
+    if (e.originalComponent == &topBar.denum)
+    {
+        denumDrag.handleDrag (e);
+        return;
     }
 }
 
