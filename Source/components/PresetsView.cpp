@@ -197,10 +197,36 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
         // TODO: background/async? though it's tiny...
         File::getSpecialLocation (File::SpecialLocationType::currentApplicationFile).getChildFile ("Factory").copyDirectoryTo (TickUtils::getUserFolder().getChildFile ("Factory"));
     }
+#elif JUCE_ANDROID
+    if (! userDataFolder.isDirectory() || ! TickUtils::getUserFolder().getChildFile ("Factory").isDirectory())
+    {
+        auto result = TickUtils::getUserFolder().createDirectory();
+        if (! result.wasOk())
+        {
+            juce::AlertWindow::showMessageBoxAsync (juce::AlertWindow::AlertIconType::WarningIcon, "Failed to create preset folder!", "Try reinstalling TICK.", "Quit", nullptr, ModalCallbackFunction::create ([] (int) {
+                                                        juce::JUCEApplicationBase::getInstance()->quit();
+                                                        jassertfalse;
+                                                    }));
+        }
+
+        ZipFile apkZip (File::getSpecialLocation (File::invokedExecutableFile));
+        for (int i = 0; i < apkZip.getNumEntries(); i++)
+        {
+            if (auto* entry = apkZip.getEntry (i))
+            {
+                if (entry->filename.endsWithIgnoreCase (".tickpreset"))
+                {
+                    apkZip.uncompressEntry (i, TickUtils::getUserFolder());
+                }
+            }
+        }
+        const auto factoryFolder = TickUtils::getUserFolder().getChildFile ("Factory");
+        TickUtils::getUserFolder().getChildFile ("assets").moveFileTo (factoryFolder);
+    }
 #else
     if (! userDataFolder.isDirectory())
     {
-        auto result = userDataFolder.createDirectory();
+        const auto result = userDataFolder.createDirectory();
         if (! result.wasOk())
         {
             juce::AlertWindow::showMessageBoxAsync (juce::AlertWindow::AlertIconType::WarningIcon, "Invalid Preset Folder!", "Try reinstalling TICK.");

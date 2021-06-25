@@ -253,7 +253,7 @@
         <MODULEPATH id="juce_audio_basics" path="JUCE/modules"/>
       </MODULEPATHS>
     </VS2019>
-    <ANDROIDSTUDIO targetFolder="Builds/Android" androidPushNotifications="0" androidExtraAssetsFolder="Included Samples"
+    <ANDROIDSTUDIO targetFolder="Builds/Android" androidPushNotifications="0" androidExtraAssetsFolder="Installer/Factory"
                    androidTheme="@android:style/Theme.NoTitleBar" smallIcon="CbfJcE"
                    bigIcon="CbfJcE" androidScreenOrientation="portrait" androidEnableContentSharing="1">
       <CONFIGURATIONS>

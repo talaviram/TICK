@@ -17,7 +17,9 @@ const char* TickUtils::kPresetExtension = ".tickpreset";
 File TickUtils::getUserFolder()
 {
     return
-#if ! JUCE_IOS
+#if JUCE_ANDROID
+        File::getSpecialLocation (File::commonApplicationDataDirectory)
+#elif ! JUCE_IOS
         File::getSpecialLocation (File::commonDocumentsDirectory).getChildFile (String (JucePlugin_Manufacturer)).getChildFile (String (JucePlugin_Name))
 #else
         // hardcoded but ideally should be queried from single place.
