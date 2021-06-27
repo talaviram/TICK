@@ -72,7 +72,7 @@ void EditBeatView::paint (juce::Graphics& g)
     using namespace juce;
     Path background;
     background.addRoundedRectangle (0, 0, getWidth(), getHeight(), 6.0f, 6.0f, true, true, false, false);
-    g.setGradientFill (ColourGradient (Colours::darkgrey.darker (2).withAlpha (0.2f), 0, 0, Colours::darkgrey.withAlpha (0.2f), 0, getLocalBounds().getCentreY(), false));
+    g.setGradientFill (ColourGradient (Colours::darkgrey.withBrightness (0.5f).withAlpha (0.2f), 0, 0, Colours::darkgrey.withAlpha (0.2f), 0, getLocalBounds().getCentreY(), false));
     g.fillPath (background);
     g.setColour (Colours::white.withAlpha (0.1f));
     g.strokePath (background, PathStrokeType (1.0f));
