@@ -15,7 +15,7 @@
 #include "utils/UtilityFunctions.h"
 
 EditBeatView::EditBeatView (TickSettings& stateRef, TicksHolder& ticksRef)
-    : model (*this), fileChooser ("Import Audio", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*.wav;*.wave;*.aif;*.aiff;*.mp3;*.flac", juce::FileChooser::isPlatformDialogAvailable()), sampleIcon ("sampleIcon", juce::DrawableButton::ImageFitted), sampleSelection ("selectSample", juce::DrawableButton::ImageFitted), state (stateRef), ticks (ticksRef)
+    : model (*this), fileChooser ("Import Audio", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*.wav;*.wave;*.aif;*.aiff;*.mp3;*.flac", TickUtils::usePlatformDialog()), sampleIcon ("sampleIcon", juce::DrawableButton::ImageFitted), sampleSelection ("selectSample", juce::DrawableButton::ImageFitted), state (stateRef), ticks (ticksRef)
 
 {
     currentColour = juce::Colours::pink;
@@ -258,20 +258,21 @@ juce::PopupMenu EditBeatView::getAddSamplesMenu (const int replaceIndex)
         });
     }
     menu.addSeparator();
-    menu.addItem ("Import Audio File...", [this, replaceIndex]() {
-        fileChooser.launchAsync (FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles,
-                                 [this, replaceIndex] (const FileChooser& chooser) {
-                                     if (chooser.getResult().existsAsFile())
-                                     {
-#if JUCE_IOS
-                                         auto newTick = std::unique_ptr<Tick> (ticks.importURL (chooser.getURLResult()));
+        menu.addItem ("Import Audio File...", TickUtils::canImport(), false, [this, replaceIndex]() {
+            fileChooser.launchAsync (FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles,
+                                     [this, replaceIndex] (const FileChooser& chooser) {
+                                         if (chooser.getResult().existsAsFile())
+                                         {
+#if JUCE_IOS || JUCE_ANDROID
+                                             auto newTick = std::unique_ptr<Tick> (
+                                                 ticks.importURL (chooser.getURLResult()));
 #else
-                                         auto newTick = std::unique_ptr<Tick> (ticks.importAudioFile (chooser.getResult()));
+                                                                                                        auto newTick = std::unique_ptr<Tick> (ticks.importAudioFile (chooser.getResult()));
 #endif
-                                         setNewImportedSample (replaceIndex, std::move (newTick));
-                                     }
-                                 });
-    });
+                                             setNewImportedSample (replaceIndex, std::move (newTick));
+                                         }
+                                     });
+        });
     return menu;
 }
 

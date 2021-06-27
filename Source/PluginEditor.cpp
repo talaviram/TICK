@@ -170,6 +170,20 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         openglContext.attachTo (*this);
 #endif
 
+#if JUCE_ANDROID
+    RuntimePermissions::request (
+        RuntimePermissions::writeExternalStorage,
+        [this] (bool wasGranted) {
+            if (! wasGranted)
+            {
+                juce::AlertWindow::showMessageBoxAsync (
+                    juce::AlertWindow::AlertIconType::WarningIcon,
+                    "No Read/Write Permission",
+                    JucePlugin_Desc " Requires Read/Write Permission in order to import/export presets and samples.\nUntil enabled all import/export features will be disabled.");
+            }
+        });
+#endif
+
     if (! TickSplash::didShowSplashOnce)
         splash.reset (new TickSplash (*this));
 

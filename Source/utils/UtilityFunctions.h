@@ -30,6 +30,37 @@ struct TickUtils
         return std::make_unique<ZipFile> (new MemoryInputStream (BinaryData::factory_samples_zip, BinaryData::factory_samples_zipSize, false), true);
     }
 
+    static bool canImport()
+    {
+        return
+#if JUCE_ANDROID
+            juce::RuntimePermissions::isGranted (juce::RuntimePermissions::readExternalStorage);
+#else
+            true
+#endif
+        ;
+    }
+
+    static bool canExport()
+    {
+        return
+#if JUCE_ANDROID
+            juce::RuntimePermissions::isGranted (juce::RuntimePermissions::writeExternalStorage);
+#else
+            true
+#endif
+        ;
+    }
+
+    static bool usePlatformDialog()
+    {
+#if JUCE_ANDROID
+        return false;
+#else
+        return juce::FileChooser::isPlatformDialogAvailable();
+#endif
+    }
+
     static void processClip (juce::AudioBuffer<float>&);
 
     static void fadeOut (juce::AudioBuffer<float>&);
