@@ -45,6 +45,8 @@ public:
         options.osxLibrarySubFolder = "Application Support";
 #if JUCE_LINUX || JUCE_BSD
         options.folderName = "~/.config";
+#elif JUCE_ANDROID
+        options.folderName = File::getSpecialLocation (File::commonApplicationDataDirectory).getFullPathName();
 #else
         options.folderName = "";
 #endif
