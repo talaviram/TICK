@@ -15,9 +15,35 @@
 
 #include <atomic>
 #include <memory>
-#include <mutex>
 #include <string>
 #include <vector>
+
+// https://www.youtube.com/watch?v=Q0vrQFyAdWI
+// TODO: optimize!
+class spin_lock
+{
+public:
+    void lock() noexcept
+    {
+        while (flag.test_and_set())
+            ;
+    }
+    void unlock() noexcept { flag.clear(); }
+    bool try_lock() noexcept { return ! flag.test_and_set(); }
+
+private:
+    std::atomic_flag flag = ATOMIC_FLAG_INIT;
+};
+
+class scoped_lock
+{
+public:
+    scoped_lock (spin_lock& l) : lock (l) { lock.lock(); }
+    ~scoped_lock() { lock.unlock(); }
+
+private:
+    spin_lock& lock;
+};
 
 static const double BASE_SAMPLERATE = 44100.0;
 
@@ -151,7 +177,7 @@ public:
     void clear();
     size_t getNumOfTicks() const;
 
-    std::mutex inuseLock;
+    spin_lock inuseLock;
 
 private:
     std::vector<std::unique_ptr<Tick>> ticks;

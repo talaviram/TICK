@@ -223,8 +223,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
 
     if (lastKnownPosition_.isPlaying)
     {
-        std::unique_lock<std::mutex> lock (ticks.getLock(), std::try_to_lock);
-        if (! lock.owns_lock())
+        if (! ticks.getLock().try_lock())
         {
             tickState.clear();
             return;
@@ -287,6 +286,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
             tickState.addTickSample (buffer, currentSampleToTick, tickLengthInSamples);
         }
         tickState.fillTickSample (buffer);
+        ticks.getLock().unlock();
     }
 }
 

@@ -205,7 +205,7 @@ public:
         return convertAudioToTick (name, reader.get());
     }
 
-    std::mutex& getLock() { return ticks.inuseLock; }
+    spin_lock& getLock() { return ticks.inuseLock; }
 
     size_t getNumOfTicks() { return ticks.getNumOfTicks(); }
 
