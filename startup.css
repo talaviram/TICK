@@ -1,0 +1,163 @@
+/* Startup Website */
+
+html,
+body,
+.cover {
+  height: 100%;
+}
+
+.download-box-container {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+download-box-container,
+.two-item {
+  grid-template-columns: 1fr 1fr;
+}
+
+.download-box {
+  justify-self: center;
+  align-self: center;
+  margin: 15px;
+  text-align: center;
+}
+
+.os-name {
+  display: block;
+}
+
+.os {
+  display: block;
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 50%;
+  margin: 0 auto;
+}
+
+.os-description {
+  display: block;
+  min-height: 150px;
+  text-align: left;
+}
+
+.download-box a {
+  color: rgb(161, 192, 177);
+}
+
+.os-windows {
+  background-image: url(img/windows.svg);
+}
+.os-mac {
+  background-image: url(img/apple.svg);
+}
+.os-linux {
+  background-image: url(img/linux.svg);
+}
+.os-ios {
+  background-image: url(img/app-store-ios.svg);
+}
+.os-android {
+  background-image: url(img/android.svg);
+}
+
+.cover {
+  background: url("img/background.png") top left no-repeat;
+  background-size: cover;
+  display: table;
+  width: 100%;
+  padding: 0 20%;
+  box-shadow: inset 0 0 100px #100;
+}
+
+.cover-text {
+  text-align: center;
+  color: white;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.cover-text h1 {
+  font-size: 60px;
+  color: burlywood;
+  margin: 0;
+  letter-spacing: -4px;
+}
+
+.nav navbar {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+}
+
+.testimonial {
+  background: #100000;
+}
+
+blockquote {
+  border: none;
+  font-family: Georgia, Times, monospace;
+  font-style: italic;
+  font-size: 32px;
+  color: aliceblue;
+}
+
+blockquote cite {
+  display: block;
+  font-family: Helvitica, sans-serif, Arial;
+  font-style: normal;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: right;
+  color: antiquewhite;
+}
+
+section {
+  padding: 100px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0 0 60px;
+}
+
+h2 + p {
+  text-align: center;
+  margin-top: -50px;
+}
+
+#download {
+  background: url("img/fan.jpg") top left no-repeat;
+  background-size: cover;
+  color: white;
+  text-align: center;
+}
+
+footer {
+  background: #222;
+  color: beige;
+  text-align: center;
+  padding: 20px;
+  font-family: Times, sans-serif, serif;
+}
+
+footer a {
+  color: red;
+}
+
+/*------- Media Queries -------*/
+
+@media only screen and (max-width: 568px) {
+  .cover h1 {
+    font-size: 40px;
+  }
+  section {
+    padding: 20px;
+  }
+}

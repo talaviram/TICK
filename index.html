@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<title>TICK Metronome</title>
+
+	<!-- Bootstrap -->
+
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="startup.css" rel="stylesheet">
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body data-spy="scroll" data-target="#navbar">
+
+	<nav class="navbar navbar-fixed-top navbar-inverse" id="navbar">
+		<div class="container">
+
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+					data-target="#navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+				<a class="navbar-brand" href="index.html">TICK Metronome</a>
+			</div><!-- navbar-header -->
+
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="active"><a href="#home">Home</a></li>
+					<li><a href="#features">Features</a></li>
+					<li><a href="#download">Download</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</div>
+		</div><!-- container -->
+
+	</nav>
+
+	<div class="cover" id="home">
+		<div class="cover-text">
+			<img src="img/tick_logo.svg" height="200px" alt="Logo Image">
+			<h1><img src="img/tick_text.svg" height="50px" alt="TICK"></h1>
+			<p class="lead">Professional Open-Source Metronome</p>
+			<a href="#download" role="button" class="btn btn-info btn-lg">Download</a>
+		</div>
+	</div>
+
+	<section class="testimonial">
+		<div class="container">
+			<img src="img/truncated_screenshot.png" align="right" width="30%" alt="TICK Logo">
+			<blockquote>
+				TICK is a self-contained metronome. It runs almost anywhere. It runs as a plug-in, it runs on your
+				phone.
+				Everything is self-contained so your metronome sounds (and your bpm/time-signature) can go wherever you
+				go.
+
+			</blockquote>
+		</div>
+	</section>
+	<section id="features">
+		<h2>Features</h2>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4">
+					<h3>Professional</h3>
+					<p>TICK has been used on stage for a while now. It was actually made for that need where some DAWs
+						won't support custom routing or sounds for their internal metronome.</p>
+				</div>
+				<div class="col-sm-4">
+					<h3>Customizable</h3>
+					<p>You choose exactly how your metronome sounds. Including ability to do basic edits within TICK.
+						Import your own metronome sounds, trim to perfection and set their levels. all within TICK.
+					</p>
+				</div>
+				<div class="col-sm-4">
+					<h3>Portable</h3>
+					<p>TICK is self-contained. As a plug-in, your audio samples are saved within the preset that is part of
+						your audio session/project. As an app, you can import/export your presets across devices.</p>
+				</div>
+				<div class="col-sm-4">
+					<h3>Cross-Platform</h3>
+					<p>TICK runs on Mac, Windows, iOS and Android. Linux (including ARM) is right about the corner.
+						It's also a first-class audio plug-in supporting AAX, Audio Unit, VST2 & VST3 (AUv3 to follow).
+					</p>
+				</div>
+				<div class="col-sm-4">
+					<h3>Low-Pass Filter</h3>
+					<p>When tracking, a harsh metronome sound can easily bleed. It's very common to filter it. TICK
+						already comes with a simple Low-Pass Filter so you can start tracking quicker.</p>
+				</div>
+				<div class="col-sm-4">
+					<h3>More to come</h3>
+					<p>Since I do this in my spare time, There are many more features to come such as Ableton Link, Drag
+						&amp; Drop and more ideas (and even more unique ones...).</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="download">
+		<h2>Get Your TICK</h2>
+		<div class="download-box-container two-item">
+			<div class="download-box">
+				<a href="https://github.com/talaviram/TICK/releases/download/v0.2.0/TICK_Setup_v0.2.0.exe" download="https://github.com/talaviram/TICK/releases/download/v0.2.0/TICK_Setup_v0.2.0.exe" target="_blank">
+					<span class="os os-windows" aria-hidden="true"></span>
+					<span class="os-name">Windows</span>
+				</a>
+				<span class="os-description">
+					<ul>
+						<li>AAX, VST3, VST2 and Standalone.</li>
+						<li>Windows 7 or newer.</li>
+						<li>Intel/AMD 64bit.</li>
+					</ul>
+				</span>
+			</div>
+			<div class="download-box">
+				<a href="https://github.com/talaviram/TICK/releases/download/v0.2.0/TICK_Setup_v0.2.0.pkg" download="https://github.com/talaviram/TICK/releases/download/v0.2.0/TICK_Setup_v0.2.0.pkg" target="_blank">
+					<span class="os os-mac" aria-hidden="true"></span>
+					<span class="os-name">macOS</span>
+				</a>
+				<span class="os-description">
+					<ul>
+						<li>AAX, Audio Unit, VST3, VST2 and Standalone.</li>
+						<li>macOS 10.9 or newer.</li>
+						<li>Intel 64bit or Apple Silicon (arm64)</li>
+					</ul>
+				</span>
+			</div>
+			<div class="download-box">
+				<span>
+					<span class="os os-linux" aria-hidden="true"></span>
+					<span class="os-name">Linux</span>
+				</span>
+				<span class="os-description">
+					<ul>
+						<li>VST3 &amp; Standalone.</li>
+						<li>x86_64, AArch64 and ARMv7</li>
+						<li><strong>Coming Soon</strong></li>
+					</ul>
+				</span>
+			</div>
+			<div class="download-box">
+				<a href="https://testflight.apple.com/join/3j4lrJUU" target="_blank">
+					<span class="os os-ios" aria-hidden="true"></span>
+					<span class="os-name">iOS/iPadOS</span>
+				</a>
+				<span class="os-description">
+					<ul>
+						<li>BETA</li>
+						<li>Standalone.</li>
+						<li>iOS 9.3 or newer.</li>
+						<li>Currently under TestFlight</li>
+					</ul>
+				</span>
+			</div>
+			<div class="download-box">
+				<a href="https://play.google.com/apps/testing/com.talaviram.tick">
+					<span class="os os-android" aria-hidden="true"></span>
+					<span class="os-name">Android</span>
+				</a>
+				<span class="os-description">
+					<ul>
+						<li>BETA</li>
+						<li>Standalone.</li>
+						<li>Android 4.1 or newer.</li>
+						<li>Currently under Google Play</li>
+					</ul>
+				</span>
+			</div>
+		</div>
+	</section>
+	<section id="contact">
+		<div class="container">
+			<h2>Contact</h2>
+			<p class="lead">Report issues, contribute and more</p>
+			<div class="col-md-12 text-center">
+				<a href="https://github.com/talaviram/TICK/issues" target="_blank" type="button" class="btn btn-warning">Report
+					Issues</a>
+				<a href="https://www.talaviram.com/contact" type="button" class="btn btn-warning">Contact</a>
+			</div>
+			<div class="col-md-12 text-center">
+				<a href="https://github.com/talaviram/TICK" target="_blank">Checkout The Source Code</a>
+			</div>
+	</section>
+	<footer>
+		Tal Aviram &copy; 2019-2021, Web-template by <a
+			href="https://github.com/Ashwin7mak/Hipster-Startup-Website" target="_blank">Ashwin Kumar</a>
+	</footer>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
