@@ -224,10 +224,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
     if (lastKnownPosition_.isPlaying)
     {
         if (! ticks.getLock().try_lock())
-        {
-            tickState.clear();
             return;
-        }
 
         // calculate where tick starts in samples...
         const auto pos = lastKnownPosition_.ppqPosition;
