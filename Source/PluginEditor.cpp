@@ -116,7 +116,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
             props->setValue ("opengl", ! useOpenGL);
             // this is redundant / do nothing on standalone.
             appProperties.getUserSettings()->saveIfNeeded();
-            juce::AlertWindow::showNativeDialogBox ("Graphic Renderer Changed", "Please re-open UI to apply new renderer.", false);
+            juce::NativeMessageBox::showMessageBoxAsync (MessageBoxIconType::InfoIcon, "Graphic Renderer Changed", "Please re-open UI to apply new renderer.");
         });
 #endif
         settings.addSeparator();
