@@ -504,7 +504,8 @@ public:
         presetHash = stateToLoad.getProperty (IDs::uuid);
         presetName.setValue (stateToLoad.getProperty (IDs::presetName), nullptr);
         numOfTicks.setValue (stateToLoad.getProperty (IDs::numOfTicks), nullptr);
-        showWaveform.setValue (stateToLoad.getProperty (IDs::showWaveform, false), nullptr);
+        if (stateToLoad.hasProperty (IDs::showWaveform))
+            showWaveform.setValue (stateToLoad.getProperty (IDs::showWaveform, false), nullptr);
         cutoffFilter.setValue (stateToLoad.getProperty (IDs::filterCutoff, cutoffFilter.getDefault()), nullptr);
         view.windowSize.setValue (stateToLoad.getProperty (IDs::viewSize));
 
