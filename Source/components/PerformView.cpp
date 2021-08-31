@@ -162,8 +162,9 @@ void PerformView::setEditMode (const bool newMode)
     }
     editView->updateSelection ({});
     editView->setVisible (isEditMode);
-    juce::Rectangle<int> hidden (0, getBottom(), getWidth(), 200);
-    juce::Rectangle<int> showing (0, getBottom() - 200, getWidth(), 200);
+    auto height = std::min<int> (200, getHeight());
+    juce::Rectangle<int> hidden (0, getBottom(), getWidth(), height);
+    juce::Rectangle<int> showing (0, getBottom() - height, getWidth(), height);
     editView->setBounds (isEditMode ? hidden : showing);
     resized();
     juce::Desktop::getInstance().getAnimator().animateComponent (editView.get(), isEditMode ? showing : hidden, 1.0f, 150, true, 1.0, 1.0);
