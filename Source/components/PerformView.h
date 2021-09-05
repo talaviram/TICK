@@ -38,7 +38,7 @@ public:
     void setTapVisibility (bool isVisible) { topBar.tapMode.setVisible (isVisible); }
 
 private:
-    void selectionChanged (int index);
+    void selectionChanged (int index, bool propogateToEditView = true);
 
     struct DragStep
     {

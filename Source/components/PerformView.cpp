@@ -32,6 +32,11 @@ PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, S
     topBar.denum.setText (juce::String (state.transport.denumerator.get()), dontSendNotification);
     addAndMakeVisible (topBar);
 
+    editView->onBeatUpdate = [this] (std::vector<int>& selection) {
+        for (auto&& i : selection)
+            selectionChanged (i, false);
+    };
+
     beatsView.addMouseListener (this, false);
     topBar.tapMode.addMouseListener (this, true);
     // draggable labels...
@@ -68,16 +73,20 @@ PerformView::~PerformView()
     juce::Desktop::getInstance().getAnimator().removeChangeListener (this);
 }
 
-void PerformView::selectionChanged (const int index)
+void PerformView::selectionChanged (const int index, const bool propogateToEditView)
 {
+    // TODO: remove unused multi-selection API left over? clean up code!
     // this actually supports multi-selection but unused for this UX
-    std::vector<int> newSelection { index };
+    if (propogateToEditView)
+    {
+        std::vector<int> newSelection { index };
+        editView->updateSelection (newSelection);
+    }
     for (auto idx = 0; idx < beats.size(); idx++)
     {
         jassert (idx < 64);
         beats[idx]->isSelected = idx == index;
     }
-    editView->updateSelection (newSelection);
 }
 
 void PerformView::resized()
@@ -160,7 +169,7 @@ void PerformView::setEditMode (const bool newMode)
 
         beat->setEnabled (isEditMode);
     }
-    editView->updateSelection ({});
+    editView->updateSelection ({ 0 });
     editView->setVisible (isEditMode);
     auto height = std::min<int> (200, getHeight());
     juce::Rectangle<int> hidden (0, getBottom(), getWidth(), height);

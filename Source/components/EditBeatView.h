@@ -29,7 +29,8 @@ public:
 
     void updateSelection (const std::vector<int>& selection);
 
-    std::function<void (std::vector<int>& updateSelection, BeatAssignment newAssignment)> onBeatUpdate {};
+    // allows editor to 'listen' for beat updates.
+    std::function<void (std::vector<int>& selection)> onBeatUpdate {};
 
 private:
     void changeListenerCallback (juce::ChangeBroadcaster*) override;
@@ -61,6 +62,8 @@ private:
 
     juce::Label hintText;
     juce::FileChooser fileChooser;
+
+    juce::DrawableButton beatScrollButtons[2];
 
     juce::DrawableButton sampleIcon, sampleSelection;
     juce::Label beatLabel;

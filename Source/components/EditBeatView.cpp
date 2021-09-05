@@ -15,7 +15,7 @@
 #include "utils/UtilityFunctions.h"
 
 EditBeatView::EditBeatView (TickSettings& stateRef, TicksHolder& ticksRef)
-    : model (*this), fileChooser ("Import Audio", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*.wav;*.wave;*.aif;*.aiff;*.mp3;*.flac", TickUtils::usePlatformDialog()), sampleIcon ("sampleIcon", juce::DrawableButton::ImageFitted), sampleSelection ("selectSample", juce::DrawableButton::ImageFitted), state (stateRef), ticks (ticksRef)
+    : model (*this), fileChooser ("Import Audio", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*.wav;*.wave;*.aif;*.aiff;*.mp3;*.flac", TickUtils::usePlatformDialog()), beatScrollButtons { { "back", juce::DrawableButton::ImageFitted }, { "fwd", juce::DrawableButton::ImageFitted } }, sampleIcon ("sampleIcon", juce::DrawableButton::ImageFitted), sampleSelection ("selectSample", juce::DrawableButton::ImageFitted), state (stateRef), ticks (ticksRef)
 
 {
     currentColour = juce::Colours::pink;
@@ -36,6 +36,31 @@ EditBeatView::EditBeatView (TickSettings& stateRef, TicksHolder& ticksRef)
     addChildComponent (beatLabel);
     addChildComponent (beatVolume);
     addChildComponent (hintText);
+
+    const auto backArrow = jux::getArrowPath ({ 20, 20, 40, 40 }, 3, false, Justification::centred);
+    const auto forwardArrow = jux::getArrowPath ({ 20, 20, 40, 40 }, 1, false, Justification::centred);
+    juce::DrawablePath d;
+    d.setStrokeFill (FillType (Colours::white));
+    d.setStrokeType (PathStrokeType (1.0f, PathStrokeType::JointStyle::curved, PathStrokeType::EndCapStyle::rounded));
+    d.setPath (backArrow);
+    beatScrollButtons[0].setImages (&d);
+    d.setPath (forwardArrow);
+    beatScrollButtons[1].setImages (&d);
+
+    beatScrollButtons[0].onClick = [this] {
+        jassert (selection.size() > 0);
+        const auto availableBeats = state.transport.numerator.get();
+        const auto idx = selection.front() - 1;
+        updateSelection ({ (idx >= 0 ? idx : (int) (availableBeats - 1)) % availableBeats });
+    };
+    beatScrollButtons[1].onClick = [this] {
+        jassert (selection.size() > 0);
+        updateSelection ({ (selection.front() + 1) % state.transport.numerator.get() });
+    };
+
+    addChildComponent (beatScrollButtons[0]);
+    addChildComponent (beatScrollButtons[1]);
+
     updateSelection ({});
 
     ticks.addChangeListener (this);
@@ -49,10 +74,12 @@ EditBeatView::~EditBeatView()
 void EditBeatView::resized()
 {
     auto area = getLocalBounds();
-    area.removeFromTop (20);
+    //    area.removeFromTop (10);
     hintText.setBounds (getLocalBounds().reduced (10));
     {
         auto topSection = area.removeFromTop (40);
+        beatScrollButtons[0].setBounds (topSection.removeFromLeft (40).reduced (10));
+        beatScrollButtons[1].setBounds (topSection.removeFromRight (40).reduced (10));
         beatLabel.setBounds (topSection.removeFromLeft (80));
         beatVolume.setBounds (topSection.withTrimmedRight (30));
     }
@@ -69,6 +96,15 @@ void EditBeatView::visibilityChanged()
 
 void EditBeatView::paint (juce::Graphics& g)
 {
+    if (auto* p = getParentComponent())
+    {
+        // when horizontal, top bar might overlap the top area which is too transparent.
+        if (p->getHeight() <= getHeight())
+        {
+            g.setColour (Colours::black);
+            g.fillRect (0, 0, getWidth(), 40);
+        }
+    }
     using namespace juce;
     Path background;
     background.addRoundedRectangle (0, 0, getWidth(), getHeight(), 6.0f, 6.0f, true, true, false, false);
@@ -100,6 +136,9 @@ void EditBeatView::updateSelection (const std::vector<int>& newSelection)
     state.selectedEdit = assignment.tickIdx.get();
     currentColour = TickLookAndFeel::sampleColourPallete[assignment.tickIdx.get()];
 
+    beatScrollButtons[0].setVisible (true);
+    beatScrollButtons[1].setVisible (true);
+
     beatVolume.setColour (juce::Slider::ColourIds::trackColourId, currentColour.darker());
     beatVolume.setColour (juce::Slider::ColourIds::thumbColourId, currentColour);
 
@@ -125,6 +164,8 @@ void EditBeatView::updateSelection (const std::vector<int>& newSelection)
         beatLabel.setVisible (false);
         beatVolume.setVisible (false);
     }
+    if (onBeatUpdate)
+        onBeatUpdate (selection);
 }
 
 /// SamplesModel
