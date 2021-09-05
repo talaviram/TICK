@@ -31,7 +31,7 @@ public:
     void resized() override
     {
         auto area = getLocalBounds();
-        background->setTransformToFit (area.toFloat(), RectanglePlacement());
+        background->setTransformToFit (area.toFloat(), RectanglePlacement (RectanglePlacement::stretchToFit));
         area.removeFromTop (150);
         area.removeFromBottom (80);
         about.setBounds (area.reduced (10));
