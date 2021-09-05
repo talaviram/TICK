@@ -192,7 +192,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 #if JUCE_WINDOWS || JUCE_MAC || JUCE_LINUX
     const auto size = VariantConverter<ViewDiemensions>::fromVar (state.view.windowSize.getValue());
     setSize (size.x, size.y);
-    setResizeLimits (280, 500, 2048, 4096);
+    setResizeLimits (280, 260, 2048, 4096);
 #else
     setSize (375, 667);
 #endif
@@ -247,9 +247,19 @@ void TickAudioProcessorEditor::resized()
     processor.getState().view.windowSize.setValue (String (getWidth()) + "," + String (getHeight()));
 #endif
     auto safeArea = Desktop::getInstance().getDisplays().getPrimaryDisplay()->safeAreaInsets;
+    constexpr auto notchSafeSides = 32; // we are always being safe...
+    const auto isRotatedAndNeeded =
+#if JUCE_IOS || JUCE_ANDROID
+        (Desktop::getInstance().getCurrentOrientation() & (Desktop::DisplayOrientation::rotatedClockwise | Desktop::DisplayOrientation::rotatedAntiClockwise)) && ! SystemStats::getDeviceDescription().contains ("iPad")
+#else
+        false
+#endif
+        ;
     const auto safeTop = safeArea.getTop();
     const auto safeBottom = safeArea.getBottom() + safeTop > 20 ? 40 : 0;
-    const auto availableArea = getLocalBounds().withTrimmedBottom (safeBottom).withTrimmedTop (safeTop);
+    const auto safeLeft = isRotatedAndNeeded ? notchSafeSides : 0;
+    const auto safeRight = safeLeft;
+    const auto availableArea = getLocalBounds().withTrimmedBottom (safeBottom).withTrimmedTop (safeTop).withTrimmedLeft (safeLeft).withTrimmedRight (safeRight);
     auto topArea = availableArea;
     headerArea.setBounds (topArea.removeFromTop (TickLookAndFeel::toolbarHeight));
     background.separatorLineY = headerArea.getBottom() + 1;
