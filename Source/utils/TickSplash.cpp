@@ -27,7 +27,10 @@ void TickSplash::paint (Graphics& g)
     g.setColour (Colours::white);
     area.removeFromBottom (80);
     g.drawFittedText (JucePlugin_Manufacturer ", Copyright 2019-2021", area.removeFromBottom (40), Justification::centredBottom, 1);
-    logo->drawWithin (g, area.reduced (getWidth() * 0.2).toFloat(), juce::RectanglePlacement(), 1.0f);
+    auto logoArea = area.reduced (getWidth() * 0.2).toFloat();
+    if (logoArea.getHeight() == 0)
+        logoArea = area.toFloat();
+    logo->drawWithin (g, logoArea, juce::RectanglePlacement(), 1.0f);
 
     if (splashDisplayTime == 0)
         splashDisplayTime = Time::getMillisecondCounter();
