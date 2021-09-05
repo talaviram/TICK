@@ -89,14 +89,24 @@ void PerformView::selectionChanged (const int index, const bool propogateToEditV
     }
 }
 
+int PerformView::getEditViewHeight()
+{
+    return std::min<int> (200, getHeight());
+}
+
 void PerformView::resized()
 {
-    constexpr auto editViewHeight = 200;
+    const auto editViewHeight = getEditViewHeight();
     auto area = getLocalBounds();
 
     topBar.setBounds (area.removeFromTop (TickLookAndFeel::barHeight));
-    if (isEditMode && editView->isVisible() && editView->getBottom() == getBottom() + editViewHeight)
+    if (isEditMode && editView->isVisible())
+    {
+        juce::Rectangle<int> showing (0, getBottom() - editViewHeight, getWidth(), editViewHeight);
+        if (! isAnimatingEditView.load())
+            editView->setBounds (showing);
         area.removeFromBottom (editViewHeight);
+    }
     viewport.setBounds (area);
 
     beatsInRow = juce::jlimit (1, 8, juce::jmin (state.transport.numerator.get(), state.transport.denumerator.get())); //std::floor<int> (area.getWidth() / (beatSize + kMargin));
@@ -171,10 +181,11 @@ void PerformView::setEditMode (const bool newMode)
     }
     editView->updateSelection ({ 0 });
     editView->setVisible (isEditMode);
-    auto height = std::min<int> (200, getHeight());
+    const auto height = getEditViewHeight();
     juce::Rectangle<int> hidden (0, getBottom(), getWidth(), height);
     juce::Rectangle<int> showing (0, getBottom() - height, getWidth(), height);
     editView->setBounds (isEditMode ? hidden : showing);
+    isAnimatingEditView = true;
     resized();
     juce::Desktop::getInstance().getAnimator().animateComponent (editView.get(), isEditMode ? showing : hidden, 1.0f, 150, true, 1.0, 1.0);
 }
@@ -367,6 +378,7 @@ void PerformView::changeListenerCallback (juce::ChangeBroadcaster*)
 {
     if (! juce::Desktop::getInstance().getAnimator().isAnimating (editView.get()) && getParentComponent())
     {
+        isAnimatingEditView = false;
         editView->setVisible (isEditMode);
         resized();
     }

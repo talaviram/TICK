@@ -39,6 +39,7 @@ public:
 
 private:
     void selectionChanged (int index, bool propogateToEditView = true);
+    int getEditViewHeight();
 
     struct DragStep
     {
@@ -91,6 +92,7 @@ private:
     juce::Viewport viewport;
     juce::Component beatsView;
     std::unique_ptr<EditBeatView> editView;
+    std::atomic<bool> isAnimatingEditView { false };
     TapModel tapModel;
 
     std::vector<std::unique_ptr<BeatView>> beats;
