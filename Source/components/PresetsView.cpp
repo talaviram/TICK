@@ -91,7 +91,13 @@ static void deleteFileCallback (int modalResult, PresetsView* view, juce::Compon
 }
 
 PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
-    : state (stateRef), ticks (ticksRef), timesliceThread ("PresetScannerThread"), presetModel (*this), fileChooser ("Import Preset", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*" + juce::String (TickUtils::kPresetExtension), TickUtils::usePlatformDialog())
+    : state (stateRef), ticks (ticksRef), timesliceThread ("PresetScannerThread"), presetModel (*this), fileChooser ("Import Preset", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*" + juce::String (TickUtils::kPresetExtension), TickUtils::usePlatformDialog()
+#if JUCE_IOS
+                                                                                                                                                                                                                                                                 ,
+                                                                                                                     false,
+                                                                                                                     getTopLevelComponent() // AUv3 Sandbox requirement
+#endif
+                                                                                                        )
 {
     using namespace juce;
 

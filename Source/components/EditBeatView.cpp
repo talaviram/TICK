@@ -15,7 +15,18 @@
 #include "utils/UtilityFunctions.h"
 
 EditBeatView::EditBeatView (TickSettings& stateRef, TicksHolder& ticksRef)
-    : model (*this), fileChooser ("Import Audio", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*.wav;*.wave;*.aif;*.aiff;*.mp3;*.flac", TickUtils::usePlatformDialog()), beatScrollButtons { { "back", juce::DrawableButton::ImageFitted }, { "fwd", juce::DrawableButton::ImageFitted } }, sampleIcon ("sampleIcon", juce::DrawableButton::ImageFitted), sampleSelection ("selectSample", juce::DrawableButton::ImageFitted), state (stateRef), ticks (ticksRef)
+    : model (*this), fileChooser ("Import Audio", juce::File::getSpecialLocation (juce::File::userDocumentsDirectory), "*.wav;*.wave;*.aif;*.aiff;*.mp3;*.flac", TickUtils::usePlatformDialog()
+#if JUCE_IOS
+                                                                                                                                                                     ,
+                                  false,
+                                  getTopLevelComponent() // AUv3 Sandbox requirement
+#endif
+                                  ),
+      beatScrollButtons { { "back", juce::DrawableButton::ImageFitted }, { "fwd", juce::DrawableButton::ImageFitted } },
+      sampleIcon ("sampleIcon", juce::DrawableButton::ImageFitted),
+      sampleSelection ("selectSample", juce::DrawableButton::ImageFitted),
+      state (stateRef),
+      ticks (ticksRef)
 
 {
     currentColour = juce::Colours::pink;
