@@ -200,6 +200,27 @@ PerformView::BeatView::BeatView (PerformView& parent, const int idx)
     setSliderStyle (SliderStyle::RotaryHorizontalVerticalDrag);
 }
 
+bool PerformView::BeatView::isInterestedInFileDrag (const juce::StringArray& files)
+{
+    return true;
+}
+void PerformView::BeatView::filesDropped (const juce::StringArray&, int x, int y)
+{
+    hasDraggedItem = false;
+    repaint();
+}
+
+void PerformView::BeatView::fileDragEnter (const juce::StringArray&, int x, int y)
+{
+    hasDraggedItem = true;
+    repaint();
+}
+void PerformView::BeatView::fileDragExit (const juce::StringArray&)
+{
+    hasDraggedItem = false;
+    repaint();
+}
+
 void PerformView::BeatView::paint (juce::Graphics& g)
 {
     jassert (index > -1);
@@ -214,12 +235,12 @@ void PerformView::BeatView::paint (juce::Graphics& g)
     g.setColour (juce::Colours::black.withAlpha (0.3f));
     g.fillRoundedRectangle (bounds, cornerSize);
 
-    if (isOn)
+    if (isOn | hasDraggedItem)
     {
         g.setColour (gainedColour);
         g.fillRoundedRectangle (bounds, cornerSize);
     }
-    if (isCurrent)
+    if (isCurrent | hasDraggedItem)
     {
         g.setColour (gainedColour);
         g.fillRoundedRectangle (0, bounds.getY(), getWidth() * relativePos, bounds.getHeight(), cornerSize);
@@ -235,6 +256,12 @@ void PerformView::BeatView::paint (juce::Graphics& g)
     }
     if ((owner.isEditMode || owner.state.showWaveform.get()) && tickIndex < owner.ticks.getNumOfTicks())
         owner.samplesPaint.drawTick (g, getLocalBounds().reduced (10), tickIndex, assignment.gain.get(), juce::Colours::white.withAlpha (isCurrent ? 1.0f : isSelected ? 0.7f : 0.3f));
+
+    if (hasDraggedItem)
+    {
+        g.setColour (juce::Colours::white);
+        g.drawFittedText ("DROP HERE", getLocalBounds(), juce::Justification::centred, 1);
+    }
 }
 
 void PerformView::mouseDown (const juce::MouseEvent& e)

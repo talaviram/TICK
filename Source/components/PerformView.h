@@ -70,7 +70,7 @@ private:
         juce::Label tapMode;
     } topBar;
 
-    struct BeatView : juce::Slider
+    struct BeatView : juce::Slider, juce::FileDragAndDropTarget
     {
         BeatView (PerformView& parent, int index);
         int index = -1;
@@ -78,11 +78,17 @@ private:
         bool isOn = false;
         double relativePos = 0.0;
         bool isSelected = false;
+        bool hasDraggedItem = false;
 
         void mouseDown (const juce::MouseEvent&) override;
         void paint (juce::Graphics&) override;
 
         PerformView& owner;
+
+        bool isInterestedInFileDrag (const juce::StringArray& files) override;
+        void filesDropped (const juce::StringArray& files, int x, int y) override;
+        void fileDragEnter (const juce::StringArray& files, int x, int y) override;
+        void fileDragExit (const juce::StringArray& files) override;
     };
 
     TickSettings& state;
