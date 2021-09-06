@@ -49,7 +49,6 @@ Upcoming
 - Refactor to background thread for some nasty file operations.
 - Tomper (nice idea to be explained in the future)
 - Ableton Link.
-- Desktop drag-and-drop support, drag-and-drop to reorganize samples.
 - Improve Full Screen / Tablet UI, use available real-estate properly.
 
 Builds
