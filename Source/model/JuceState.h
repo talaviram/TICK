@@ -174,10 +174,6 @@ private:
             juce::AudioSampleBuffer sampleToLoad (reader->numChannels, numSamples);
             reader->read (&sampleToLoad, 0, numSamples, 0, true, true);
             auto tick = new Tick (tickName.toRawUTF8(), sampleToLoad.getArrayOfReadPointers(), numSamples, reader->numChannels, reader->sampleRate);
-            //            if (getSampleRate() > 0)
-            //            {
-            //                tick->setSampleRate (getSampleRate());
-            //            }
             return tick;
         }
         return nullptr;
