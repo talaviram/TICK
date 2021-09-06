@@ -45,8 +45,8 @@ namespace IDs
 #undef DECLARE_ID
 } // namespace IDs
 
-constexpr int defaultWidth = 280;
-constexpr int defaultHeight = 500;
+constexpr int defaultWidth = 510;
+constexpr int defaultHeight = 300;
 typedef juce::Point<int> ViewDiemensions;
 
 template <>
