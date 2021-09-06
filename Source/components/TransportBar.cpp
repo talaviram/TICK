@@ -16,9 +16,10 @@ TransportBar::TransportBar()
     : transportButton ("transportButton", juce::DrawableButton::ImageFitted), syncIndicator ("syncIndicator", juce::DrawableButton::ImageAboveTextLabel)
 {
     auto syncOn = juce::Drawable::createFromImageData (BinaryData::lock_clock24px_svg, BinaryData::lock_clock24px_svgSize);
-    syncOn->replaceColour (Colours::black, Colours::white);
+    syncOn->replaceColour (Colours::black, Colours::grey);
     syncIndicator.setTooltip ("Transport Controlled from Host");
     syncIndicator.setButtonText ("EXT SYNC");
+    syncIndicator.setColour (DrawableButton::textColourId, juce::Colours::grey);
     syncIndicator.setImages (syncOn.get(), nullptr, nullptr, nullptr);
     syncIndicator.setInterceptsMouseClicks (false, false);
     addChildComponent (syncIndicator);

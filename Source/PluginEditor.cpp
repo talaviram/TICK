@@ -147,7 +147,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     editModeButton.toFront (false);
 
     bottomBar.transportButton.getToggleStateValue().referTo (state.transport.isPlaying.getPropertyAsValue());
-    addAndMakeVisible (bottomBar);
+    // bottomBar add on resize
 
     performView.reset (new PerformView (processor.getState(), processor.getTicks(), *samplesPaint));
     mainArea.addAndMakeVisible (*performView);
@@ -243,6 +243,11 @@ void TickAudioProcessorEditor::parentHierarchyChanged()
 
 void TickAudioProcessorEditor::resized()
 {
+    const bool transportOnTopBar = getWidth() >= 380 && getHeight() <= 260;
+    // brute force removal before re-adding
+    topBar.removeChildComponent (&bottomBar);
+    removeChildComponent (&bottomBar);
+
 #if ! JUCE_IOS || ! JUCE_ANDROID
     processor.getState().view.windowSize.setValue (String (getWidth()) + "," + String (getHeight()));
 #endif
@@ -263,7 +268,12 @@ void TickAudioProcessorEditor::resized()
     auto topArea = availableArea;
     headerArea.setBounds (topArea.removeFromTop (TickLookAndFeel::toolbarHeight));
     background.separatorLineY = headerArea.getBottom() + 1;
-    bottomBar.setBounds (topArea.removeFromBottom (TickLookAndFeel::toolbarHeight));
+
+    if (! transportOnTopBar)
+    {
+        addAndMakeVisible (bottomBar);
+        bottomBar.setBounds (topArea.removeFromBottom (TickLookAndFeel::toolbarHeight));
+    }
     editModeButton.setBounds (headerArea.getBounds().removeFromRight (60));
     samplesButton.setBounds (headerArea.getBounds().removeFromLeft (headerArea.getHeight()).reduced (TickLookAndFeel::reducePixels));
 
@@ -272,8 +282,13 @@ void TickAudioProcessorEditor::resized()
 
     background.setBounds (getLocalBounds());
     auto performViewArea = mainArea.getLocalBounds();
+    topBar.extendedTopBar = transportOnTopBar;
     topBar.setBounds (headerArea.getBounds());
-
+    if (transportOnTopBar)
+    {
+        topBar.addAndMakeVisible (bottomBar);
+        bottomBar.setBounds (topBar.extendedBarArea);
+    }
     performView->setBounds (performViewArea);
     presetsView->setBounds (mainArea.getLocalBounds().translated (0, (bool) processor.getState().view.showPresetsView.getValue() == true ? 0 : getHeight()));
     aboutView->setBounds (getLocalBounds());
@@ -327,7 +342,7 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
     }
     else if (value.refersToSameSourceAs (state.view.showPresetsView))
     {
-        const auto safeBounds = topBar.getBounds().withBottom (getLocalBounds().getBottom() - bottomBar.getHeight());
+        const auto safeBounds = topBar.getBounds().withBottom (getLocalBounds().getBottom() - (topBar.extendedTopBar ? 0 : bottomBar.getHeight()));
         presetsView->setBounds (value.getValue() ? getLocalBounds().translated (0, getHeight()) : safeBounds);
         const auto to = value.getValue() ? safeBounds : getLocalBounds().translated (0, getHeight());
         juce::Desktop::getInstance().getAnimator().animateComponent (presetsView.get(), to, 1.0f, 200, false, 1.0, 1.0);

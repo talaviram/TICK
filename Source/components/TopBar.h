@@ -40,4 +40,10 @@ public:
     ClickableLabel centerLabel;
     juce::DrawableButton leftButton;
     juce::DrawableButton rightButton;
+
+    // when set, the top-bar also being used for transport instead of bottom area.
+    bool extendedTopBar { false };
+    juce::Rectangle<int> extendedBarArea {};
+
+private:
 };
