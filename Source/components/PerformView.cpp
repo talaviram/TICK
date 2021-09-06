@@ -202,6 +202,17 @@ PerformView::BeatView::BeatView (PerformView& parent, const int idx)
 
 bool PerformView::BeatView::isInterestedInFileDrag (const juce::StringArray& files)
 {
+    if (files.size() != 1)
+        return false;
+
+    auto file = juce::File (files[0]);
+
+    if (file.isDirectory())
+        return false;
+
+    if (! file.hasFileExtension (".wave;wav;aif;aiff;mp3;flac"))
+        return false;
+
     return true;
 }
 void PerformView::BeatView::filesDropped (const juce::StringArray&, int x, int y)
