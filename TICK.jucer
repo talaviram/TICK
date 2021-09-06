@@ -165,6 +165,9 @@
       </GROUP>
       <GROUP id="{34DB7F8E-02FF-974C-F434-34813CFCA0B9}" name="components">
         <FILE id="IyHKNg" name="AboutView.h" compile="0" resource="0" file="Source/components/AboutView.h"/>
+        <FILE id="q9b7OG" name="TransportBar.cpp" compile="1" resource="0"
+              file="Source/components/TransportBar.cpp"/>
+        <FILE id="bCzfat" name="TransportBar.h" compile="0" resource="0" file="Source/components/TransportBar.h"/>
         <FILE id="F0ZGB7" name="DialogComponent.cpp" compile="1" resource="0"
               file="Source/components/DialogComponent.cpp"/>
         <FILE id="iBpcXa" name="DialogComponent.h" compile="0" resource="0"

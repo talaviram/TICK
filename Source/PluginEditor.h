@@ -16,6 +16,7 @@
 #include "components/LookAndFeel.h"
 #include "components/PerformView.h"
 #include "components/TopBar.h"
+#include "components/TransportBar.h"
 #include "utils/TickSplash.h"
 
 //==============================================================================
@@ -90,15 +91,7 @@ private:
     juce::LookAndFeel_V4 plainLaF;
 
     TopBar topBar;
-
-    struct BottomBar : juce::Component
-    {
-        BottomBar();
-        void resized() override;
-        juce::DrawableButton transportButton;
-        juce::DrawableButton syncIndicator;
-        juce::Label transportPosition;
-    } bottomBar;
+    TransportBar bottomBar;
 
     // views
     std::unique_ptr<PresetsView> presetsView;
