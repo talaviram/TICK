@@ -215,8 +215,14 @@ bool PerformView::BeatView::isInterestedInFileDrag (const juce::StringArray& fil
 
     return true;
 }
-void PerformView::BeatView::filesDropped (const juce::StringArray&, int x, int y)
+void PerformView::BeatView::filesDropped (const juce::StringArray& files, int x, int y)
 {
+    auto possibleTick = std::unique_ptr<Tick> (owner.ticks.importAudioFile (juce::File (files[0])));
+    if (possibleTick)
+    {
+        owner.ticks.addTick (std::move (possibleTick));
+        owner.state.beatAssignments[index].tickIdx = static_cast<int> (owner.ticks.getNumOfTicks() - 1);
+    }
     hasDraggedItem = false;
     repaint();
 }
