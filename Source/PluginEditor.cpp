@@ -243,7 +243,7 @@ void TickAudioProcessorEditor::parentHierarchyChanged()
 
 void TickAudioProcessorEditor::resized()
 {
-    const bool transportOnTopBar = getWidth() >= 380 && getHeight() <= 260;
+    const bool transportOnTopBar = processor.wrapperType == TickAudioProcessor::wrapperType_AudioUnitv3 || (getWidth() >= 375 && getHeight() <= 260);
     // brute force removal before re-adding
     topBar.removeChildComponent (&bottomBar);
     removeChildComponent (&bottomBar);
