@@ -290,6 +290,8 @@ void TickAudioProcessorEditor::resized()
         bottomBar.setBounds (topBar.extendedBarArea);
     }
     performView->setBounds (performViewArea);
+    if (samplesView->isVisible())
+        samplesView->setBounds (performView->getBounds());
     presetsView->setBounds (mainArea.getLocalBounds().translated (0, (bool) processor.getState().view.showPresetsView.getValue() == true ? 0 : getHeight()));
     aboutView->setBounds (getLocalBounds());
 }
@@ -335,7 +337,7 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
         samplesView->updateSelection (state.selectedEdit);
         if (value.getValue())
             samplesView->toFront (false);
-        const auto baseBounds = performView->getBounds().reduced (4, 0).withTrimmedTop (mainArea.getHeight() - 180);
+        const auto baseBounds = performView->getBounds();
         samplesView->setBounds (value.getValue() ? baseBounds.translated (0, getHeight()) : baseBounds);
         const auto to = value.getValue() ? baseBounds : baseBounds.translated (0, mainArea.getHeight());
         juce::Desktop::getInstance().getAnimator().animateComponent (samplesView.get(), to, 1.0f, 200, false, 1.0, 1.0);
