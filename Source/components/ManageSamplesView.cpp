@@ -26,28 +26,6 @@ ManageSamplesView::ManageSamplesView (SamplesPaint& samplesPaint, TicksHolder& t
     samplesPaint.addChangeListener (this);
 }
 
-void ManageSamplesView::mouseDown (const juce::MouseEvent&)
-{
-    originalY = getY();
-    heightNorm.start = 0;
-    heightNorm.end = getHeight();
-}
-void ManageSamplesView::mouseUp (const juce::MouseEvent&)
-{
-    closeButton.triggerClick();
-}
-void ManageSamplesView::mouseDrag (const juce::MouseEvent& e)
-{
-    constexpr auto safeArea = 30;
-    constexpr auto pixelsForFullDragExtent = 250.0f;
-    ;
-    const auto dragRatio = e.getDistanceFromDragStartY() / pixelsForFullDragExtent;
-    const auto newY = originalY + roundToInt (pow (getHeight(), dragRatio));
-    if (newY < originalY - safeArea || newY == getHeight())
-        return;
-    setBounds (getBounds().withY (newY));
-}
-
 void ManageSamplesView::updateSelection (const int index)
 {
     lastSelection = index;

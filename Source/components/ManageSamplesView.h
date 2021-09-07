@@ -28,10 +28,6 @@ public:
     void resized() override;
     void paint (juce::Graphics& g) override;
 
-    void mouseDown (const juce::MouseEvent&) override;
-    void mouseUp (const juce::MouseEvent&) override;
-    void mouseDrag (const juce::MouseEvent&) override;
-
     struct CloseButton : juce::Button
     {
         CloseButton();
