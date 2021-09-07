@@ -275,8 +275,12 @@ void EditBeatView::SamplesModel::SampleOption::mouseDown (const juce::MouseEvent
                 }
                 break;
                 case 3:
+                {
+                    auto& assignment = owner.state.beatAssignments[owner.selection.front()];
+                    assignment.tickIdx.setValue (std::max (0, assignment.tickIdx.get() - 1), nullptr);
                     owner.ticks.removeTick (row);
                     break;
+                }
                 case 4:
                 {
                     const auto currentSelection = owner.selection[0];
