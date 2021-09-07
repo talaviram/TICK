@@ -61,6 +61,7 @@ void ManageSamplesView::paint (juce::Graphics& g)
     p.addRoundedRectangle (0, 0, getWidth(), getHeight(), 5.0f, 5.0f, true, true, false, false);
     g.setColour (juce::Colours::black);
     g.fillPath (p);
+    samplesPaint.drawTick (g, getLocalBounds().reduced (10), lastSelection, 1.0, TickLookAndFeel::sampleColourPallete[lastSelection]);
 }
 
 void ManageSamplesView::changeListenerCallback (juce::ChangeBroadcaster*)
