@@ -89,8 +89,8 @@ void EditBeatView::resized()
     hintText.setBounds (getLocalBounds().reduced (10));
     {
         auto topSection = area.removeFromTop (40);
-        beatScrollButtons[0].setBounds (topSection.removeFromLeft (40).reduced (10));
-        beatScrollButtons[1].setBounds (topSection.removeFromRight (40).reduced (10));
+        beatScrollButtons[0].setBounds (topSection.removeFromLeft (40).reduced (0, 10));
+        beatScrollButtons[1].setBounds (topSection.removeFromRight (40).reduced (0, 10));
         beatLabel.setBounds (topSection.removeFromLeft (80));
         beatVolume.setBounds (topSection.withTrimmedRight (30));
     }
