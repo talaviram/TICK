@@ -276,7 +276,8 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
             // LPF is per beat, less responsive but more optimized
             lpfFilter.setCoefficients (IIRCoefficients::makeLowPass (getSampleRate(), filterCutoff->load()));
             lpfFilter.processSamples (tickState.sample.getWritePointer (0), tickState.sample.getNumSamples());
-            TickUtils::fadeOut (tickState.sample);
+            if (tickState.currentSample >= 0)
+                TickUtils::fadeOut (tickState.sample);
             // hard-clip if needed
             TickUtils::processClip (tickState.sample);
             tickState.beatGain = beatAssign.gain.get();
