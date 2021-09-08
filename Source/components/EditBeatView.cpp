@@ -249,7 +249,7 @@ void EditBeatView::SamplesModel::SampleOption::mouseDown (const juce::MouseEvent
         menu.addItem (3, "Delete Sample...");
         menu.addSeparator();
         menu.addItem (4, "Set sample to this beat and onward...");
-        auto options = juce::PopupMenu::Options().withTargetScreenArea (getScreenBounds().removeFromRight (getHeight()));
+        auto options = juce::PopupMenu::Options().withParentComponent (owner.getParentComponent()).withTargetScreenArea (getScreenBounds().removeFromRight (getHeight()));
         menu.showMenuAsync (options, [this] (int value) {
             switch (value)
             {
