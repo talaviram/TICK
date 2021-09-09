@@ -41,13 +41,8 @@ void ManageSamplesView::invalidateSampleCells()
 
 void ManageSamplesView::resized()
 {
-#if JUCE_IOS || JUCE_ANDROID
-    constexpr auto topZoneHeight = 50;
-    constexpr auto reducedArea = 14;
-#else
     constexpr auto topZoneHeight = 30;
     constexpr auto reducedArea = 4;
-#endif
     constexpr auto editViewHeight = 150;
     closeButton.setBounds (getLocalBounds().removeFromTop (topZoneHeight).removeFromRight (topZoneHeight).reduced (reducedArea));
     auto area = getLocalBounds().reduced (8, 0);

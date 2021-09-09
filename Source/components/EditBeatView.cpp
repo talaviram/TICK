@@ -85,7 +85,6 @@ EditBeatView::~EditBeatView()
 void EditBeatView::resized()
 {
     auto area = getLocalBounds();
-    //    area.removeFromTop (10);
     hintText.setBounds (getLocalBounds().reduced (10));
     {
         auto topSection = area.removeFromTop (40);
