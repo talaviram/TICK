@@ -33,6 +33,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     addAndMakeVisible (background);
     juce::LookAndFeel::setDefaultLookAndFeel (&lookAndFeel);
 
+    lookAndFeel.setColour (juce::Label::outlineWhenEditingColourId, juce::Colours::transparentBlack);
     lookAndFeel.setColour (juce::PopupMenu::highlightedTextColourId, juce::Colours::white);
     lookAndFeel.setColour (juce::PopupMenu::highlightedBackgroundColourId, TickLookAndFeel::Colours::mint.withAlpha (0.6f));
     lookAndFeel.setColour (juce::TextEditor::backgroundColourId, juce::Colours::transparentBlack);
