@@ -30,10 +30,16 @@ public:
 
     void resized() override
     {
+        const auto isHorizontal = getWidth() > getHeight();
         auto area = getLocalBounds();
         background->setTransformToFit (area.toFloat(), RectanglePlacement (RectanglePlacement::stretchToFit));
-        area.removeFromTop (150);
-        area.removeFromBottom (80);
+        if (isHorizontal)
+            area.removeFromLeft (getWidth() * 0.3);
+        else
+        {
+            area.removeFromTop (150);
+            area.removeFromBottom (80);
+        }
         about.setBounds (area.reduced (10));
     }
 
@@ -54,13 +60,18 @@ public:
 #error "Unexpected Arch!"
 #endif
                             "]\n";
-
+        const auto isHorizontal = getWidth() > getHeight();
         auto area = getLocalBounds().removeFromTop (150);
+        if (isHorizontal)
+            area = area.removeFromLeft (getWidth() * 0.3);
         logo->drawWithin (g, area.toFloat(), RectanglePlacement(), 1.0f);
         g.setFont (Font (15.0f));
         g.setColour (Colours::white);
         juce::String version = JucePlugin_VersionString " (" + juce::String (GIT_COMMIT) + ")\n";
-        g.drawFittedText (version + wrapperType + arch + (JucePlugin_Manufacturer ", Copyright 2019-2021"), getLocalBounds().removeFromBottom (80), Justification::centred, 1);
+        auto textArea = getLocalBounds();
+        if (isHorizontal)
+            textArea = textArea.removeFromLeft (getWidth() * 0.3);
+        g.drawFittedText (version + wrapperType + arch + (JucePlugin_Manufacturer ", Copyright 2019-2021"), textArea.removeFromBottom (80), Justification::centred, 1);
     }
 
 private:
