@@ -3,13 +3,13 @@
 <JUCERPROJECT id="vfIUOx" name="TICK" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" projectType="audioplug" version="0.3.0"
               bundleIdentifier="com.talaviram.Tick" includeBinaryInAppConfig="1"
-              buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
+              buildVST="1" buildVST3="1" buildAU="1" buildAUv3="1" buildRTAS="0"
               buildAAX="1" buildStandalone="1" enableIAA="0" pluginName="TICK"
               pluginDesc="T:CK" pluginManufacturer="Tal Aviram" pluginManufacturerCode="Tala"
               pluginCode="Tick" pluginChannelConfigs="" pluginIsSynth="0" pluginWantsMidiIn="0"
               pluginProducesMidiOut="0" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="TickAU" pluginRTASCategory="" aaxIdentifier="com.talaviram.Tick"
-              pluginAAXCategory="2048" pluginFormats="buildAAX,buildAU,buildStandalone,buildVST,buildVST3"
+              pluginAAXCategory="2048" pluginFormats="buildAAX,buildAU,buildAUv3,buildStandalone,buildVST,buildVST3"
               companyName="Tal Aviram" companyCopyright="Tal Aviram (c) 2019 - 2021"
               companyWebsite="https://www.talaviram.com" companyEmail="me@talaviram.com"
               pluginAUIsSandboxSafe="1" pluginVST3Category="Generator" pluginVSTCategory="kPlugCategGenerator"
@@ -290,10 +290,13 @@
                   iosDevelopmentTeamID="7P7G2A8U54" customXcodeResourceFolders="Installer/Factory"
                   customPList="&lt;plist&gt;&#10; &lt;dict&gt;&#10;&lt;key&gt;UTExportedTypeDeclarations&lt;/key&gt;&#10;&#9;&lt;array&gt;&#10;&#9;&#9;&lt;dict&gt;&#10;&#9;&#9;&#9;&lt;key&gt;UTTypeConformsTo&lt;/key&gt;&#10;&#9;&#9;&#9;&lt;array&gt;&#10;&#9;&#9;&#9;&#9;&lt;string&gt;public.data&lt;/string&gt;&#10;&#9;&#9;&#9;&lt;/array&gt;&#10;&#9;&#9;&#9;&lt;key&gt;UTTypeIdentifier&lt;/key&gt;&#10;&#9;&#9;&#9;&lt;string&gt;com.talaviram.Tick.preset&lt;/string&gt;&#10;&#9;&#9;&#9;&lt;key&gt;UTTypeTagSpecification&lt;/key&gt;&#10;&#9;&#9;&#9;&lt;dict&gt;&#10;&#9;&#9;&#9;&#9;&lt;key&gt;public.filename-extension&lt;/key&gt;&#10;&#9;&#9;&#9;&#9;&lt;string&gt;tickpreset&lt;/string&gt;&#10;&#9;&#9;&#9;&#9;&lt;key&gt;public.mime-type&lt;/key&gt;&#10;&#9;&#9;&#9;&#9;&lt;string&gt;applications/tickpreset&lt;/string&gt;&#10;&#9;&#9;&#9;&lt;/dict&gt;&#10;&#9;&#9;&lt;/dict&gt;&#10;&#9;&lt;/array&gt;&#10;&lt;/dict&gt;&#10;&lt;/plist&gt;"
                   iosAppGroups="1" iosAppGroupsId="group.talaviram.TICKPresets"
-                  prebuildCommand="python3 $SRCROOT/../../get_git_rev.py $SRCROOT/../../Source/utils/git_version.cpp">
+                  prebuildCommand="python3 $SRCROOT/../../get_git_rev.py $SRCROOT/../../Source/utils/git_version.cpp"
+                  externalLibraries="ABLLink" networkingMulticast="1">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="TICK"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="TICK"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="TICK" headerPath="../../private/LinkKit/include"
+                       libraryPath="../../private/LinkKit/lib"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="TICK" headerPath="../../private/LinkKit/include"
+                       libraryPath="../../private/LinkKit/lib"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_opengl" path="JUCE/modules"/>
