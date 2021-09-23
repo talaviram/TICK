@@ -3,7 +3,7 @@
 	url = https://github.com/erikd/libsamplerate.git
 [submodule "JUX"]
 	path = JUX
-	url = git@github.com:talaviram/JUX.git
+	url = https://github.com/talaviram/JUX.git
 [submodule "JUCE"]
 	path = JUCE
 	url = https://github.com/juce-framework/JUCE.git
