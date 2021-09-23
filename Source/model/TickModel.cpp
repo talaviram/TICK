@@ -13,6 +13,7 @@
 #include "../libsamplerate/src/samplerate.h"
 #include <cassert>
 #include <cmath>
+#include <cstring>
 
 static const auto maxSamples = 2.0 * BASE_SAMPLERATE;
 

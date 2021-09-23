@@ -22,7 +22,8 @@ EditBeatView::EditBeatView (TickSettings& stateRef, TicksHolder& ticksRef)
                                   getTopLevelComponent() // AUv3 Sandbox requirement
 #endif
                                   ),
-      beatScrollButtons { { "back", juce::DrawableButton::ImageFitted }, { "fwd", juce::DrawableButton::ImageFitted } },
+      beatScrollBack ("back", juce::DrawableButton::ImageFitted),
+      beatScrollForward ("fwd", juce::DrawableButton::ImageFitted),
       sampleIcon ("sampleIcon", juce::DrawableButton::ImageFitted),
       sampleSelection ("selectSample", juce::DrawableButton::ImageFitted),
       state (stateRef),
@@ -54,23 +55,23 @@ EditBeatView::EditBeatView (TickSettings& stateRef, TicksHolder& ticksRef)
     d.setStrokeFill (FillType (Colours::white));
     d.setStrokeType (PathStrokeType (1.0f, PathStrokeType::JointStyle::curved, PathStrokeType::EndCapStyle::rounded));
     d.setPath (backArrow);
-    beatScrollButtons[0].setImages (&d);
+    beatScrollBack.setImages (&d);
     d.setPath (forwardArrow);
-    beatScrollButtons[1].setImages (&d);
+    beatScrollForward.setImages (&d);
 
-    beatScrollButtons[0].onClick = [this] {
+    beatScrollBack.onClick = [this] {
         jassert (selection.size() > 0);
         const auto availableBeats = state.transport.numerator.get();
         const auto idx = selection.front() - 1;
         updateSelection ({ (idx >= 0 ? idx : (int) (availableBeats - 1)) % availableBeats });
     };
-    beatScrollButtons[1].onClick = [this] {
+    beatScrollForward.onClick = [this] {
         jassert (selection.size() > 0);
         updateSelection ({ (selection.front() + 1) % state.transport.numerator.get() });
     };
 
-    addChildComponent (beatScrollButtons[0]);
-    addChildComponent (beatScrollButtons[1]);
+    addChildComponent (beatScrollBack);
+    addChildComponent (beatScrollForward);
 
     updateSelection ({});
 
@@ -88,8 +89,8 @@ void EditBeatView::resized()
     hintText.setBounds (getLocalBounds().reduced (10));
     {
         auto topSection = area.removeFromTop (40);
-        beatScrollButtons[0].setBounds (topSection.removeFromLeft (40).reduced (0, 10));
-        beatScrollButtons[1].setBounds (topSection.removeFromRight (40).reduced (0, 10));
+        beatScrollBack.setBounds (topSection.removeFromLeft (40).reduced (0, 10));
+        beatScrollForward.setBounds (topSection.removeFromRight (40).reduced (0, 10));
         beatLabel.setBounds (topSection.removeFromLeft (80));
         beatVolume.setBounds (topSection.withTrimmedRight (30));
     }
@@ -146,8 +147,8 @@ void EditBeatView::updateSelection (const std::vector<int>& newSelection)
     state.selectedEdit = assignment.tickIdx.get();
     currentColour = TickLookAndFeel::sampleColourPallete[assignment.tickIdx.get()];
 
-    beatScrollButtons[0].setVisible (true);
-    beatScrollButtons[1].setVisible (true);
+    beatScrollBack.setVisible (true);
+    beatScrollForward.setVisible (true);
 
     beatVolume.setColour (juce::Slider::ColourIds::trackColourId, currentColour.darker());
     beatVolume.setColour (juce::Slider::ColourIds::thumbColourId, currentColour);

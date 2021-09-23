@@ -63,7 +63,7 @@ private:
     juce::Label hintText;
     juce::FileChooser fileChooser;
 
-    juce::DrawableButton beatScrollButtons[2];
+    juce::DrawableButton beatScrollBack, beatScrollForward;
 
     juce::DrawableButton sampleIcon, sampleSelection;
     juce::Label beatLabel;
