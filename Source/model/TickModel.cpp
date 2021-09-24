@@ -65,7 +65,7 @@ void Tick::mono_resample (const float* src, float* dst, double ratio, const int 
     src_data.output_frames = static_cast<long> (numOfOutSamples);
     src_data.data_out = dst;
     // resample single channel
-    const auto res = src_simple (&src_data, SRC_SINC_BEST_QUALITY, 1);
+    [[maybe_unused]] const auto res = src_simple (&src_data, SRC_SINC_BEST_QUALITY, 1);
     assert (res == 0);
 }
 

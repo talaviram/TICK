@@ -274,7 +274,7 @@ public:
         float* src[1];
         src[0] = ticks[idx].getTickSource();
         const auto result = writer->write ((const int**) src, ticks[idx].getSourceLengthInSamples());
-        jassert (result);
+        jassertquiet (result);
         writer->flush();
         return new juce::MemoryInputStream (wav->getData(), wav->getDataSize(), true);
     }
