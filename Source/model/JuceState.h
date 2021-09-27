@@ -467,6 +467,9 @@ public:
         }
 
         setCachedValues();
+#if JUCE_LINUX
+        const juce::MessageManagerLock mmLock;
+#endif
         state.addListener (this);
         ticksHolder.addChangeListener (this);
     }
