@@ -134,4 +134,29 @@ void AbletonLink::showSettings (juce::Component& source, std::function<void()> o
     settingsUI = std::make_unique<LinkSettings> (std::move(onDismiss), ablLink, source);
 }
 
+bool AbletonLink::isLinkEnabled()
+{
+    return ABLLinkIsEnabled (ablLink);
+}
+
+bool AbletonLink::isLinkConnected()
+{
+    return ABLLinkIsConnected (ablLink);
+}
+
+void AbletonLink::linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos)
+{
+    if (!isLinkConnected())
+    {
+        jassertfalse;
+        return;
+    }
+
+    const auto stateRef =
+        ABLLinkCaptureAudioSessionState (ablLink);
+
+    pos.isPlaying = ABLLinkIsPlaying (stateRef);
+    pos.bpm = ABLLinkGetTempo (stateRef);
+}
+
 #endif
