@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "../libsamplerate/src/samplerate.h"
 
+#include "model/AbletonLink.h"
 #include "model/JuceState.h"
 
 //==============================================================================
@@ -74,6 +75,9 @@ public:
 
     void setExternalProps (juce::PropertySet* s);
 
+#if JUCE_IOS
+    AbletonLink m_link;
+#endif
 private:
     double ppqEndVal;
 

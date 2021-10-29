@@ -120,6 +120,12 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
             juce::NativeMessageBox::showMessageBoxAsync (MessageBoxIconType::InfoIcon, "Graphic Renderer Changed", "Please re-open UI to apply new renderer.");
         });
 #endif
+#if JUCE_IOS
+        settings.addSeparator();
+        settings.addItem ("Ableton Link..", [this]
+                          { processor.m_link.showSettings (settingsButton, [this]
+                                                           { /* TODO */ }); });
+#endif
         settings.addSeparator();
         settings.addItem ("About", [this] {
             aboutView->setVisible (true);

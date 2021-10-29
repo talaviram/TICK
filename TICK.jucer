@@ -189,6 +189,8 @@
         <FILE id="zaxdt4" name="TopBar.h" compile="0" resource="0" file="Source/components/TopBar.h"/>
       </GROUP>
       <GROUP id="{25670950-CE15-21A9-CE3D-4FEEAC9EDE28}" name="model">
+        <FILE id="lZFuAB" name="AbletonLink.h" compile="0" resource="0" file="Source/model/AbletonLink.h"/>
+        <FILE id="aSUlRs" name="AbletonLink.mm" compile="1" resource="0" file="Source/model/AbletonLink.mm"/>
         <FILE id="bhaPy3" name="JuceState.h" compile="0" resource="0" file="Source/model/JuceState.h"/>
         <FILE id="h1fDHG" name="TapModel.cpp" compile="1" resource="0" file="Source/model/TapModel.cpp"/>
         <FILE id="wCFZud" name="TapModel.h" compile="0" resource="0" file="Source/model/TapModel.h"/>
