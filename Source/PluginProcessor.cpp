@@ -204,10 +204,14 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
             const double bufInSecs = buffer.getNumSamples() / getSampleRate();
             const double iqps = lastKnownPosition_.bpm / 60.0; // quarter-per-second
             lastKnownPosition_.ppqPosition += iqps * bufInSecs;
+            lastKnownPosition_.timeInSamples += buffer.getNumSamples();
+            lastKnownPosition_.timeInSeconds += bufInSecs;
         }
         else
         {
             lastKnownPosition_.ppqPosition = 0.0;
+            lastKnownPosition_.timeInSamples = 0;
+            lastKnownPosition_.timeInSeconds = 0;
             tickState.clear();
         }
     }
