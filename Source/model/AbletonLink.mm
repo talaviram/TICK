@@ -2,7 +2,9 @@
 #if JUCE_IOS
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 #import <objc/message.h>
+#include <mach/mach_time.h>
 #include "../../JUCE/modules/juce_core/native/juce_mac_ObjCHelpers.h"
 #include "ABLLinkSettingsViewController.h"
 
@@ -152,11 +154,27 @@ void AbletonLink::linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos)
         return;
     }
 
-    const auto stateRef =
-        ABLLinkCaptureAudioSessionState (ablLink);
+    const auto stateRef = ABLLinkCaptureAudioSessionState (ablLink);
+    const auto quantum = 4 * pos.timeSigNumerator / pos.timeSigDenominator;
+
+    // it seems output latency is already being calculated/counted in code calling this???
+    // adding output latency (similar to LinkHut example) seems to break sync on actual device(s).
+    uint64_t timeInMicroseconds = mach_absolute_time();
+
+    ABLLinkCommitAudioSessionState (ablLink, stateRef);
 
     pos.isPlaying = ABLLinkIsPlaying (stateRef);
     pos.bpm = ABLLinkGetTempo (stateRef);
+
+    auto beat = ABLLinkBeatAtTime (stateRef, timeInMicroseconds, quantum);
+#if JUCE_DEBUG
+    auto phase = ABLLinkPhaseAtTime (stateRef, timeInMicroseconds, quantum);
+    DBG("BPM " << pos.bpm);
+    DBG("IS PLAYING - " << (pos.isPlaying ? "YES" : "NO"));
+    DBG("BEAT " << juce::String(beat) << " " << "PHASE " << juce::String(phase));
+    DBG("OUR DATA " << juce::String(pos.ppqPosition));
+#endif
+    pos.ppqPosition = beat;
 }
 
 #endif

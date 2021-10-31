@@ -214,6 +214,14 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
             lastKnownPosition_.timeInSeconds = 0;
             tickState.clear();
         }
+
+#if JUCE_IOS
+        if (m_link.isLinkConnected())
+        {
+            m_link.linkPosition(lastKnownPosition_);
+            settings.transport.isPlaying.setValue (lastKnownPosition_.isPlaying, nullptr);
+        }
+#endif
     }
     else if (getPlayHead())
     {
