@@ -364,6 +364,11 @@ void TickAudioProcessorEditor::timerCallback()
     performView->update (processor.getCurrentBeatPos());
     bottomBar.syncIndicator.setVisible (useHostTransport);
     bottomBar.transportButton.setVisible (! useHostTransport);
+#if JUCE_IOS
+    const auto link = processor.m_link.isLinkConnected();
+    bottomBar.transportButton.setColour (juce::DrawableButton::backgroundColourId, link ? TickLookAndFeel::Colours::mint : Colours::transparentBlack);
+    bottomBar.transportButton.setColour (juce::DrawableButton::backgroundOnColourId, link ? TickLookAndFeel::Colours::mint : Colours::transparentBlack);
+#endif
     bottomBar.transportPosition.setVisible (useHostTransport);
     performView->setTapVisibility (! useHostTransport);
     if (useHostTransport)
