@@ -146,7 +146,7 @@ bool AbletonLink::isLinkConnected()
     return ABLLinkIsConnected (ablLink);
 }
 
-void AbletonLink::linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos)
+void AbletonLink::linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos, Requests req)
 {
     if (!isLinkConnected())
     {
@@ -160,6 +160,40 @@ void AbletonLink::linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos)
     // it seems output latency is already being calculated/counted in code calling this???
     // adding output latency (similar to LinkHut example) seems to break sync on actual device(s).
     uint64_t timeInMicroseconds = mach_absolute_time();
+
+    if (req.isPlaying.has_value())
+    {
+        const auto reqIsPlaying = *req.isPlaying;
+        if (reqIsPlaying && !ABLLinkIsPlaying (stateRef)) {
+            // Request starting playback at the beginning of this buffer.
+            ABLLinkSetIsPlaying (stateRef, reqIsPlaying, timeInMicroseconds);
+        }
+
+        if (!reqIsPlaying && ABLLinkIsPlaying (stateRef)) {
+            // Request stopping playback at the beginning of this buffer.
+            ABLLinkSetIsPlaying (stateRef, reqIsPlaying, timeInMicroseconds);
+        }
+    }
+
+    if (!pos.isPlaying && ABLLinkIsPlaying (stateRef)) {
+        // Reset the session state's beat timeline so that the requested
+        // beat time corresponds to the time the transport will start playing.
+        // The returned beat time is the actual beat time mapped to the time
+        // playback will start, which therefore may be less than the requested
+        // beat time by up to a quantum.
+        ABLLinkRequestBeatAtStartPlayingTime (stateRef, 0., quantum);
+        pos.isPlaying = true;
+    }
+    else if(pos.isPlaying && !ABLLinkIsPlaying (stateRef)) {
+        pos.isPlaying = false;
+    }
+
+    // Handle a tempo proposal
+    if (req.bpm.has_value()) {
+        // Propose that the new tempo takes effect at the beginning of
+        // this buffer.
+        ABLLinkSetTempo (stateRef, *req.bpm, timeInMicroseconds);
+    }
 
     ABLLinkCommitAudioSessionState (ablLink, stateRef);
 

@@ -195,6 +195,15 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
     // standalone mode
     if (! isHostSyncSupported() || ! getState().useHostTransport.get())
     {
+#if JUCE_IOS
+        AbletonLink::Requests requests;
+        if (lastKnownPosition_.isPlaying != settings.transport.isPlaying.get())
+            requests.isPlaying = settings.transport.isPlaying.get();
+
+        if (lastKnownPosition_.bpm != settings.transport.bpm.get())
+            requests.bpm = settings.transport.bpm.get();
+#endif
+
         lastKnownPosition_.isPlaying = settings.transport.isPlaying.get();
         lastKnownPosition_.timeSigNumerator = settings.transport.numerator.get();
         lastKnownPosition_.timeSigDenominator = settings.transport.denumerator.get();
@@ -218,7 +227,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
 #if JUCE_IOS
         if (m_link.isLinkConnected())
         {
-            m_link.linkPosition(lastKnownPosition_);
+            m_link.linkPosition (lastKnownPosition_, requests);
             settings.transport.isPlaying.setValue (lastKnownPosition_.isPlaying, nullptr);
         }
 #endif

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <optional>
 
 #if JUCE_IOS
 #include "ABLLink.h"
@@ -14,8 +15,14 @@ public:
     bool isLinkEnabled();
     bool isLinkConnected();
 
+    struct Requests
+    {
+        std::optional<bool> isPlaying;
+        std::optional<float> bpm;
+    };
+
     // to be used on audio callback for the actual 'Link' sync
-    void linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos);
+    void linkPosition (juce::AudioPlayHead::CurrentPositionInfo&, Requests);
 private:
     ABLLinkRef ablLink;
 };
