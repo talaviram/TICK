@@ -100,6 +100,10 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addItem ("External (Host)", canExternal, transport.get(), [&transport] {
             transport.setValue (true, nullptr);
         });
+#if JUCE_IOS
+        settings.addItem ("Ableton Link..", true, processor.m_link.isLinkConnected(), [this]
+                          { processor.m_link.showSettings (settingsButton, [this] { /* TODO */ }); });
+#endif
         settings.addSeparator();
         auto& showWaveform = processor.getState().showWaveform;
         settings.addItem ("Always Show Waveform", true, showWaveform.get(), [&showWaveform] {
@@ -119,12 +123,6 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
             appProperties.getUserSettings()->saveIfNeeded();
             juce::NativeMessageBox::showMessageBoxAsync (MessageBoxIconType::InfoIcon, "Graphic Renderer Changed", "Please re-open UI to apply new renderer.");
         });
-#endif
-#if JUCE_IOS
-        settings.addSeparator();
-        settings.addItem ("Ableton Link..", [this]
-                          { processor.m_link.showSettings (settingsButton, [this]
-                                                           { /* TODO */ }); });
 #endif
         settings.addSeparator();
         settings.addItem ("About", [this] {
