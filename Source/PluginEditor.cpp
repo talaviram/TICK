@@ -102,7 +102,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         });
 #if JUCE_IOS
         settings.addItem ("Ableton Link..", true, processor.m_link.isLinkConnected(), [this]
-                          { processor.m_link.showSettings (settingsButton, [this] { /* TODO */ }); });
+                          { processor.m_link.showSettings (settingsButton, nullptr); });
 #endif
         settings.addSeparator();
         auto& showWaveform = processor.getState().showWaveform;
