@@ -48,7 +48,7 @@ Upcoming
 - Clean/refactor ugly code.
 - Refactor to background thread for some nasty file operations.
 - Tomper (nice idea to be explained in the future)
-- Ableton Link.
+- ~~Ableton Link.~~ Implemented for iOS/iPadOS.
 - Improve Full Screen / Tablet UI, use available real-estate properly.
 
 Builds
