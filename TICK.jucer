@@ -210,12 +210,13 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX" vstLegacyFolder="../../SDKs/VST2_SDK"
                hardenedRuntime="1" smallIcon="FLUr1i" bigIcon="FLUr1i" iosPushNotifications="1"
-               aaxFolder="../../SDKs/AAX_SDK" prebuildCommand="python3 $SRCROOT/../../get_git_rev.py $SRCROOT/../../Source/utils/git_version.cpp">
+               aaxFolder="../../SDKs/AAX_SDK" prebuildCommand="python3 $SRCROOT/../../get_git_rev.py $SRCROOT/../../Source/utils/git_version.cpp"
+               iosDevelopmentTeamID="7P7G2A8U54">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="TICK" osxCompatibility="10.7 SDK"
-                       macOSDeploymentTarget="10.7"/>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="TICK" osxCompatibility="10.11 SDK"
+                       macOSDeploymentTarget="10.11"/>
         <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="TICK"
-                       osxCompatibility="10.7 SDK" macOSDeploymentTarget="10.7"/>
+                       osxCompatibility="10.11 SDK" macOSDeploymentTarget="10.11"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="JUCE/modules"/>
