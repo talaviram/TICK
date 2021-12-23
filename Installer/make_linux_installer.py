@@ -61,7 +61,7 @@ def main():
         linux_build_path.joinpath("TICK.vst3"),
         deb_make_path.joinpath("usr/local/lib/vst3"),
     )
-    factory_path = deb_make_path.joinpath("opt/TICK")
+    factory_path = deb_make_path.joinpath("opt/Tal Aviram/TICK")
     factory_path.mkdir(parents=True)
     factory_src = root_path.joinpath("Installer/Factory")
     print("Copy factory presets to be packed..")
