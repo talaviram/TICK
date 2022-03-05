@@ -10,6 +10,9 @@
 
 using namespace juce;
 
+class LinkSettings;
+static std::unique_ptr<LinkSettings> settingsUI;
+
 AbletonLink::AbletonLink(const double bpm)
 {
     ablLink = ABLLinkNew (bpm);
@@ -18,6 +21,7 @@ AbletonLink::AbletonLink(const double bpm)
 AbletonLink::~AbletonLink()
 {
     ABLLinkDelete (ablLink);
+    settingsUI.reset();
 }
 
 @interface StdFunctionToObjCAction  : NSObject
@@ -128,8 +132,6 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LinkSettings)
 };
-
-static std::unique_ptr<LinkSettings> settingsUI;
 
 void AbletonLink::showSettings (juce::Component& source, std::function<void()> onDismiss)
 {
