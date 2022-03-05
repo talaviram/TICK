@@ -199,6 +199,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     setSize (size.x, size.y);
     setResizeLimits (280, 260, 2048, 4096);
 #else
+    Desktop::getInstance().setScreenSaverEnabled (false);
     setSize (375, 667);
 #endif
 
