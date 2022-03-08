@@ -38,18 +38,13 @@ TickAudioProcessor::TickAudioProcessor()
 #endif
       ,
       settings (ticks),
-      parameters (*this, nullptr, Identifier (JucePlugin_Name),
-                  {
-                      std::make_unique<AudioParameterFloat> (IDs::filterCutoff.toString(), // parameter ID
-                                                             "Filter Cutoff", // parameter name
-                                                             TickUtils::makeLogarithmicRange<float> (100.0, 20000.0f),
-                                                             20000.0f,
-                                                             "Hz",
-                                                             AudioProcessorParameter::genericParameter,
-                                                             [=] (int val, int maxLen) {
-                                                                 return String (roundToInt (val)) + "Hz";
-                                                             }) // default value
-                  })
+      parameters (*this, nullptr, Identifier (JucePlugin_Name), { std::make_unique<AudioParameterFloat> (ParameterID (IDs::filterCutoff.toString(), 1), // parameter ID
+                                                                                                         "Filter Cutoff", // parameter name
+                                                                                                         TickUtils::makeLogarithmicRange<float> (100.0, 20000.0f),
+                                                                                                         20000.0f,
+                                                                                                         AudioParameterFloatAttributes().withStringFromValueFunction ([] (auto val, auto)
+                                                                                                                                                                      { return String (roundToInt (val)) + "Hz"; })
+                                                                                                             .withLabel ("Hz")) })
 {
     // init samples reading
     ticks.clear();
