@@ -50,11 +50,13 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 
     lookAndFeel.setColour (juce::Slider::ColourIds::rotarySliderFillColourId, TickLookAndFeel::Colours::defaultHighlight);
 
+    headerArea.setFocusContainerType (FocusContainerType::focusContainer);
     addAndMakeVisible (headerArea);
     headerName.setColour (juce::Label::ColourIds::textColourId, TickLookAndFeel::Colours::mint);
 
     headerArea.setColour (juce::Label::ColourIds::backgroundColourId, juce::Colours::transparentBlack);
     editModeButton.setButtonText ("Edit");
+    editModeButton.setDescription ("Open/Close Samples Editor");
     editModeButton.setClickingTogglesState (true);
     editModeButton.setColour (juce::TextButton::ColourIds::buttonOnColourId, juce::Colours::transparentBlack);
     editModeButton.setColour (juce::TextButton::ColourIds::buttonColourId, juce::Colours::transparentBlack);
@@ -141,6 +143,8 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     };
     mainArea.addChildComponent (*samplesView);
 
+    topBar.leftButton.setAccessible (false);
+    topBar.rightButton.setAccessible (false);
     topBar.centerLabel.getTextValue().referTo (state.presetName.getPropertyAsValue());
     topBar.centerLabel.onClick = [this] {
         auto& showPresetValue = processor.getState().view.showPresetsView;
@@ -148,6 +152,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         showPresetValue.setValue (! value);
     };
     addAndMakeVisible (topBar);
+    settingsButton.setTitle ("Settings");
     settingsButton.toFront (false);
     editModeButton.toFront (false);
 
@@ -350,6 +355,10 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
     }
     else if (value.refersToSameSourceAs (state.view.showPresetsView))
     {
+        settingsButton.setAccessible (! value.getValue());
+        editModeButton.setAccessible (! value.getValue());
+        samplesView->setAccessible (! value.getValue());
+        performView->setAccessible (! value.getValue());
         const auto safeBounds = topBar.getBounds().withBottom (getLocalBounds().getBottom() - (topBar.extendedTopBar ? 0 : bottomBar.getHeight()));
         presetsView->setBounds (value.getValue() ? getLocalBounds().translated (0, getHeight()) : safeBounds);
         const auto to = value.getValue() ? safeBounds : getLocalBounds().translated (0, getHeight());

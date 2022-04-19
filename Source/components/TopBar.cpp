@@ -4,6 +4,8 @@ TopBar::TopBar() : leftButton ("LeftButton", juce::DrawableButton::ImageFitted),
 {
     using namespace juce;
 
+    setFocusContainerType (FocusContainerType::focusContainer);
+
     addAndMakeVisible (leftButton);
     addAndMakeVisible (rightButton);
 

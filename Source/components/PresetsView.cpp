@@ -109,6 +109,7 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
         auto backImage = Drawable::createFromImageData (BinaryData::arrow_back_ios24px_svg, BinaryData::arrow_back_ios24px_svgSize);
         backImage->replaceColour (Colours::black, Colours::white);
         topBar->leftButton.setImages (backImage.get());
+        topBar->leftButton.setDescription ("Back");
         topBar->leftButton.onClick = [this] {
             transitionList();
             backToParent();
@@ -119,9 +120,11 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
         topBar->centerLabel.onClick = [this] {
             state.view.showPresetsView.setValue (false);
         };
+        topBar->centerLabel.setDescription ("Click to close presets view");
         auto moreImage = Drawable::createFromImageData (BinaryData::more_horiz24px_svg, BinaryData::more_horiz24px_svgSize);
         moreImage->replaceColour (Colours::black, Colours::white);
         topBar->rightButton.setImages (moreImage.get());
+        topBar->rightButton.setTitle ("More Presets Options");
         topBar->rightButton.onClick = [this] {
             PopupMenu menu;
             if (isRoot())
@@ -487,6 +490,7 @@ juce::Component* PresetsView::PresetModel::refreshComponentForRow (int rowNumber
             props.set ("time", time);
         }
         component->name.setText (data.name + time, juce::dontSendNotification);
+        component->name.setDescription ((data.isFolder ? "Folder " : "Preset " + component->name.getText()));
         component->isReady = true;
     }
 
@@ -494,8 +498,9 @@ juce::Component* PresetsView::PresetModel::refreshComponentForRow (int rowNumber
 }
 
 PresetsView::PresetView::PresetView()
-    : moreOptions ("More", juce::DrawableButton::ImageFitted)
+    : moreOptions ("More Options...", juce::DrawableButton::ImageFitted)
 {
+    setFocusContainerType (FocusContainerType::focusContainer);
     auto more = juce::Drawable::createFromImageData (BinaryData::more_vert24px_svg, BinaryData::more_vert24px_svgSize);
     auto moreInverted = more->createCopy();
     more->replaceColour (juce::Colours::black, juce::Colours::white);

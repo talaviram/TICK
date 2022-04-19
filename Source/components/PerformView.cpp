@@ -160,6 +160,9 @@ void PerformView::update (double currentPos)
         }
     }
     const bool isStandalone = ! state.useHostTransport.get();
+    topBar.tempo.setDescription (juce::String (state.transport.bpm.get()) + "BPM");
+    topBar.num.setDescription (juce::String (state.transport.numerator.get()) + " beats numerator");
+    topBar.denum.setDescription (juce::String (state.transport.denumerator.get()) + " beats denumerator");
     topBar.tempo.setEnabled (isStandalone);
     topBar.num.setEnabled (isStandalone);
     topBar.denum.setEnabled (isStandalone);
@@ -367,6 +370,7 @@ void setupSigLabel (juce::Label& l)
 
 PerformView::TopBar::TopBar()
 {
+    setFocusContainerType (FocusContainerType::focusContainer);
     setInterceptsMouseClicks (false, true);
     tempoLabel.setText ("BPM", juce::dontSendNotification);
     tempoLabel.setFont (juce::Font (30.0));
@@ -386,10 +390,12 @@ PerformView::TopBar::TopBar()
     setupSigLabel (num);
     setupSigLabel (denum);
     sigDivider.setText ("/", juce::dontSendNotification);
+    sigDivider.setAccessible (false);
 
     tapMode.setFont (juce::Font (30.0));
     tapMode.setJustificationType (juce::Justification::centred);
     tapMode.setText ("TAP", juce::dontSendNotification);
+    tapMode.setDescription ("Tap Tempo Button");
 
     tempo.setEditable (true);
     num.setEditable (true);

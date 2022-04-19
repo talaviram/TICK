@@ -58,7 +58,8 @@ EditBeatView::EditBeatView (TickSettings& stateRef, TicksHolder& ticksRef)
     beatScrollBack.setImages (&d);
     d.setPath (forwardArrow);
     beatScrollForward.setImages (&d);
-
+    beatScrollBack.setTitle ("Previous Sample");
+    beatScrollForward.setTitle ("Next Sample");
     beatScrollBack.onClick = [this] {
         jassert (selection.size() > 0);
         const auto availableBeats = state.transport.numerator.get();
