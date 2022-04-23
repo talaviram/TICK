@@ -243,7 +243,8 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
             return;
 
         // calculate where tick starts in samples...
-        const auto pos = lastKnownPosition_.ppqPosition;
+        jassert (lastKnownPosition_.ppqPositionOfLastBarStart == 0 || lastKnownPosition_.ppqPosition >= lastKnownPosition_.ppqPositionOfLastBarStart);
+        const auto pos = lastKnownPosition_.ppqPosition - lastKnownPosition_.ppqPositionOfLastBarStart;
         const auto bps = lastKnownPosition_.bpm / 60.0;
         const auto bpSmp = getSampleRate() / bps;
         const auto ttq = (4.0 / lastKnownPosition_.timeSigDenominator); // tick to quarter

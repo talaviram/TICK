@@ -76,7 +76,7 @@ struct TickUtils
             return "1|1|000";
 
         const auto quarterNotesPerBar = (numerator * 4 / denominator);
-        const auto beats = (fmod (quarterNotes, quarterNotesPerBar) / quarterNotesPerBar) * numerator;
+        const auto beats = (fmod (quarterNotes - pos.ppqPositionOfLastBarStart, quarterNotesPerBar) / quarterNotesPerBar) * numerator;
 
         const auto bar = ((int) quarterNotes) / quarterNotesPerBar + 1;
         const auto beat = ((int) beats) + 1;
