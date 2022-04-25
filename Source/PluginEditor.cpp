@@ -107,10 +107,18 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
                           { processor.m_link.showSettings (settingsButton, nullptr); });
 #endif
         settings.addSeparator();
+        settings.addSectionHeader ("View");
         auto& showWaveform = processor.getState().showWaveform;
         settings.addItem ("Always Show Waveform", true, showWaveform.get(), [&showWaveform] {
             showWaveform.setValue (! showWaveform.get(), nullptr);
         });
+        auto& isVertical = processor.getState().isVertical;
+        jassert (performView);
+        auto& performViewRef = *performView;
+        settings.addItem ("Vertical Layout", true, isVertical.get(), [&isVertical, &performViewRef]
+                          {
+            isVertical.setValue (! isVertical.get(), nullptr);
+            performViewRef.resized(); });
         settings.addSeparator();
         settings.addSectionHeader ("Low-Pass Filter");
         settings.addCustomItem (222, std::move (slider));

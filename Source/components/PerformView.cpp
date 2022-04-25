@@ -109,20 +109,22 @@ void PerformView::resized()
     }
     viewport.setBounds (area);
 
-    beatsInRow = juce::jlimit (1, 8, juce::jmin (state.transport.numerator.get(), state.transport.denumerator.get())); //std::floor<int> (area.getWidth() / (beatSize + kMargin));
-    const auto beatSize = std::floor<int> ((area.getWidth() - 2 * kMargin) / beatsInRow) - 2 * kMargin;
-    const auto beatHeight = std::min<int> (beatSize, area.getHeight() - 2 * kMargin);
+    const auto isVertical = state.isVertical.get();
+    beatsInRow = juce::jlimit (1, 8, juce::jmin (state.transport.numerator.get(), state.transport.denumerator.get()));
+    const auto beatSize = std::floor<int> (((isVertical ? area.getHeight() : area.getWidth()) - 2 * kMargin) / beatsInRow) - 2 * kMargin;
+    const auto beatHeight = std::min<int> (beatSize, area.getHeight() - 3 * kMargin);
+    const auto itemWidth = isVertical ? area.getWidth() - 2 * kMargin - viewport.getScrollBarThickness() : beatSize;
     const auto numOfBeats = state.transport.numerator.get();
-    beatsView.setBounds (area.withHeight (std::max<int> (area.getHeight(), std::ceil (numOfBeats / beatsInRow) * (beatSize + 2 * kMargin) + kMargin)).withWidth (area.getWidth() - viewport.getScrollBarThickness()));
-    juce::FlexBox fb (juce::FlexBox::Direction::row, juce::FlexBox::Wrap::wrap, juce::FlexBox::AlignContent::flexStart, juce::FlexBox::AlignItems::center, juce::FlexBox::JustifyContent::flexStart);
+    beatsView.setBounds (area.withHeight (std::max<int> (area.getHeight(), (isVertical ? state.transport.numerator.get() : std::ceil (numOfBeats / beatsInRow)) * (beatSize + 2 * kMargin) + kMargin)).withWidth (area.getWidth() - viewport.getScrollBarThickness()));
+    juce::FlexBox fb (isVertical ? juce::FlexBox::Direction::column : juce::FlexBox::Direction::row, juce::FlexBox::Wrap::wrap, juce::FlexBox::AlignContent::flexStart, juce::FlexBox::AlignItems::center, juce::FlexBox::JustifyContent::flexStart);
     for (auto& beat : beats)
     {
         juce::FlexItem newItem (*beat);
         fb.items.add (newItem.withFlex (1.0f)
                           .withMinHeight (beatHeight)
-                          .withMinWidth (beatSize)
+                          .withMinWidth (itemWidth)
                           .withMaxHeight (beatHeight)
-                          .withMaxWidth (beatSize)
+                          .withMaxWidth (itemWidth)
                           .withMargin (juce::FlexItem::Margin (kMargin)));
     }
     fb.performLayout (beatsView.getLocalBounds());

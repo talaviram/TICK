@@ -28,6 +28,7 @@ namespace IDs
     DECLARE_ID (useHostTransport)
     DECLARE_ID (filterCutoff)
     DECLARE_ID (showWaveform)
+    DECLARE_ID (isVertical)
 
     DECLARE_ID (BEAT)
     DECLARE_ID (index)
@@ -387,6 +388,7 @@ public:
         {
             stateToStore.removeProperty (IDs::showWaveform, nullptr);
             stateToStore.removeProperty (IDs::viewSize, nullptr);
+            stateToStore.removeProperty (IDs::isVertical, nullptr);
             // we don't really use APVTS so we manually add it
             stateToStore.removeProperty (IDs::filterCutoff, nullptr);
         }
@@ -505,6 +507,8 @@ public:
         numOfTicks.setValue (stateToLoad.getProperty (IDs::numOfTicks), nullptr);
         if (stateToLoad.hasProperty (IDs::showWaveform))
             showWaveform.setValue (stateToLoad.getProperty (IDs::showWaveform, false), nullptr);
+        if (stateToLoad.hasProperty (IDs::isVertical))
+            isVertical.setValue (stateToLoad.getProperty (IDs::isVertical, false), nullptr);
         cutoffFilter.setValue (stateToLoad.getProperty (IDs::filterCutoff, cutoffFilter.getDefault()), nullptr);
         view.windowSize.setValue (stateToLoad.getProperty (IDs::viewSize));
 
@@ -555,6 +559,7 @@ public:
 
     juce::CachedValue<bool> useHostTransport;
     juce::CachedValue<bool> showWaveform;
+    juce::CachedValue<bool> isVertical;
     juce::CachedValue<float> cutoffFilter;
     juce::CachedValue<int> numOfTicks;
     juce::String presetHash;
@@ -580,6 +585,7 @@ private:
             presetName.referTo (state, IDs::presetName, nullptr, "Empty");
             useHostTransport.referTo (state, IDs::useHostTransport, nullptr, true);
             showWaveform.referTo (state, IDs::showWaveform, nullptr, false);
+            isVertical.referTo (state, IDs::isVertical, nullptr, false);
             cutoffFilter.referTo (state, IDs::filterCutoff, nullptr, 20000.0f);
             numOfTicks.referTo (state, IDs::numOfTicks, nullptr, 0);
             view.windowSize.referTo (state.getPropertyAsValue (IDs::viewSize, nullptr));
