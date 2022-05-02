@@ -112,6 +112,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addItem ("Always Show Waveform", true, showWaveform.get(), [&showWaveform] {
             showWaveform.setValue (! showWaveform.get(), nullptr);
         });
+        auto& showBeatNumber = processor.getState().showBeatNumber;
+        settings.addItem ("Show Beat Number", true, showBeatNumber.get(), [&showBeatNumber]
+                          { showBeatNumber.setValue (! showBeatNumber.get(), nullptr); });
         auto& isVertical = processor.getState().isVertical;
         jassert (performView);
         auto& performViewRef = *performView;

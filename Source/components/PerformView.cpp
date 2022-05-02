@@ -279,6 +279,14 @@ void PerformView::BeatView::paint (juce::Graphics& g)
     if ((owner.isEditMode || owner.state.showWaveform.get()) && tickIndex < owner.ticks.getNumOfTicks())
         owner.samplesPaint.drawTick (g, getLocalBounds().reduced (10), tickIndex, assignment.gain.get(), juce::Colours::white.withAlpha (isCurrent ? 1.0f : isSelected ? 0.7f : 0.3f));
 
+    if (! owner.isEditMode && owner.state.showBeatNumber.get())
+    {
+        auto bounds = getLocalBounds();
+        g.setColour (juce::Colours::white.withAlpha (isCurrent ? 1.0f : 0.1f));
+        g.setFont (juce::Font (std::max<int> (4, bounds.getHeight() - 20)));
+        g.drawFittedText (juce::String (index + 1), bounds, juce::Justification::centred, 1);
+    }
+
     if (hasDraggedItem)
     {
         g.setColour (juce::Colours::white);
