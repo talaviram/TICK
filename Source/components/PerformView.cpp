@@ -277,7 +277,8 @@ void PerformView::BeatView::paint (juce::Graphics& g)
         g.drawRoundedRectangle (getLocalBounds().toFloat().reduced (1.0f), cornerSize, cornerSize);
     }
     if ((owner.isEditMode || owner.state.showWaveform.get()) && tickIndex < owner.ticks.getNumOfTicks())
-        owner.samplesPaint.drawTick (g, getLocalBounds().reduced (10), tickIndex, assignment.gain.get(), juce::Colours::white.withAlpha (isCurrent ? 1.0f : isSelected ? 0.7f : 0.3f));
+        owner.samplesPaint.drawTick (g, getLocalBounds().reduced (10), tickIndex, assignment.gain.get(), juce::Colours::white.withAlpha (isCurrent && ! owner.state.showBeatNumber.get() ? 1.0f : isSelected || owner.state.showBeatNumber.get() ? 0.7f
+                                                                                                                                                                                                                                                 : 0.3f));
 
     if (! owner.isEditMode && owner.state.showBeatNumber.get())
     {
