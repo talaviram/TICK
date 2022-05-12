@@ -10,7 +10,7 @@
               pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="0" pluginAUExportPrefix="TickAU"
               pluginRTASCategory="" aaxIdentifier="com.talaviram.Tick" pluginAAXCategory="2048"
               pluginFormats="buildAAX,buildAU,buildAUv3,buildStandalone,buildVST,buildVST3"
-              companyName="Tal Aviram" companyCopyright="Tal Aviram (c) 2019 - 2021"
+              companyName="Tal Aviram" companyCopyright="Tal Aviram (c) 2019 - 2022"
               companyWebsite="https://www.talaviram.com" companyEmail="me@talaviram.com"
               pluginAUIsSandboxSafe="1" pluginVST3Category="Generator" pluginVSTCategory="kPlugCategGenerator"
               projectLineFeed="&#10;" defines="JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP&#10;JUCE_COREGRAPHICS_DRAW_ASYNC&#10;JUCE_DONT_AUTO_OPEN_MIDI_DEVICES_ON_MOBILE=1&#10;"
