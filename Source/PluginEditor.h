@@ -93,7 +93,18 @@ private:
     TopBar topBar;
     TransportBar bottomBar;
     SidePanel sidePanel;
-    Component sidePanelArea;
+    struct SidePanelArea : Component
+    {
+        bool hitTest (int, int) override
+        {
+            return panel->isPanelShowing();
+        }
+        void mouseUp (const juce::MouseEvent&) override
+        {
+            panel->showOrHide (false);
+        }
+        SidePanel* panel;
+    } sidePanelArea;
 
     // views
     std::unique_ptr<PresetsView> presetsView;

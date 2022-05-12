@@ -186,10 +186,10 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     addAndMakeVisible (*presetsView);
 
     sidePanel.setTitleBarHeight (0);
-    sidePanelArea.setInterceptsMouseClicks (false, true);
     sidePanelArea.setWantsKeyboardFocus (false);
     sidePanelArea.setFocusContainerType (FocusContainerType::focusContainer);
     sidePanelArea.addAndMakeVisible (sidePanel);
+    sidePanelArea.panel = &sidePanel;
     addAndMakeVisible (sidePanelArea);
 
     aboutView.reset (new AboutView (AudioProcessor::getWrapperTypeDescription (processor.wrapperType)));
