@@ -18,7 +18,7 @@
               jucerFormatVersion="1" addUsingNamespaceToJuceHeader="0" headerPath="../../;&#10;../../Source"
               pluginAUMainType="'aumu'" postExportShellCommandPosix="&quot;%%1%%/run_ver_patch.sh&quot;"
               postExportShellCommandWin="%%1%%/run_ver_patch.bat" cppLanguageStandard="17"
-              version="0.4.1">
+              version="0.5.0">
   <MAINGROUP id="C2pL3d" name="TICK">
     <FILE id="Qy9ZQb" name="factory_default.preset" compile="0" resource="1"
           file="factory_default.preset"/>
