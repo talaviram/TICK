@@ -20,7 +20,7 @@
 
 //==============================================================================
 TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
-    : AudioProcessorEditor (&p), samplesButton ("Sounds", juce::DrawableButton::ButtonStyle::ImageFitted), settingsButton ("settingsButton", juce::DrawableButton::ImageFitted), processor (p)
+    : AudioProcessorEditor (&p), samplesButton ("Sounds", juce::DrawableButton::ButtonStyle::ImageFitted), settingsButton ("settingsButton", juce::DrawableButton::ImageFitted), sidePanel ("TICK", 280, true), processor (p)
 {
 // splash is a 'nicer way' to make JUCE splash requirement for non-GPL builds.
 // this is needed for any non-GPL compliant build...
@@ -86,6 +86,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 
     settingsButton.onClick = [this] {
         auto slider = std::make_unique<TickUtils::ParameterSliderItem> (processor.getAPVTS(), IDs::filterCutoff.toString());
+        slider->slider.setScrollWheelEnabled (false);
         PopupMenu settings;
         settings.addSectionHeader ("Sync");
         auto& transport = processor.getState().useHostTransport;
@@ -107,21 +108,21 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
                           { processor.m_link.showSettings (settingsButton, nullptr); });
 #endif
         settings.addSeparator();
-        settings.addSectionHeader ("View");
+        PopupMenu viewSubMenu;
         auto& showWaveform = processor.getState().showWaveform;
-        settings.addItem ("Always Show Waveform", true, showWaveform.get(), [&showWaveform] {
-            showWaveform.setValue (! showWaveform.get(), nullptr);
-        });
+        viewSubMenu.addItem ("Always Show Waveform", true, showWaveform.get(), [&showWaveform, this]
+                             { showWaveform.setValue (! showWaveform.get(), nullptr); });
         auto& showBeatNumber = processor.getState().showBeatNumber;
-        settings.addItem ("Show Beat Number", true, showBeatNumber.get(), [&showBeatNumber]
-                          { showBeatNumber.setValue (! showBeatNumber.get(), nullptr); });
+        viewSubMenu.addItem ("Show Beat Number", true, showBeatNumber.get(), [&showBeatNumber]
+                             { showBeatNumber.setValue (! showBeatNumber.get(), nullptr); });
         auto& isVertical = processor.getState().isVertical;
         jassert (performView);
         auto& performViewRef = *performView;
-        settings.addItem ("Vertical Layout", true, isVertical.get(), [&isVertical, &performViewRef]
-                          {
+        viewSubMenu.addItem ("Vertical Layout", true, isVertical.get(), [&isVertical, &performViewRef]
+                             {
             isVertical.setValue (! isVertical.get(), nullptr);
             performViewRef.resized(); });
+        settings.addSubMenu ("View", viewSubMenu);
         settings.addSeparator();
         settings.addSectionHeader ("Low-Pass Filter");
         settings.addCustomItem (222, std::move (slider));
@@ -141,7 +142,15 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addItem ("About", [this] {
             aboutView->setVisible (true);
         });
-        settings.showMenuAsync (PopupMenu::Options().withParentComponent (this).withMinimumWidth (100).withMaximumNumColumns (3).withTargetComponent (&settingsButton));
+
+        auto sideBarContent = std::make_unique<jux::ListBoxMenu>();
+        sideBarContent->setMenuFromPopup (std::move (settings));
+        sideBarContent->setOnRootBackToParent ([this]
+                                               { sidePanel.showOrHide (false); });
+        sideBarContent->setShouldCloseOnItemClick (true, [this]
+                                                   { sidePanel.showOrHide (false); });
+        sidePanel.setContent (sideBarContent.release());
+        sidePanel.showOrHide (! sidePanel.isPanelShowing());
     };
 
     addAndMakeVisible (mainArea);
@@ -175,6 +184,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 
     presetsView.reset (new PresetsView (processor.getState(), processor.getTicks()));
     addAndMakeVisible (*presetsView);
+
+    sidePanel.setTitleBarHeight (0);
+    addAndMakeVisible (sidePanel);
 
     aboutView.reset (new AboutView (AudioProcessor::getWrapperTypeDescription (processor.wrapperType)));
     addChildComponent (aboutView.get());

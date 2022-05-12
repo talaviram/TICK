@@ -92,6 +92,7 @@ private:
 
     TopBar topBar;
     TransportBar bottomBar;
+    SidePanel sidePanel;
 
     // views
     std::unique_ptr<PresetsView> presetsView;
