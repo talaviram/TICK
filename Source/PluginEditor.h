@@ -93,6 +93,7 @@ private:
     TopBar topBar;
     TransportBar bottomBar;
     SidePanel sidePanel;
+    Component sidePanelArea;
 
     // views
     std::unique_ptr<PresetsView> presetsView;

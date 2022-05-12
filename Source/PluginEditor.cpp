@@ -186,7 +186,11 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     addAndMakeVisible (*presetsView);
 
     sidePanel.setTitleBarHeight (0);
-    addAndMakeVisible (sidePanel);
+    sidePanelArea.setInterceptsMouseClicks (false, true);
+    sidePanelArea.setWantsKeyboardFocus (false);
+    sidePanelArea.setFocusContainerType (FocusContainerType::focusContainer);
+    sidePanelArea.addAndMakeVisible (sidePanel);
+    addAndMakeVisible (sidePanelArea);
 
     aboutView.reset (new AboutView (AudioProcessor::getWrapperTypeDescription (processor.wrapperType)));
     addChildComponent (aboutView.get());
@@ -302,6 +306,8 @@ void TickAudioProcessorEditor::resized()
     auto topArea = availableArea;
     headerArea.setBounds (topArea.removeFromTop (TickLookAndFeel::toolbarHeight));
     background.separatorLineY = headerArea.getBottom() + 1;
+
+    sidePanelArea.setBounds (availableArea);
 
     if (! transportOnTopBar)
     {
