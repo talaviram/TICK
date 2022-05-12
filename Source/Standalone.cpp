@@ -91,6 +91,9 @@ public:
         mainWindow.reset (createWindow());
         mainWindow->setColour (ResizableWindow::backgroundColourId, Colours::transparentBlack);
         static_cast<TickAudioProcessor*> (mainWindow->getAudioProcessor())->setExternalProps (appProperties.getUserSettings());
+#if JUCE_IOS
+        mainWindow->getPeer()->setAppStyle (ComponentPeer::Style::dark);
+#endif
 #if JUCE_STANDALONE_FILTER_WINDOW_USE_KIOSK_MODE
         Desktop::getInstance().setKioskModeComponent (mainWindow.get(), false);
 #endif
