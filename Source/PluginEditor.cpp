@@ -185,6 +185,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     presetsView.reset (new PresetsView (processor.getState(), processor.getTicks()));
     addAndMakeVisible (*presetsView);
 
+    sidePanelArea.setAlwaysOnTop (true);
     sidePanel.setTitleBarHeight (0);
     sidePanelArea.setWantsKeyboardFocus (false);
     sidePanelArea.setFocusContainerType (FocusContainerType::focusContainer);
