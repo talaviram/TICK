@@ -25,13 +25,6 @@ const juce::Colour TickLookAndFeel::Colours::wood = juce::Colour::fromString ("f
 const juce::Colour TickLookAndFeel::Colours::mint = juce::Colour::fromString ("ffA8BFB2");
 const juce::Colour TickLookAndFeel::Colours::grey = juce::Colour::fromString ("ff373640");
 
-static juce::Colour brighter (juce::Colour c, int steps)
-{
-    for (auto i = 0; i < steps; i++)
-        c.brighter();
-    return c;
-}
-
 // should be greater or equal to kMaxTick...
 const juce::Colour TickLookAndFeel::sampleColourPallete[] = {
     Colours::peach,
@@ -42,14 +35,14 @@ const juce::Colour TickLookAndFeel::sampleColourPallete[] = {
     Colours::mint.brighter(),
     Colours::clay.brighter(),
     Colours::wood.brighter(),
-    brighter (Colours::peach, 2),
-    brighter (Colours::mint, 2),
-    brighter (Colours::clay, 2),
-    brighter (Colours::wood, 2),
-    brighter (Colours::peach, 3),
-    brighter (Colours::mint, 3),
-    brighter (Colours::clay, 3),
-    brighter (Colours::wood, 3)
+    Colours::peach.brighter (2),
+    Colours::mint.brighter (2),
+    Colours::clay.brighter (2),
+    Colours::wood.brighter (2),
+    Colours::peach.brighter (3),
+    Colours::mint.brighter (3),
+    Colours::clay.brighter (3),
+    Colours::wood.brighter (3)
 };
 
 juce::Path TickLookAndFeel::createTransportIcon (juce::Rectangle<int> b, const bool isPlaying, const float proportion)
