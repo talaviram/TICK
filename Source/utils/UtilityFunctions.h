@@ -30,6 +30,13 @@ struct TickUtils
         return std::make_unique<ZipFile> (new MemoryInputStream (BinaryData::factory_samples_zip, BinaryData::factory_samples_zipSize, false), true);
     }
 
+#if JUCE_ANDROID
+    static bool canUseNewerAndroidFileAPI()
+    {
+        return android_get_device_api_level() > 28;
+    }
+#endif
+
     static bool canImport()
     {
         return
@@ -45,7 +52,7 @@ struct TickUtils
     {
         return
 #if JUCE_ANDROID
-            juce::RuntimePermissions::isGranted (juce::RuntimePermissions::writeExternalStorage);
+            ! canUseNewerAndroidFileAPI() ? juce::RuntimePermissions::isGranted (juce::RuntimePermissions::writeExternalStorage) : true;
 #else
             true
 #endif
@@ -54,11 +61,7 @@ struct TickUtils
 
     static bool usePlatformDialog()
     {
-#if JUCE_ANDROID
-        return false;
-#else
         return juce::FileChooser::isPlatformDialogAvailable();
-#endif
     }
 
     static void processClip (juce::AudioBuffer<float>&);

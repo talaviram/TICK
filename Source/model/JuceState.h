@@ -191,10 +191,16 @@ public:
 
     Tick* importURL (juce::URL url)
     {
+#if JUCE_ANDROID
+        auto androidDocument = juce::AndroidDocument::fromDocument (url);
+        auto stream = androidDocument.createInputStream();
+#else
         std::unique_ptr<juce::InputStream> stream (juce::URLInputSource (url).createInputStream());
+#endif
         jassert (stream != nullptr);
+        auto name = url.getFileName().upToLastOccurrenceOf (".", false, false);
         std::unique_ptr<juce::AudioFormatReader> reader (formatManager.createReaderFor (std::move (stream)));
-        return convertAudioToTick (url.getLocalFile().getFileNameWithoutExtension(), reader.get());
+        return convertAudioToTick (name, reader.get());
     }
 
     Tick* importAudioStream (const juce::String& name, std::unique_ptr<juce::InputStream> stream)

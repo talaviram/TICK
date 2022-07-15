@@ -164,10 +164,14 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
                                              [this] (const FileChooser& chooser) {
                                                  if (! chooser.getURLResult().isEmpty())
                                                  {
+#if JUCE_ANDROID
+                                                     auto stream = AndroidDocument::fromDocument (chooser.getURLResult()).createInputStream();
+#else
                                                      auto stream (
                                                          chooser.getURLResult().createInputStream (
                                                              URL::InputStreamOptions (
                                                                  URL::ParameterHandling::inAddress)));
+#endif
                                                      jassert (stream != nullptr);
                                                      FileOutputStream output (
                                                          TickUtils::getUserFolder().getChildFile (

@@ -315,21 +315,25 @@ juce::PopupMenu EditBeatView::getAddSamplesMenu (const int replaceIndex)
         });
     }
     menu.addSeparator();
-        menu.addItem ("Import Audio File...", TickUtils::canImport(), false, [this, replaceIndex]() {
-            fileChooser.launchAsync (FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles,
-                                     [this, replaceIndex] (const FileChooser& chooser) {
+    menu.addItem ("Import Audio File...", TickUtils::canImport(), false, [this, replaceIndex]()
+                  { fileChooser.launchAsync (FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles,
+                                             [this, replaceIndex] (const FileChooser& chooser)
+                                             {
+#if JUCE_ANDROID
+                                                 if (! chooser.getURLResult().isEmpty())
+#else
                                          if (chooser.getResult().existsAsFile())
-                                         {
+#endif
+                                                 {
 #if JUCE_IOS || JUCE_ANDROID
-                                             auto newTick = std::unique_ptr<Tick> (
-                                                 ticks.importURL (chooser.getURLResult()));
+                                                     auto newTick = std::unique_ptr<Tick> (
+                                                         ticks.importURL (chooser.getURLResult()));
 #else
                                                                                                         auto newTick = std::unique_ptr<Tick> (ticks.importAudioFile (chooser.getResult()));
 #endif
-                                             setNewImportedSample (replaceIndex, std::move (newTick));
-                                         }
-                                     });
-        });
+                                                     setNewImportedSample (replaceIndex, std::move (newTick));
+                                                 }
+                                             }); });
     return menu;
 }
 

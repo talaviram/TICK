@@ -210,8 +210,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 
 #if JUCE_ANDROID
     RuntimePermissions::request (
-        RuntimePermissions::writeExternalStorage,
-        [this] (bool wasGranted) {
+        TickUtils::canUseNewerAndroidFileAPI() ? RuntimePermissions::readExternalStorage : RuntimePermissions::writeExternalStorage,
+        [this] (bool wasGranted)
+        {
             if (! wasGranted)
             {
                 juce::AlertWindow::showMessageBoxAsync (
