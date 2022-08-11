@@ -446,7 +446,7 @@ PresetsView::PresetModel::PresetModel (PresetsView& parent)
 
 int PresetsView::PresetModel::getNumRows()
 {
-    return owner.directoryContents->isStillLoading() ? 0 : owner.directoryContents->getNumFiles();
+    return owner.directoryContents == nullptr || owner.directoryContents->isStillLoading() ? 0 : owner.directoryContents->getNumFiles();
 }
 
 void PresetsView::PresetModel::paintListBoxItem (int rowNumber, juce::Graphics& g, int width, int height, bool selected)
