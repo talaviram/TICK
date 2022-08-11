@@ -613,10 +613,13 @@ void PresetsView::PresetView::paint (juce::Graphics& g)
         g.fillAll (isCurrent ? TickLookAndFeel::Colours::mint : juce::Colours::white);
 
     const auto textColor = isSelected ? juce::Colours::black : isCurrent ? TickLookAndFeel::Colours::mint : juce::Colours::white;
-    name.setColour (juce::Label::textColourId, textColor);
-    name.setColour (juce::Label::textWhenEditingColourId, textColor);
     image->replaceColour (juce::Colours::black, textColor);
     image->drawWithin (g, getLocalBounds().removeFromLeft (getHeight()).reduced (12).toFloat(), juce::RectanglePlacement(), 1.0f);
+    auto& nameLabel = name;
+    MessageManager::callAsync ([&nameLabel, textColor]
+                               {
+        nameLabel.setColour (juce::Label::textColourId, textColor);
+        nameLabel.setColour (juce::Label::textWhenEditingColourId, textColor); });
 }
 
 void PresetsView::PresetView::resized()
