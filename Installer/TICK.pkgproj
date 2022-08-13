@@ -2002,7 +2002,7 @@
 															<key>PATH_TYPE</key>
 															<integer>2</integer>
 															<key>PERMISSIONS</key>
-															<integer>509</integer>
+															<integer>511</integer>
 															<key>TYPE</key>
 															<integer>2</integer>
 															<key>UID</key>
@@ -2121,7 +2121,7 @@
 				<key>NAME</key>
 				<string>Factory Presets</string>
 				<key>OVERWRITE_PERMISSIONS</key>
-				<false/>
+				<true/>
 				<key>PAYLOAD_SIZE</key>
 				<integer>-1</integer>
 				<key>REFERENCE_PATH</key>
