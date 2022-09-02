@@ -423,7 +423,7 @@ void TickAudioProcessorEditor::timerCallback()
     {
         bottomBar.transportPosition.setText (TickUtils::generateTimecodeDisplay (processor.lastKnownPosition_), dontSendNotification);
     }
-    else if (isVisible())
+    else if (isVisible() && isShowing())
     {
         // When plug-in is self controlled, we want spacebar to work
         grabKeyboardFocus();
