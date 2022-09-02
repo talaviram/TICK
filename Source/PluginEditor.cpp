@@ -130,7 +130,14 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 #if ! JUCE_IOS && ! JUCE_ANDROID
         // for standalone props needs to come from it.
         auto props = standaloneProps != nullptr ? standaloneProps : appProperties.getUserSettings();
-        const auto useOpenGL = props->getBoolValue ("opengl", true);
+        const auto openGLDefault =
+#if JUCE_MAC
+            false
+#else
+            true
+#endif
+            ;
+        const auto useOpenGL = props->getBoolValue ("opengl", openGLDefault);
         settings.addItem ("OpenGL Renderer", true, useOpenGL, [this, useOpenGL, props] {
             props->setValue ("opengl", ! useOpenGL);
             // this is redundant / do nothing on standalone.
