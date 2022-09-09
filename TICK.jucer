@@ -263,7 +263,7 @@
     <ANDROIDSTUDIO targetFolder="Builds/Android" androidPushNotifications="0" androidExtraAssetsFolder="Installer/Factory"
                    androidTheme="@android:style/Theme.NoTitleBar" smallIcon="OKPwIG"
                    bigIcon="OKPwIG" androidEnableContentSharing="1" androidGradleSettingsContent="def task = &quot;python3 ../../get_git_rev.py ../../Source/utils/git_version.cpp&quot;.execute()&#10;task.waitFor()&#10;println task.text"
-                   androidVersionCode="3" androidTargetSDK="30">
+                   androidVersionCode="4" androidTargetSDK="30">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="TICK"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="TICK"/>
