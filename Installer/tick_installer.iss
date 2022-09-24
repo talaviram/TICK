@@ -69,7 +69,7 @@ function ShouldSkipPage(PageID: Integer): Boolean;
 begin
   Result := False;
   if PageID = VST2_64bit_InputDirPage.ID then
-    Result := not IsComponentSelected('vst2');
+    Result := not WizardIsComponentSelected('vst2');
 end;
 
 function GetVST2_64bit_Dir(Param: String): String;
