@@ -3589,6 +3589,11 @@
 				<integer>0</integer>
 				<key>installer-script.domains:enable_localSystem</key>
 				<integer>0</integer>
+				<key>installer-script.options:hostArchitectures</key>
+				<array>
+					<string>x86_64</string>
+					<string>arm64</string>
+				</array>
 			</dict>
 			<key>BUILD_FORMAT</key>
 			<integer>0</integer>
