@@ -350,11 +350,26 @@ void TickAudioProcessorEditor::resized()
 
 bool TickAudioProcessorEditor::keyPressed (const juce::KeyPress& key)
 {
-    if (processor.wrapperType == AudioProcessor::wrapperType_Standalone && ! processor.getState().useHostTransport.get() && key.getKeyCode() == juce::KeyPress::spaceKey)
+    if (processor.wrapperType == AudioProcessor::wrapperType_Standalone && ! processor.getState().useHostTransport.get())
     {
-        auto& transport = bottomBar.transportButton;
-        transport.setToggleState (! transport.getToggleState(), dontSendNotification);
-        return true;
+        if (key.getKeyCode() == juce::KeyPress::spaceKey)
+        {
+            auto& transport = bottomBar.transportButton;
+            transport.setToggleState (! transport.getToggleState(), dontSendNotification);
+            return true;
+        }
+        if (key.getKeyCode() == juce::KeyPress::upKey)
+        {
+            auto& bpmVal = processor.getState().transport.bpm;
+            bpmVal.setValue (bpmVal.get() + 1, nullptr);
+            return true;
+        }
+        if (key.getKeyCode() == juce::KeyPress::downKey)
+        {
+            auto& bpmVal = processor.getState().transport.bpm;
+            bpmVal.setValue (bpmVal.get() - 1, nullptr);
+            return true;
+        }
     }
     return false;
 }
