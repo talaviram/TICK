@@ -17,12 +17,12 @@
 
 static const auto maxSamples = 2.0 * BASE_SAMPLERATE;
 
-Tick::Tick (const char* name, const float** audioToSave, const int numOfSamples, const int numOfChannels, double sampleRate) : name (name),
-                                                                                                                               lastSampleRate (BASE_SAMPLERATE),
-                                                                                                                               resampled ({}),
-                                                                                                                               numOfResampledSamples (0),
-                                                                                                                               startPosInSec (0),
-                                                                                                                               endPosInSec (numOfSamples / BASE_SAMPLERATE)
+Tick::Tick (const char* name, const float* const* audioToSave, const int numOfSamples, const int numOfChannels, double sampleRate) : name (name),
+                                                                                                                                     lastSampleRate (BASE_SAMPLERATE),
+                                                                                                                                     resampled ({}),
+                                                                                                                                     numOfResampledSamples (0),
+                                                                                                                                     startPosInSec (0),
+                                                                                                                                     endPosInSec (numOfSamples / BASE_SAMPLERATE)
 {
     // limit to sample up to 2 seconds.
     const auto samplesToRead = fmin (numOfSamples, 2.0 * sampleRate);

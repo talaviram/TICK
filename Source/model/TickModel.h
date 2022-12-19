@@ -54,7 +54,7 @@ struct Tick
 {
 public:
     /* Constructor for tick. */
-    Tick (const char* name, const float** audioToSave, int numOfSamples, int numOfChannels = 1, double sampleRate = BASE_SAMPLERATE);
+    Tick (const char* name, const float* const* audioToSave, int numOfSamples, int numOfChannels = 1, double sampleRate = BASE_SAMPLERATE);
 
     std::string getName() const;
 
