@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include <JuceHeader.h>
 #include "../libsamplerate/src/samplerate.h"
 
 #include "model/AbletonLink.h"
