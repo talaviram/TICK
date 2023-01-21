@@ -35,7 +35,7 @@ class TickAudioProcessorEditor : public juce::AudioProcessorEditor, private juce
 {
 public:
     TickAudioProcessorEditor (TickAudioProcessor&);
-    ~TickAudioProcessorEditor();
+    ~TickAudioProcessorEditor() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
