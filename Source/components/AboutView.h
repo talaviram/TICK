@@ -1,7 +1,7 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "utils/git_version.h"
+#include "utils/gitversion.h"
 
 class AboutView : public juce::Component
 {
@@ -67,7 +67,7 @@ public:
         logo->drawWithin (g, area.toFloat(), RectanglePlacement(), 1.0f);
         g.setFont (Font (15.0f));
         g.setColour (Colours::white);
-        juce::String version = JucePlugin_VersionString " (" + juce::String (GIT_COMMIT) + ")\n";
+        juce::String version = JucePlugin_VersionString " (" + juce::String (GIT_REVISION) + ")\n" + juce::String (BUILD_TIMESTAMP) +"\n";
         auto textArea = getLocalBounds();
         if (isHorizontal)
             textArea = textArea.removeFromLeft (roundToInt (getWidth() * 0.3));

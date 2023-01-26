@@ -182,8 +182,6 @@ target_sources(TICK
     Source/utils/TickSplash.cpp
     Source/utils/UtilityFunctions.h
     Source/utils/UtilityFunctions.cpp
-    Source/utils/git_version.h # TODO
-    Source/utils/git_version.cpp # TODO
 )
 
 if(APPLE_IOS)
@@ -239,6 +237,15 @@ juce_add_binary_data(TickBinaryData
     Media/stop-button.svg
     Media/unfold_more_black_24dp.svg
 )
+
+add_custom_target(
+    generate_git_revision
+    COMMAND ${CMAKE_COMMAND}
+    -Dlocal_dir="${CMAKE_CURRENT_SOURCE_DIR}"
+    -Doutput_dir="${CMAKE_CURRENT_SOURCE_DIR}/Source/utils"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/gitversion.cmake")
+
+add_dependencies(TICK generate_git_revision)
 
 if(APPLE_IOS)
     juce_add_bundle_resources_directory(TICK "Installer/Factory")
