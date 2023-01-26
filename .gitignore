@@ -10,4 +10,4 @@ __pycache__
 /private
 /result
 # auto-generated each build
-Source/utils/git_version.cpp
+Source/utils/gitversion.h
