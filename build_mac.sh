@@ -1,28 +1,20 @@
 #!/bin/sh
-xcodebuild -project ./JUCE/extras/Projucer/Builds/MacOSX/Projucer.xcodeproj || { echo 'Projucer build failed' ; exit 1; }
-./JUCE/extras/Projucer/Builds/MacOSX/build/Debug/Projucer.app/Contents/MacOS/Projucer --resave ./TICK.jucer || { echo 'JUCE -> Xcode Exporting failed' ; exit 1; }
-
 echo "Building GPL formats"
-xcodebuild -project ./Builds/MacOSX/TICK.xcodeproj -configuration Release -target "TICK - AU" CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO || { echo 'Build failed!' ; exit 1; }
-xcodebuild -project ./Builds/MacOSX/TICK.xcodeproj -configuration Release -target "TICK - Standalone Plugin" CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO || { echo 'Build failed!' ; exit 1; }
-xcodebuild -project ./Builds/MacOSX/TICK.xcodeproj -configuration Release -target "TICK - VST3" CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO || { echo 'Build failed!' ; exit 1; }
-
+cmake -B ./build -G "Xcode" -DCOPY_AFTER_BUILD="FALSE" -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -DJUCE_DISPLAY_SPLASH_SCREEN=0"
+cmake --build ./build --clean-first --target TICK_Standalone TICK_AUv3 TICK_AU TICK_VST3 --config RelWithDebInfo
 echo "Building non-GPL with Splash"
-xcodebuild ARCHS=x86_64 ONLY_ACTIVE_ARCH=NO -project ./Builds/MacOSX/TICK.xcodeproj -configuration Release -target "TICK - AAX" CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS JUCE_DISPLAY_SPLASH_SCREEN=1' || { echo 'Build failed!' ; exit 1; }
-xcodebuild -project ./Builds/MacOSX/TICK.xcodeproj -configuration Release -target "TICK - VST" CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS JUCE_DISPLAY_SPLASH_SCREEN=1' || { echo 'Build failed!' ; exit 1; }
-
-# builds all targets (not used to add non-GPL splash)
-# xcodebuild -project ./Builds/MacOSX/TICK.xcodeproj -configuration Release || { echo 'Build failed!' ; exit 1; }
+cmake -B ./build -G "Xcode" -DCOPY_AFTER_BUILD="FALSE" -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -DJUCE_DISPLAY_SPLASH_SCREEN=1"
+cmake --build ./build --target TICK_VST TICK_AAX --config RelWithDebInfo
 
 echo Copying built binaries...
 mkdir -p result/mac
 # Projucer locations
 # TODO: add non-GPL which should be built with different flags
-cp -R -L ./Builds/MacOSX/build/Release/TICK.aaxplugin ./result/mac
-cp -R -L ./Builds/MacOSX/build/Release/TICK.app ./result/mac
-cp -R -L ./Builds/MacOSX/build/Release/TICK.component ./result/mac
-cp -R -L ./Builds/MacOSX/build/Release/TICK.vst ./result/mac
-cp -R -L ./Builds/MacOSX/build/Release/TICK.vst3 ./result/mac
+cp -R -L ./build/TICK_artefacts/RelWithDebInfo/AAX/TICK.aaxplugin ./result/mac
+cp -R -L ./build/TICK_artefacts/RelWithDebInfo/Standalone/TICK.app ./result/mac
+cp -R -L ./build/TICK_artefacts/RelWithDebInfo/AU/TICK.component ./result/mac
+cp -R -L ./build/TICK_artefacts/RelWithDebInfo/VST/TICK.vst ./result/mac
+cp -R -L ./build/TICK_artefacts/RelWithDebInfo/VST3/TICK.vst3 ./result/mac
 
 echo Apple codesign...
 ./private/codesign.sh ./result/mac/TICK.aaxplugin
