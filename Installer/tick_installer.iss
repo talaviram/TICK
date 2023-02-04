@@ -34,10 +34,10 @@ DisableWelcomePage=False
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "..\Builds\VisualStudio2019\x64\Release\Standalone Plugin\TICK.exe"; DestDir: "{autopf}\{#MyAppName}"; Flags: ignoreversion; Components: standalone
-Source: "..\Builds\VisualStudio2019\x64\Release\VST3\TICK.vst3"; DestDir: "{commoncf}\VST3"; Flags: ignoreversion; Components: vst3
-Source: "..\Builds\VisualStudio2019\x64\Release\VST\TICK.dll"; DestDir: "{code:GetVST2_64bit_Dir}"; Flags: ignoreversion; Components: vst2
-Source: "..\Builds\VisualStudio2019\x64\Release\AAX\TICK.aaxplugin"; DestDir: "{commoncf}\Avid\Audio\Plug-Ins"; Flags: ignoreversion recursesubdirs; Components: aax
+Source: "..\build\TICK_artefacts\RelWithDebInfo\Standalone\TICK.exe"; DestDir: "{autopf}\{#MyAppName}"; Flags: ignoreversion; Components: standalone
+Source: "..\build\TICK_artefacts\RelWithDebInfo\VST3\TICK.vst3"; DestDir: "{commoncf}\VST3"; Flags: ignoreversion recursesubdirs; Components: vst3
+Source: "..\build\TICK_artefacts\RelWithDebInfo\VST\TICK.dll"; DestDir: "{code:GetVST2_64bit_Dir}"; Flags: ignoreversion; Components: vst2
+Source: "..\build\TICK_artefacts\RelWithDebInfo\AAX\TICK.aaxplugin"; DestDir: "{commoncf}\Avid\Audio\Plug-Ins"; Flags: ignoreversion recursesubdirs; Components: aax
 Source: "Factory\*"; DestDir: "{commondocs}\Tal Aviram\TICK\Presets\Factory"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]

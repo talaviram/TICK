@@ -1,17 +1,10 @@
-"%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" ./JUCE/extras/Projucer/Builds/VisualStudio2019/Projucer.sln
-"./JUCE/extras/Projucer/Builds/VisualStudio2019/x64/Debug/App/Projucer.exe" --resave ./TICK.jucer
-
+@echo off
 echo Building GPL formats
-set CL=/DJUCE_DISPLAY_SPLASH_SCREEN#0
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" ./Builds/VisualStudio2019/TICK_SharedCode.vcxproj /p:Configuration=Release /p:platform=x64 /t:rebuild /m
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" ./Builds/VisualStudio2019/TICK_StandalonePlugin.vcxproj /p:Configuration=Release /p:platform=x64 /t:rebuild /m
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" ./Builds/VisualStudio2019/TICK_VST3.vcxproj /p:Configuration=Release /p:platform=x64 /t:rebuild /m
-
+cmake -B ./build -DCOPY_AFTER_BUILD="FALSE" -DCMAKE_CXX_FLAGS="/DJUCE_DISPLAY_SPLASH_SCREEN=0"
+cmake --build ./build --clean-first --target TICK TICK_Standalone TICK_VST3 --config RelWithDebInfo
 echo Building non-GPL with Splash
-set CL=/DJUCE_DISPLAY_SPLASH_SCREEN#1
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" ./Builds/VisualStudio2019/TICK_SharedCode.vcxproj /p:Configuration=Release /t:rebuild /p:platform=x64 /m
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" ./Builds/VisualStudio2019/TICK_AAX.vcxproj /p:Configuration=Release /p:platform=x64 /t:rebuild /m
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" ./Builds/VisualStudio2019/TICK_VST.vcxproj /p:Configuration=Release /p:platform=x64 /t:rebuild /m
+cmake -B ./build -DCOPY_AFTER_BUILD="FALSE" -DCMAKE_CXX_FLAGS="/DJUCE_DISPLAY_SPLASH_SCREEN=1"
+cmake --build ./build --target TICK TICK_VST TICK_AAX --config RelWithDebInfo
 
-echo Sign AAX
-python3 .\private\sign_aax.py ".\builds\VisualStudio2019\x64\Release\AAX\TICK.aaxplugin\Contents\x64\TICK.aaxplugin"
+@REM echo Sign AAX
+@REM python3 .\private\sign_aax.py ".\TICK_artefacts\RelWithDebInfo\AAX\TICK.aaxplugin\Contents\x64\TICK.aaxplugin"
