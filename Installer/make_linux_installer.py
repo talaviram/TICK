@@ -1,12 +1,18 @@
-import patch_installer_ver as p
 import os, pathlib, sys, shutil, subprocess
+
+
+def get_cmake_project_version(build_path):
+    base_cmd = "cmake --system-information | awk -F= '$1~/CMAKE_PROJECT_VERSION:STATIC/{print$2}'"
+    output = subprocess.check_output(base_cmd, cwd=build_path, shell=True)
+    return output.decode("ascii").strip("\n")
 
 
 def main():
     root_path = pathlib.Path(str(sys.argv[1])).absolute()
-    version_string = p.get_version_from_jucer(
-        pathlib.Path(root_path).joinpath("TICK.jucer")
+    version_string = get_cmake_project_version(
+        pathlib.Path(root_path).joinpath("build")
     )
+
     print("Making debian package")
     deb_make_path = root_path.joinpath("deb_temp")
     if deb_make_path.exists():
@@ -48,17 +54,22 @@ def main():
         f.write("Keywords=metronome;tick;audio\n")
         f.write("\n")
         f.close()
-    shutil.copyfile(root_path.joinpath("Media/Logo/tick_icon.svg"), desktopFilePath.joinpath("TICK_icon.svg"))
+    shutil.copyfile(
+        root_path.joinpath("Media/Logo/tick_icon.svg"),
+        desktopFilePath.joinpath("TICK_icon.svg"),
+    )
     print("Copy files to be packed by deb.")
-    linux_build_path = root_path.joinpath("Builds/LinuxMakefile/build")
+    linux_build_path = root_path.joinpath("build/TICK_artefacts/Release/")
     standalone_dst = deb_make_path.joinpath("usr/local/bin")
     print("Copy binary (standalone)...")
     os.makedirs(standalone_dst)
-    shutil.copyfile(linux_build_path.joinpath("TICK"), standalone_dst.joinpath("TICK"))
+    shutil.copyfile(
+        linux_build_path.joinpath("Standalone/TICK"), standalone_dst.joinpath("TICK")
+    )
     os.chmod(standalone_dst.joinpath("TICK"), 0x777)
     print("Copy VST3...")
     shutil.copytree(
-        linux_build_path.joinpath("TICK.vst3"),
+        linux_build_path.joinpath("VST3/TICK.vst3"),
         deb_make_path.joinpath("usr/local/lib/vst3"),
     )
     factory_path = deb_make_path.joinpath("opt/Tal Aviram/TICK")
@@ -69,7 +80,9 @@ def main():
     print("Copy license")
     license_path = deb_make_path.joinpath("usr/share/doc/tick-metronome")
     license_path.mkdir(parents=True)
-    shutil.copyfile(root_path.joinpath("LICENSE.md"), license_path.joinpath("copyright"))
+    shutil.copyfile(
+        root_path.joinpath("LICENSE.md"), license_path.joinpath("copyright")
+    )
 
     print("Package...")
     os.makedirs(root_path.joinpath("Installer/build"), exist_ok=True)
