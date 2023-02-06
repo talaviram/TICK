@@ -53,7 +53,7 @@ endif()
 
 if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-    set(ICON "tick_icon.svg")
+    set(ICON "tick_icon.png")
 endif()
 
 if(UNIX AND NOT APPLE)
