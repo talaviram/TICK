@@ -17,7 +17,7 @@ if(APPLE)
     if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
         set(APPLE_IOS TRUE)
         set(ICON "tick_icon_iOS.png")
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "9.3" CACHE STRING "Minimum iOS deployment version")
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum iOS deployment version")
         set(PLIST_ADDITION
             "
         <plist>
