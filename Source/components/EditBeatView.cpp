@@ -333,6 +333,7 @@ juce::PopupMenu EditBeatView::getAddSamplesMenu (const int replaceIndex)
 #endif
                                                      setNewImportedSample (replaceIndex, std::move (newTick));
                                                  }
+                                                 getTopLevelComponent()->repaint();
                                              }); });
     return menu;
 }
