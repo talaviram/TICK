@@ -71,7 +71,7 @@ public:
         auto textArea = getLocalBounds();
         if (isHorizontal)
             textArea = textArea.removeFromLeft (getWidth() * 0.3);
-        g.drawFittedText (version + wrapperType + arch + (JucePlugin_Manufacturer ", Copyright 2019-2021"), textArea.removeFromBottom (80), Justification::centred, 1);
+        g.drawFittedText (version + wrapperType + arch + (JucePlugin_Manufacturer ", Copyright 2019-2023"), textArea.removeFromBottom (80), Justification::centred, 1);
     }
 
 private:
