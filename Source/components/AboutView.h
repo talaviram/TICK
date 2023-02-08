@@ -6,7 +6,7 @@
 class AboutView : public juce::Component
 {
 public:
-    AboutView (String wrapperType) : about (aboutText, nullptr), wrapperType (wrapperType)
+    AboutView (String wrapperTypeName) : about (aboutText, nullptr), wrapperType (wrapperTypeName)
     {
         using namespace juce;
         background = Drawable::createFromImageData (BinaryData::background_png, BinaryData::background_pngSize);
@@ -34,7 +34,7 @@ public:
         auto area = getLocalBounds();
         background->setTransformToFit (area.toFloat(), RectanglePlacement (RectanglePlacement::stretchToFit));
         if (isHorizontal)
-            area.removeFromLeft (getWidth() * 0.3);
+            area.removeFromLeft (roundToInt (getWidth() * 0.3));
         else
         {
             area.removeFromTop (150);
@@ -63,14 +63,14 @@ public:
         const auto isHorizontal = getWidth() > getHeight();
         auto area = getLocalBounds().removeFromTop (150);
         if (isHorizontal)
-            area = area.removeFromLeft (getWidth() * 0.3);
+            area = area.removeFromLeft (roundToInt (getWidth() * 0.3));
         logo->drawWithin (g, area.toFloat(), RectanglePlacement(), 1.0f);
         g.setFont (Font (15.0f));
         g.setColour (Colours::white);
         juce::String version = JucePlugin_VersionString " (" + juce::String (GIT_COMMIT) + ")\n";
         auto textArea = getLocalBounds();
         if (isHorizontal)
-            textArea = textArea.removeFromLeft (getWidth() * 0.3);
+            textArea = textArea.removeFromLeft (roundToInt (getWidth() * 0.3));
         g.drawFittedText (version + wrapperType + arch + (JucePlugin_Manufacturer ", Copyright 2019-2023"), textArea.removeFromBottom (80), Justification::centred, 1);
     }
 
