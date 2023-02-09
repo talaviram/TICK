@@ -112,7 +112,7 @@ public:
         systemSuspended = true;
 #if JUCE_IOS || JUCE_ANDROID
         mainWindow->pluginHolder->savePluginState();
-        if (static_cast<TickAudioProcessor*> (mainWindow->getAudioProcessor())->lastKnownPosition_.isPlaying)
+        if (static_cast<TickAudioProcessor*> (mainWindow->getAudioProcessor())->playheadPosition_.getIsPlaying())
             return;
         Timer::callAfterDelay (60 * 1000, [this]() {
             // only after 1min

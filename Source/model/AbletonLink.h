@@ -22,7 +22,7 @@ public:
     };
 
     // to be used on audio callback for the actual 'Link' sync
-    void linkPosition (juce::AudioPlayHead::CurrentPositionInfo&, Requests);
+    void linkPosition (juce::AudioPlayHead::PositionInfo&, Requests);
 private:
     ABLLinkRef ablLink;
 };

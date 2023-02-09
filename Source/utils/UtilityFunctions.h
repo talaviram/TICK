@@ -70,16 +70,17 @@ struct TickUtils
 
     // bluntly taken from juce demo. might need to add branches for different hosts/PPQ resolution
     // if possible
-    static String generateTimecodeDisplay (const AudioPlayHead::CurrentPositionInfo& pos)
+    static String generateTimecodeDisplay (const AudioPlayHead::PositionInfo& pos)
     {
-        const double quarterNotes = pos.ppqPosition;
-        const int numerator = pos.timeSigNumerator;
-        const int denominator = pos.timeSigDenominator;
+        const auto quarterNotes = pos.getPpqPosition().orFallback(0.0);
+        const auto ts = pos.getTimeSignature().orFallback (AudioPlayHead::TimeSignature({0,0}));
+        const auto numerator = ts.numerator;
+        const auto denominator = ts.denominator;
         if (numerator == 0 || denominator == 0)
             return "1|1|000";
 
         const auto quarterNotesPerBar = (numerator * 4 / denominator);
-        const auto beats = (fmod (quarterNotes - pos.ppqPositionOfLastBarStart, quarterNotesPerBar) / quarterNotesPerBar) * numerator;
+        const auto beats = (fmod (quarterNotes - pos.getPpqPositionOfLastBarStart().orFallback(0), quarterNotesPerBar) / quarterNotesPerBar) * numerator;
 
         const auto bar = ((int) quarterNotes) / quarterNotesPerBar + 1;
         const auto beat = ((int) beats) + 1;

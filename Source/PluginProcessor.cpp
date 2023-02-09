@@ -55,7 +55,7 @@ TickAudioProcessor::TickAudioProcessor()
     setStateInformation (BinaryData::factory_default_preset, BinaryData::factory_default_presetSize);
 
     settings.useHostTransport.setValue (wrapperType != WrapperType::wrapperType_Standalone, nullptr);
-    lastKnownPosition_.resetToDefault();
+    playheadPosition_ = juce::AudioPlayHead::PositionInfo();
     settings.isDirty = false;
 }
 
@@ -192,68 +192,78 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
     {
 #if JUCE_IOS
         AbletonLink::Requests requests;
-        if (lastKnownPosition_.isPlaying != settings.transport.isPlaying.get())
+        if (playheadPosition_.getIsPlaying() != settings.transport.isPlaying.get())
             requests.isPlaying = settings.transport.isPlaying.get();
 
-        if (lastKnownPosition_.bpm != settings.transport.bpm.get())
+        if (playheadPosition_.getBpm().hasValue() && *playheadPosition_.getBpm() != settings.transport.bpm.get())
             requests.bpm = settings.transport.bpm.get();
 #endif
 
-        lastKnownPosition_.isPlaying = settings.transport.isPlaying.get();
-        lastKnownPosition_.timeSigNumerator = settings.transport.numerator.get();
-        lastKnownPosition_.timeSigDenominator = settings.transport.denumerator.get();
-        lastKnownPosition_.bpm = settings.transport.bpm.get();
-        if (lastKnownPosition_.isPlaying && ! tickState.isClear)
+        playheadPosition_.setIsPlaying (settings.transport.isPlaying.get());
+        playheadPosition_.setTimeSignature(AudioPlayHead::TimeSignature ({(int)settings.transport.numerator.get(), (int)settings.transport.denumerator.get()}));
+        playheadPosition_.setBpm (settings.transport.bpm.get());
+        if (playheadPosition_.getIsPlaying() && ! tickState.isClear)
         {
             const double bufInSecs = buffer.getNumSamples() / getSampleRate();
-            const double iqps = lastKnownPosition_.bpm / 60.0; // quarter-per-second
-            lastKnownPosition_.ppqPosition += iqps * bufInSecs;
-            lastKnownPosition_.timeInSamples += buffer.getNumSamples();
-            lastKnownPosition_.timeInSeconds += bufInSecs;
+            const double iqps = playheadPosition_.getBpm().orFallback(120.0f) / 60.0; // quarter-per-second
+            playheadPosition_.setPpqPosition (playheadPosition_.getPpqPosition().orFallback(0) + (iqps * bufInSecs));
+            playheadPosition_.setTimeInSamples(playheadPosition_.getTimeInSamples().orFallback(0) + buffer.getNumSamples());
+            playheadPosition_.setTimeInSeconds (playheadPosition_.getTimeInSeconds().orFallback(0) + bufInSecs);
         }
         else
         {
-            lastKnownPosition_.ppqPosition = 0.0;
-            lastKnownPosition_.timeInSamples = 0;
-            lastKnownPosition_.timeInSeconds = 0;
+            playheadPosition_.setPpqPosition({});
+            playheadPosition_.setTimeInSamples({});
+            playheadPosition_.setTimeInSeconds({});
             tickState.clear();
         }
 
 #if JUCE_IOS
         if (m_link.isLinkConnected())
         {
-            m_link.linkPosition (lastKnownPosition_, requests);
-            settings.transport.isPlaying.setValue (lastKnownPosition_.isPlaying, nullptr);
+            m_link.linkPosition (playheadPosition_, requests);
+            settings.transport.isPlaying.setValue (playheadPosition_.getIsPlaying(), nullptr);
         }
 #endif
     }
     else if (getPlayHead())
     {
-        getPlayHead()->getCurrentPosition (lastKnownPosition_);
+        playheadPosition_ = getPlayHead()->getPosition().orFallback(AudioPlayHead::PositionInfo());
     }
 
     // setValue only triggers if value is different
-    settings.transport.bpm.setValue (lastKnownPosition_.bpm, nullptr);
-    settings.transport.numerator.setValue (lastKnownPosition_.timeSigNumerator, nullptr);
-    settings.transport.denumerator.setValue (lastKnownPosition_.timeSigDenominator, nullptr);
+    if (playheadPosition_.getBpm().hasValue())
+        settings.transport.bpm.setValue (*playheadPosition_.getBpm(), nullptr);
+    if (playheadPosition_.getTimeSignature().hasValue())
+    {
+        const auto ts = *playheadPosition_.getTimeSignature();
+        settings.transport.numerator.setValue (ts.numerator, nullptr);
+        settings.transport.denumerator.setValue (ts.denominator, nullptr);
+    }
 
-    if (lastKnownPosition_.isPlaying)
+
+    if (playheadPosition_.getIsPlaying())
     {
         if (! ticks.getLock().try_lock())
             return;
 
+        const auto ppqPosition = playheadPosition_.getPpqPosition().orFallback(0);
+        const auto lastBarStart = playheadPosition_.getPpqPositionOfLastBarStart().orFallback(0);
+        const auto bpm = playheadPosition_.getBpm().orFallback(120.0f);
+        const auto ts = playheadPosition_.getTimeSignature().orFallback(AudioPlayHead::TimeSignature ({4, 4}));
+        
         // calculate where tick starts in samples...
-        jassert (lastKnownPosition_.ppqPositionOfLastBarStart == 0 || lastKnownPosition_.ppqPosition >= lastKnownPosition_.ppqPositionOfLastBarStart);
-        const auto pos = lastKnownPosition_.ppqPosition - lastKnownPosition_.ppqPositionOfLastBarStart;
-        const auto bps = lastKnownPosition_.bpm / 60.0;
+        jassert (lastBarStart == 0 || ppqPosition >= lastBarStart);
+        const auto pos = ppqPosition - lastBarStart;
+        const auto bps = bpm / 60.0;
         const auto bpSmp = getSampleRate() / bps;
-        const auto ttq = (4.0 / lastKnownPosition_.timeSigDenominator); // tick to quarter
+        const auto ttq = (4.0 / ts.denominator); // tick to quarter
         const auto tickAt = ttq / tickMultiplier; // tick every (1.0 = 1/4, 0.5 = 1/8, ...)
         const auto tickLengthInSamples = tickAt * bpSmp;
 
         const auto ppqFromBufStart = fmod (pos, tickAt);
         const double ppqOffset = tickAt - ppqFromBufStart;
-        const auto bufStartInSecs = lastKnownPosition_.timeInSeconds;
+        const auto bufStartInSecs = playheadPosition_.getTimeInSeconds().orFallback(0);
         const auto bufEndInSecs = bufStartInSecs + (buffer.getNumSamples() / getSampleRate());
         ppqEndVal = pos + ((bufEndInSecs - bufStartInSecs) * bps);
         const auto bufLengthInPPQ = bps * (buffer.getNumSamples() / getSampleRate());
@@ -282,9 +292,9 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
             // add tick(s) to current buffer
             currentSampleToTick = roundToInt (ppqPosInBuf * bpSmp);
             ppqPosInBuf += tickAt; // next sample
-            tickState.beat = floor (fmod ((pos + ppqPosInBuf) / ttq, lastKnownPosition_.timeSigNumerator)); // + 1;
+            tickState.beat = floor (fmod ((pos + ppqPosInBuf) / ttq, ts.numerator)); // + 1;
             if (tickState.beat == 0)
-                tickState.beat = lastKnownPosition_.timeSigNumerator;
+                tickState.beat = ts.numerator;
             const auto& beatAssign = settings.beatAssignments[jlimit (1, TickSettings::kMaxBeatAssignments, tickState.beat) - 1];
             const auto tickIdx = jlimit (0, jmax ((int) ticks.getNumOfTicks() - 1, 0), beatAssign.tickIdx.get());
             tickState.refer[0] = ticks[tickIdx].getTickAudioBuffer();
@@ -336,8 +346,10 @@ void TickAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 
 double TickAudioProcessor::getCurrentBeatPos()
 {
-    const auto ttq = (4.0 / lastKnownPosition_.timeSigDenominator); // tick to quarter
-    auto subDiv = fmod (lastKnownPosition_.ppqPosition, ttq) / ttq;
+    const auto ppq = playheadPosition_.getPpqPosition().orFallback(0);
+    const auto ts = playheadPosition_.getTimeSignature().orFallback(AudioPlayHead::TimeSignature ({4/4}));
+    const auto ttq = (4.0 / ts.denominator); // tick to quarter
+    auto subDiv = fmod (ppq, ttq) / ttq;
     return tickState.beat + subDiv;
 }
 

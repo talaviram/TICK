@@ -439,7 +439,7 @@ void TickAudioProcessorEditor::timerCallback()
     performView->setTapVisibility (! useHostTransport);
     if (useHostTransport)
     {
-        bottomBar.transportPosition.setText (TickUtils::generateTimecodeDisplay (processor.lastKnownPosition_), dontSendNotification);
+        bottomBar.transportPosition.setText (TickUtils::generateTimecodeDisplay (processor.playheadPosition_), dontSendNotification);
     }
     else if (isVisible() && isShowing())
     {

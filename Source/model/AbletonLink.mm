@@ -148,7 +148,7 @@ bool AbletonLink::isLinkConnected()
     return ABLLinkIsConnected (ablLink);
 }
 
-void AbletonLink::linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos, Requests req)
+void AbletonLink::linkPosition (AudioPlayHead::PositionInfo& pos, Requests req)
 {
     if (!isLinkConnected())
     {
@@ -157,7 +157,8 @@ void AbletonLink::linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos, R
     }
 
     const auto stateRef = ABLLinkCaptureAudioSessionState (ablLink);
-    const auto quantum = 4 * pos.timeSigNumerator / pos.timeSigDenominator;
+    const auto ts = pos.getTimeSignature().orFallback (AudioPlayHead::TimeSignature ({4/4}));
+    const auto quantum = 4 * ts.numerator / ts.denominator;
 
     // it seems output latency is already being calculated/counted in code calling this???
     // adding output latency (similar to LinkHut example) seems to break sync on actual device(s).
@@ -177,17 +178,17 @@ void AbletonLink::linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos, R
         }
     }
 
-    if (!pos.isPlaying && ABLLinkIsPlaying (stateRef)) {
+    if (!pos.getIsPlaying() && ABLLinkIsPlaying (stateRef)) {
         // Reset the session state's beat timeline so that the requested
         // beat time corresponds to the time the transport will start playing.
         // The returned beat time is the actual beat time mapped to the time
         // playback will start, which therefore may be less than the requested
         // beat time by up to a quantum.
         ABLLinkRequestBeatAtStartPlayingTime (stateRef, 0., quantum);
-        pos.isPlaying = true;
+        pos.setIsPlaying (true);
     }
-    else if(pos.isPlaying && !ABLLinkIsPlaying (stateRef)) {
-        pos.isPlaying = false;
+    else if(pos.getIsPlaying() && !ABLLinkIsPlaying (stateRef)) {
+        pos.setIsPlaying (false);
     }
 
     // Handle a tempo proposal
@@ -199,18 +200,18 @@ void AbletonLink::linkPosition (juce::AudioPlayHead::CurrentPositionInfo& pos, R
 
     ABLLinkCommitAudioSessionState (ablLink, stateRef);
 
-    pos.isPlaying = ABLLinkIsPlaying (stateRef);
-    pos.bpm = ABLLinkGetTempo (stateRef);
+    pos.setIsPlaying (ABLLinkIsPlaying (stateRef));
+    pos.setBpm (ABLLinkGetTempo (stateRef));
 
     auto beat = ABLLinkBeatAtTime (stateRef, timeInMicroseconds, quantum);
 #if JUCE_DEBUG
     auto phase = ABLLinkPhaseAtTime (stateRef, timeInMicroseconds, quantum);
-    DBG("BPM " << pos.bpm);
-    DBG("IS PLAYING - " << (pos.isPlaying ? "YES" : "NO"));
+    DBG("BPM " << pos.getBpm().orFallback(0.0));
+    DBG("IS PLAYING - " << (pos.getIsPlaying() ? "YES" : "NO"));
     DBG("BEAT " << juce::String(beat) << " " << "PHASE " << juce::String(phase));
-    DBG("OUR DATA " << juce::String(pos.ppqPosition));
+    DBG("OUR DATA " << juce::String(pos.getPpqPosition().orFallback(0.0)));
 #endif
-    pos.ppqPosition = beat;
+    pos.setPpqPosition (beat);
 }
 
 #endif

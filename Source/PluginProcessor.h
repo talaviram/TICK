@@ -63,7 +63,7 @@ public:
 
     bool isHostSyncSupported();
 
-    juce::AudioPlayHead::CurrentPositionInfo lastKnownPosition_;
+    juce::AudioPlayHead::PositionInfo playheadPosition_;
 
     double getCurrentBeatPos();
     int getBeat() { return tickState.beat; }
