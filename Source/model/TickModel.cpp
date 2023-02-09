@@ -26,7 +26,7 @@ Tick::Tick (const char* name, const float* const* audioToSave, const int numOfSa
 {
     // limit to sample up to 2 seconds.
     const auto samplesToRead = fmin (numOfSamples, 2.0 * sampleRate);
-    const auto resampleRatio = sampleRate / BASE_SAMPLERATE;
+    const auto resampleRatio = BASE_SAMPLERATE / sampleRate;
     numOfTickSamples = static_cast<int> (fmin (round (samplesToRead * resampleRatio), maxSamples));
 
     sample = std::make_unique<float[]> (numOfTickSamples); // this also zeros out samples.
