@@ -74,6 +74,7 @@ struct TickUtils
     {
         const auto quarterNotes = pos.getPpqPosition().orFallback(0.0);
         const auto ts = pos.getTimeSignature().orFallback (AudioPlayHead::TimeSignature({0,0}));
+        const auto maybeBar = pos.getBarCount();
         const auto numerator = ts.numerator;
         const auto denominator = ts.denominator;
         if (numerator == 0 || denominator == 0)
@@ -82,7 +83,7 @@ struct TickUtils
         const auto quarterNotesPerBar = (numerator * 4 / denominator);
         const auto beats = (fmod (quarterNotes - pos.getPpqPositionOfLastBarStart().orFallback(0), quarterNotesPerBar) / quarterNotesPerBar) * numerator;
 
-        const auto bar = ((int) quarterNotes) / quarterNotesPerBar + 1;
+        const auto bar = maybeBar.orFallback (((int) quarterNotes) / quarterNotesPerBar + 1);
         const auto beat = ((int) beats) + 1;
         const auto ticks = ((int) (fmod (beats, 1.0) * 960.0 + 0.5));
 
