@@ -172,10 +172,10 @@ private:
     {
         if (reader != nullptr)
         {
-            const auto numSamples = std::min<double> (static_cast<double> (reader->lengthInSamples), reader->sampleRate * 2.0);
-            juce::AudioSampleBuffer sampleToLoad (reader->numChannels, numSamples);
+            const auto numSamples = (int) std::ceil (std::min<double> (static_cast<double> (reader->lengthInSamples), reader->sampleRate * 2.0));
+            juce::AudioSampleBuffer sampleToLoad ((int) reader->numChannels, numSamples);
             reader->read (&sampleToLoad, 0, numSamples, 0, true, true);
-            auto tick = new Tick (tickName.toRawUTF8(), sampleToLoad.getArrayOfReadPointers(), numSamples, reader->numChannels, reader->sampleRate);
+            auto tick = new Tick (tickName.toRawUTF8(), sampleToLoad.getArrayOfReadPointers(), numSamples, (int) reader->numChannels, reader->sampleRate);
             return tick;
         }
         return nullptr;
@@ -268,8 +268,9 @@ public:
         return begin();
     }
 
-    juce::MemoryInputStream* getTickAsWave (int idx)
+    juce::MemoryInputStream* getTickAsWave (int index)
     {
+        const auto idx = static_cast<size_t> (index);
         auto* wav = new juce::MemoryOutputStream();
         juce::StringPairArray meta;
         // our non-standard meta data
@@ -296,9 +297,9 @@ public:
         wavData.setSize (1, (int) reader->lengthInSamples);
         reader->read (&wavData, 0, (int) reader->lengthInSamples, 0, true, false);
         auto tick = std::make_unique<Tick> (reader->metadataValues.getValue (juce::WavAudioFormat::riffInfoTitle, "").toRawUTF8(), wavData.getArrayOfReadPointers(), wavData.getNumSamples(), 1, reader->sampleRate);
-        auto start = reader->metadataValues.getValue (juce::WavAudioFormat::riffInfoStartTimecode, "0.0").getDoubleValue();
-        auto end = reader->metadataValues.getValue (juce::WavAudioFormat::riffInfoEndTimecode, "0.0").getDoubleValue();
-        auto gain = reader->metadataValues.getValue (juce::WavAudioFormat::riffInfoComment, "1.0").getDoubleValue();
+        const auto start = reader->metadataValues.getValue (juce::WavAudioFormat::riffInfoStartTimecode, "0.0").getDoubleValue();
+        const auto end = reader->metadataValues.getValue (juce::WavAudioFormat::riffInfoEndTimecode, "0.0").getDoubleValue();
+        const auto gain = (float) reader->metadataValues.getValue (juce::WavAudioFormat::riffInfoComment, "1.0").getDoubleValue();
         tick->setRange (start, end);
         tick->setGain (gain);
         return tick;
@@ -329,7 +330,7 @@ struct Transport : public juce::Value::Listener
         meterAsText.addListener (this);
     }
 
-    ~Transport()
+    ~Transport() override
     {
         meterAsText.removeListener (this);
     }
@@ -411,9 +412,9 @@ public:
         juce::ZipFile::Builder builder;
         auto inputStream = new juce::MemoryInputStream (stream.getData(), stream.getDataSize(), false);
         builder.addEntry (inputStream, 5, INFO_FILE_NAME, juce::Time::getCurrentTime());
-        for (auto i = 0; i < ticks.getNumOfTicks(); i++)
+        for (size_t i = 0; i < ticks.getNumOfTicks(); i++)
         {
-            builder.addEntry (ticks.getTickAsWave (i), 5, juce::String (i) + ".wav", juce::Time::getCurrentTime());
+            builder.addEntry (ticks.getTickAsWave ((int) i), 5, juce::String (i) + ".wav", juce::Time::getCurrentTime());
         }
         // TODO: make this async?
         double progress = 0.0;
@@ -491,7 +492,7 @@ public:
         state.addListener (this);
     }
 
-    ~TickSettings()
+    ~TickSettings() override
     {
         ticksHolder.removeChangeListener (this);
         state.removeListener (this);
@@ -544,7 +545,7 @@ public:
         }
     }
 
-    void valueTreePropertyChanged (juce::ValueTree& vt, const juce::Identifier& vid) override
+    void valueTreePropertyChanged (juce::ValueTree&, const juce::Identifier& vid) override
     {
         if (vid == IDs::isPlaying)
             return;

@@ -24,7 +24,7 @@ class TickAudioProcessor : public juce::AudioProcessor
 public:
     //==============================================================================
     TickAudioProcessor();
-    ~TickAudioProcessor();
+    ~TickAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -68,10 +68,10 @@ public:
     double getCurrentBeatPos();
     int getBeat() { return tickState.beat; }
 
-    TicksHolder& getTicks() { return ticks; };
+    TicksHolder& getTicks() { return ticks; }
     TickSettings& getState() { return settings; }
 
-    juce::AudioProcessorValueTreeState& getAPVTS() { return parameters; };
+    juce::AudioProcessorValueTreeState& getAPVTS() { return parameters; }
 
     void setExternalProps (juce::PropertySet* s);
 

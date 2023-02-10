@@ -13,7 +13,7 @@ class PresetsView : public juce::Component, private juce::ChangeListener
 {
 public:
     PresetsView (TickSettings& state, TicksHolder& ticksRef);
-    ~PresetsView();
+    ~PresetsView() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;

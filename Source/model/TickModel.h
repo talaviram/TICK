@@ -91,21 +91,19 @@ public:
     double getEndInSec() const;
 
 private:
-    void mono_resample (const float* src, float* dst, double ratio, int numOfInSamples, int numOfOutSamples);
+    void mono_resample (const float* src, float* dst, double ratio, size_t numOfInSamples, size_t numOfOutSamples);
 
     std::string name;
     double lastSampleRate;
 
     std::unique_ptr<float[]> sample, resampled;
-    int numOfTickSamples;
+    size_t numOfTickSamples;
     int numOfResampledSamples;
 
     float gain { 1.0f };
 
     // allows fine tune within sample.
     double startPosInSec, endPosInSec;
-
-    double resampledSamplerate;
 };
 
 //==============================================================================

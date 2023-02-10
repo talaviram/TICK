@@ -158,7 +158,7 @@ void EditBeatView::updateSelection (const std::vector<int>& newSelection)
     beatLabel.setText ("Beat #" + juce::String (newSelection.front() + 1), juce::dontSendNotification);
     samplesList.setVisible (true);
     hintText.setVisible (false);
-    if (assignment.tickIdx.get() < ticks.getNumOfTicks())
+    if ((size_t) assignment.tickIdx.get() < ticks.getNumOfTicks())
     {
         beatVolume.getValueObject().referTo (assignment.gain.getPropertyAsValue());
         samplesList.selectRow (assignment.tickIdx.get());
@@ -205,7 +205,7 @@ void EditBeatView::SamplesModel::paintListBoxItem (int rowNumber, juce::Graphics
     g.setColour (rowIsSelected ? juce::Colours::black.withAlpha (0.9f) : juce::Colours::white);
     g.setFont (juce::Font (30.0f));
 
-    g.drawFittedText (isLast ? "Add new sample..." : owner.ticks[rowNumber].getName(), 20, 0, width - 20, height, juce::Justification::centredLeft, 1);
+    g.drawFittedText (isLast ? "Add new sample..." : owner.ticks[(size_t) rowNumber].getName(), 20, 0, width - 20, height, juce::Justification::centredLeft, 1);
     if (! rowIsSelected)
     {
         g.setColour (juce::Colours::white.withAlpha (0.4f));
@@ -213,7 +213,7 @@ void EditBeatView::SamplesModel::paintListBoxItem (int rowNumber, juce::Graphics
     }
 }
 
-juce::Component* EditBeatView::SamplesModel::refreshComponentForRow (int rowNumber, bool isRowSelected, juce::Component* existingComponentToUpdate)
+juce::Component* EditBeatView::SamplesModel::refreshComponentForRow (int rowNumber, bool /*isRowSelected*/, juce::Component* existingComponentToUpdate)
 {
     if (existingComponentToUpdate == nullptr)
         existingComponentToUpdate = new SampleOption (owner);
@@ -241,7 +241,7 @@ void EditBeatView::SamplesModel::SampleOption::paint (juce::Graphics& g)
     }
 }
 
-void EditBeatView::SamplesModel::SampleOption::mouseDown (const juce::MouseEvent& e)
+void EditBeatView::SamplesModel::SampleOption::mouseDown (const juce::MouseEvent&)
 {
     {
         juce::PopupMenu menu;
@@ -260,10 +260,10 @@ void EditBeatView::SamplesModel::SampleOption::mouseDown (const juce::MouseEvent
                 case 2:
                 {
                     // TODO: DRY with code below for adding new samples
-                    auto menu = owner.getAddSamplesMenu (row);
+                    auto addSamplesMenu = owner.getAddSamplesMenu (row);
                     owner.listboxMenu.reset (new jux::ListBoxMenu());
                     owner.listboxMenu->setRowHeight (50);
-                    owner.listboxMenu->setMenuFromPopup (std::move (menu));
+                    owner.listboxMenu->setMenuFromPopup (std::move (addSamplesMenu));
                     owner.listboxMenu->setShouldCloseOnItemClick (true);
                     owner.getParentComponent()->addAndMakeVisible (owner.listboxMenu.get());
                     owner.listboxMenu->setBounds (owner.getParentComponent()->getLocalBounds());
@@ -351,7 +351,7 @@ void EditBeatView::setNewImportedSample (const int replaceIndex, std::unique_ptr
     removeChildComponent (listboxMenu.get());
 }
 
-bool EditBeatView::SamplesModel::SampleOption::hitTest (int x, int y)
+bool EditBeatView::SamplesModel::SampleOption::hitTest (int x, int /*y*/)
 {
     if (owner.model.isLastRow (row))
         return false;
@@ -361,10 +361,10 @@ bool EditBeatView::SamplesModel::SampleOption::hitTest (int x, int y)
 
 inline bool EditBeatView::SamplesModel::isLastRow (int row) const
 {
-    return row >= owner.ticks.getNumOfTicks();
+    return (size_t) row >= owner.ticks.getNumOfTicks();
 }
 
-void EditBeatView::SamplesModel::listBoxItemClicked (int row, const juce::MouseEvent& e)
+void EditBeatView::SamplesModel::listBoxItemClicked (int row, const juce::MouseEvent&)
 {
     if (! isLastRow (row) && owner.selection.size() > 0)
     {

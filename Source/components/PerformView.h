@@ -22,7 +22,7 @@ class PerformView
 {
 public:
     PerformView (TickSettings& stateToLink, TicksHolder& ticks, SamplesPaint& samplesPaint);
-    ~PerformView();
+    ~PerformView() override;
     void resized() override;
     void setEditMode (bool);
     void update (double currentPos);
@@ -76,7 +76,7 @@ private:
         int index = -1;
         bool isCurrent = false;
         bool isOn = false;
-        double relativePos = 0.0;
+        float relativePos = 0.0f;
         bool isSelected = false;
         bool hasDraggedItem = false;
 

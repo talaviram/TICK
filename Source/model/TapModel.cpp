@@ -18,7 +18,7 @@ double TapModel::pushTap (const juce::Time& t)
     if (fabs (lastDetectedBPM - lastTapBpm) > bpmDriftTolerance)
     {
         // remove older points
-        for (auto i = 0; i < (tapPoints.size() - 1); i++)
+        for (size_t i = 0; i < (tapPoints.size() - 1); i++)
             tapPoints.pop_back();
         lastDetectedBPM = estimateBPM();
     }

@@ -72,7 +72,7 @@ public:
 
     void drawRotarySlider (juce::Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, juce::Slider& slider) override;
 
-    void drawComboBox (juce::Graphics& g, int width, int height, bool isButtonDown, int buttonX, int buttonY, int buttonW, int buttonH, juce::ComboBox& combo) override
+    void drawComboBox (juce::Graphics& g, int width, int height, bool /*isButtonDown*/, int /*buttonX*/, int /*buttonY*/, int /*buttonW*/, int /*buttonH*/, juce::ComboBox& combo) override
     {
         g.setColour (combo.findColour (juce::ComboBox::ColourIds::backgroundColourId));
         g.fillRoundedRectangle (0, 0, width, height, 4);
@@ -92,7 +92,8 @@ public:
     void fillTextEditorBackground (juce::Graphics&, int width, int height, juce::TextEditor&) override;
     void drawTextEditorOutline (juce::Graphics&, int width, int height, juce::TextEditor&) override;
     void drawDialogComponent (juce::Graphics& g, DialogComponent& alert, const juce::Rectangle<int>& textArea, juce::TextLayout& textLayout);
-    juce::Array<int> getWidthsForTextButtons (const juce::Array<juce::TextButton*>& buttons);
+
+    juce::Array<int> getWidthsForTextButtonsForDialog (const juce::Array<juce::TextButton*>& buttons);
 
     juce::Path getTickShape (float height) override;
 };

@@ -12,8 +12,8 @@ static juce_wchar getDefaultPasswordChar() noexcept
 #endif
 }
 
-DialogComponent::DialogComponent (const String& title, const String& message, Component* associatedComponent)
-    : justification (Justification::centred), associatedComponent (associatedComponent)
+DialogComponent::DialogComponent (const String& title, const String& message, Component* associatedComp)
+    : justification (Justification::centred), associatedComponent (associatedComp)
 {
     setName (title);
     setAlwaysOnTop (true);
@@ -43,7 +43,7 @@ void DialogComponent::addButton (const String& name,
     auto& lf = dynamic_cast<TickLookAndFeel&> (getLookAndFeel());
 
     auto buttonHeight = lf.getAlertWindowButtonHeight();
-    auto buttonWidths = lf.getWidthsForTextButtons (buttonsArray);
+    auto buttonWidths = lf.getWidthsForTextButtonsForDialog (buttonsArray);
 
     jassert (buttonWidths.size() == buttons.size());
     int i = 0;
@@ -55,9 +55,9 @@ void DialogComponent::addButton (const String& name,
     updateLayout();
 }
 
-void DialogComponent::addToggle (const String& name, const String& text, const bool initialState)
+void DialogComponent::addToggle (const String& name, const String& textToggle, const bool initialState)
 {
-    auto* b = new ToggleButton (text);
+    auto* b = new ToggleButton (textToggle);
     b->setName (name);
     b->setToggleState (initialState, dontSendNotification);
     toggles.add (b);
@@ -242,8 +242,8 @@ void DialogComponent::updateLayout()
     if (buttons.size())
     {
         auto idealBtnWidth = roundToInt (getWidth() / buttons.size());
-        const auto h = lf.getAlertWindowButtonHeight();
-        auto buttonsArea = getLocalBounds().withY (getHeight() - h - 1).withHeight (h);
+        const auto windowHeight = lf.getAlertWindowButtonHeight();
+        auto buttonsArea = getLocalBounds().withY (getHeight() - windowHeight - 1).withHeight (h);
         for (auto* c : buttons)
         {
             const auto ideal = jmax (lf.getTextButtonWidthToFitText (*c, buttonsArea.getHeight()), idealBtnWidth);
@@ -296,8 +296,8 @@ bool DialogComponent::containsAnyExtraComponents() const
 void DialogComponent::showOkCancelDialog (
     const String& title,
     const String& message,
-    const String& button1Text,
-    const String& button2Text,
+    const String& /*button1Text*/,
+    const String& /*button2Text*/,
     Component* associatedComponent,
     ModalComponentManager::Callback* callback)
 {

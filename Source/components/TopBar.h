@@ -31,7 +31,7 @@ public:
             const Font font (laf.getLabelFont (*this));
             g.setColour (findColour (Label::textColourId).withMultipliedAlpha (alpha));
             g.setFont (font);
-            const auto textArea = laf.getLabelBorderSize (*this).subtractedFrom (getLocalBounds().withTrimmedLeft (getHeight() * 0.8));
+            const auto textArea = laf.getLabelBorderSize (*this).subtractedFrom (getLocalBounds().withTrimmedLeft (static_cast<int> (getHeight() * 0.8)));
             g.drawFittedText (getText(), textArea, getJustificationType(), jmax (1, (int) ((float) textArea.getHeight() / font.getHeight())), getMinimumHorizontalScale());
             g.setColour (findColour (Label::outlineColourId).withMultipliedAlpha (alpha));
         }

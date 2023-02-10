@@ -17,17 +17,17 @@
 
 static const auto maxSamples = 2.0 * BASE_SAMPLERATE;
 
-Tick::Tick (const char* name, const float* const* audioToSave, const int numOfSamples, const int numOfChannels, double sampleRate) : name (name),
-                                                                                                                                     lastSampleRate (BASE_SAMPLERATE),
-                                                                                                                                     resampled ({}),
-                                                                                                                                     numOfResampledSamples (0),
-                                                                                                                                     startPosInSec (0),
-                                                                                                                                     endPosInSec (numOfSamples / BASE_SAMPLERATE)
+Tick::Tick (const char* tickName, const float* const* audioToSave, const int numOfSamples, const int numOfChannels, double sampleRate) : name (tickName),
+                                                                                                                                         lastSampleRate (BASE_SAMPLERATE),
+                                                                                                                                         resampled ({}),
+                                                                                                                                         numOfResampledSamples (0),
+                                                                                                                                         startPosInSec (0),
+                                                                                                                                         endPosInSec (numOfSamples / BASE_SAMPLERATE)
 {
     // limit to sample up to 2 seconds.
     const auto samplesToRead = fmin (numOfSamples, 2.0 * sampleRate);
     const auto resampleRatio = BASE_SAMPLERATE / sampleRate;
-    numOfTickSamples = static_cast<int> (fmin (round (samplesToRead * resampleRatio), maxSamples));
+    numOfTickSamples = static_cast<size_t> (fmin (round (samplesToRead * resampleRatio), maxSamples));
 
     sample = std::make_unique<float[]> (numOfTickSamples); // this also zeros out samples.
     auto summing_buffer = std::make_unique<float[]> (numOfTickSamples);
@@ -38,7 +38,7 @@ Tick::Tick (const char* name, const float* const* audioToSave, const int numOfSa
         // needs resample?
         if (resampleRatio != 1.0)
         {
-            mono_resample (audioToSave[ch], summing_buffer.get(), resampleRatio, numOfSamples, numOfTickSamples);
+            mono_resample (audioToSave[ch], summing_buffer.get(), resampleRatio, (size_t) numOfSamples, numOfTickSamples);
         }
         else
         {
@@ -46,7 +46,7 @@ Tick::Tick (const char* name, const float* const* audioToSave, const int numOfSa
         }
 
         // sum inputs
-        for (auto sidx = 0; sidx < numOfTickSamples; sidx++)
+        for (size_t sidx = 0; sidx < numOfTickSamples; sidx++)
             sample[sidx] = gainFactor * summing_buffer[sidx];
     }
 }
@@ -56,11 +56,11 @@ std::string Tick::getName() const
     return name;
 }
 
-void Tick::mono_resample (const float* src, float* dst, double ratio, const int numOfInSamples, const int numOfOutSamples)
+void Tick::mono_resample (const float* src, float* dst, double ratio, const size_t numOfInSamples, const size_t numOfOutSamples)
 {
     SRC_DATA src_data;
     src_data.data_in = src;
-    src_data.input_frames = numOfInSamples;
+    src_data.input_frames = (long) numOfInSamples;
     src_data.src_ratio = ratio;
     src_data.output_frames = static_cast<long> (numOfOutSamples);
     src_data.data_out = dst;
@@ -73,14 +73,14 @@ int Tick::getLengthInSamples() const
 {
     auto numSamples = resampled ? numOfResampledSamples : getSourceLengthInSamples();
     if (endPosInSec > 0)
-        return fmin (round ((endPosInSec - startPosInSec) * getSampleRate()), numSamples);
+        return std::min<int> ((int) round ((endPosInSec - startPosInSec) * getSampleRate()), numSamples);
     else
         return numSamples;
 }
 
 int Tick::getSourceLengthInSamples() const
 {
-    return numOfTickSamples;
+    return static_cast<int> (numOfTickSamples);
 }
 
 double Tick::getSourceLengthInSec() const
@@ -98,8 +98,8 @@ void Tick::setSampleRate (double newSampleRate)
         return;
 
     numOfResampledSamples = static_cast<int> (round (numOfTickSamples * newRatio));
-    resampled = std::make_unique<float[]> (numOfResampledSamples);
-    mono_resample (sample.get(), resampled.get(), newRatio, numOfTickSamples, numOfResampledSamples);
+    resampled = std::make_unique<float[]> (static_cast<size_t> (numOfResampledSamples));
+    mono_resample (sample.get(), resampled.get(), newRatio, (size_t) numOfTickSamples, (size_t) numOfResampledSamples);
 }
 
 double Tick::getSampleRate() const
@@ -109,7 +109,7 @@ double Tick::getSampleRate() const
 
 float* Tick::getTickAudioBuffer()
 {
-    int startPos = round (getSampleRate() * startPosInSec);
+    const auto startPos = (int) round (getSampleRate() * startPosInSec);
     if (resampled)
         return &resampled.get()[startPos];
     else
@@ -158,14 +158,14 @@ void Ticks::addTick (std::unique_ptr<Tick>&& tickToAdd)
 void Ticks::replaceTick (const int idx, std::unique_ptr<Tick>&& newTick)
 {
     const scoped_lock sl (inuseLock);
-    ticks[idx] = std::move (newTick);
+    ticks[(size_t) idx] = std::move (newTick);
     printf ("Tick was replaced!\n");
 }
 
 void Ticks::removeTick (int idx)
 {
     const scoped_lock sl (inuseLock);
-    assert (idx >= 0 && idx < ticks.size());
+    assert (idx >= 0 && idx < (int) ticks.size());
     ticks.erase (ticks.begin() + idx);
     printf ("Tick was removed!\n");
 }

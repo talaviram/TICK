@@ -42,7 +42,6 @@ public:
     void updateSelection (int index);
 
 private:
-    int originalY = 0;
     juce::NormalisableRange<float> heightNorm;
     void changeListenerCallback (juce::ChangeBroadcaster*) override;
 

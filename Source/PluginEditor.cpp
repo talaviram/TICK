@@ -20,7 +20,7 @@
 
 //==============================================================================
 TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
-    : AudioProcessorEditor (&p), samplesButton ("Sounds", juce::DrawableButton::ButtonStyle::ImageFitted), settingsButton ("settingsButton", juce::DrawableButton::ImageFitted), sidePanel ("TICK", 280, true), processor (p)
+    : AudioProcessorEditor (&p), samplesButton ("Sounds", juce::DrawableButton::ButtonStyle::ImageFitted), settingsButton ("settingsButton", juce::DrawableButton::ImageFitted), sidePanel ("TICK", 280, true), tickProcessor (p)
 {
 // splash is a 'nicer way' to make JUCE splash requirement for non-GPL builds.
 // this is needed for any non-GPL compliant build...
@@ -28,7 +28,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     TickSplash::didShowSplashOnce = true;
 #endif
     initAppProperties();
-    auto& state = processor.getState();
+    auto& state = tickProcessor.getState();
     background.setBufferedToImage (true);
     addAndMakeVisible (background);
     juce::LookAndFeel::setDefaultLookAndFeel (&lookAndFeel);
@@ -84,12 +84,13 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     settingsButton.setImages (settingsOff.get(), nullptr, settingsOn.get(), nullptr, settingsOn.get());
     addAndMakeVisible (settingsButton);
 
-    settingsButton.onClick = [this] {
-        auto slider = std::make_unique<TickUtils::ParameterSliderItem> (processor.getAPVTS(), IDs::filterCutoff.toString());
+    settingsButton.onClick = [this]
+    {
+        auto slider = std::make_unique<TickUtils::ParameterSliderItem> (tickProcessor.getAPVTS(), IDs::filterCutoff.toString());
         slider->slider.setScrollWheelEnabled (false);
         PopupMenu settings;
         settings.addSectionHeader ("Sync");
-        auto& transport = processor.getState().useHostTransport;
+        auto& transport = tickProcessor.getState().useHostTransport;
         settings.addItem ("Internal", true, ! transport.get(), [&transport] {
             transport.setValue (false, nullptr);
         });
@@ -104,18 +105,18 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
             transport.setValue (true, nullptr);
         });
 #if JUCE_IOS
-        settings.addItem ("Ableton Link..", true, processor.m_link.isLinkConnected(), [this]
-                          { processor.m_link.showSettings (settingsButton, nullptr); });
+        settings.addItem ("Ableton Link..", true, tickProcessor.m_link.isLinkConnected(), [this]
+                          { tickProcessor.m_link.showSettings (settingsButton, nullptr); });
 #endif
         settings.addSeparator();
         PopupMenu viewSubMenu;
-        auto& showWaveform = processor.getState().showWaveform;
-        viewSubMenu.addItem ("Always Show Waveform", true, showWaveform.get(), [&showWaveform, this]
+        auto& showWaveform = tickProcessor.getState().showWaveform;
+        viewSubMenu.addItem ("Always Show Waveform", true, showWaveform.get(), [&showWaveform]
                              { showWaveform.setValue (! showWaveform.get(), nullptr); });
-        auto& showBeatNumber = processor.getState().showBeatNumber;
+        auto& showBeatNumber = tickProcessor.getState().showBeatNumber;
         viewSubMenu.addItem ("Show Beat Number", true, showBeatNumber.get(), [&showBeatNumber]
                              { showBeatNumber.setValue (! showBeatNumber.get(), nullptr); });
-        auto& isVertical = processor.getState().isVertical;
+        auto& isVertical = tickProcessor.getState().isVertical;
         jassert (performView);
         auto& performViewRef = *performView;
         viewSubMenu.addItem ("Vertical Layout", true, isVertical.get(), [&isVertical, &performViewRef]
@@ -162,10 +163,11 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 
     addAndMakeVisible (mainArea);
 
-    samplesPaint = std::make_unique<SamplesPaint> (processor.getTicks());
+    samplesPaint = std::make_unique<SamplesPaint> (tickProcessor.getTicks());
 
-    samplesView = std::make_unique<ManageSamplesView> (*samplesPaint, processor.getTicks());
-    samplesView->closeButton.onClick = [this, &state] {
+    samplesView = std::make_unique<ManageSamplesView> (*samplesPaint, tickProcessor.getTicks());
+    samplesView->closeButton.onClick = [&state]
+    {
         state.view.showEditSamples = false;
     };
     mainArea.addChildComponent (*samplesView);
@@ -173,8 +175,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     topBar.leftButton.setAccessible (false);
     topBar.rightButton.setAccessible (false);
     topBar.centerLabel.getTextValue().referTo (state.presetName.getPropertyAsValue());
-    topBar.centerLabel.onClick = [this] {
-        auto& showPresetValue = processor.getState().view.showPresetsView;
+    topBar.centerLabel.onClick = [this]
+    {
+        auto& showPresetValue = tickProcessor.getState().view.showPresetsView;
         const bool value = showPresetValue.getValue();
         showPresetValue.setValue (! value);
     };
@@ -186,12 +189,12 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     bottomBar.transportButton.getToggleStateValue().referTo (state.transport.isPlaying.getPropertyAsValue());
     // bottomBar add on resize
 
-    performView.reset (new PerformView (processor.getState(), processor.getTicks(), *samplesPaint));
+    performView.reset (new PerformView (tickProcessor.getState(), tickProcessor.getTicks(), *samplesPaint));
     mainArea.addAndMakeVisible (*performView);
 
-    presetsView.reset (new PresetsView (processor.getState(), processor.getTicks()));
+    presetsView.reset (new PresetsView (tickProcessor.getState(), tickProcessor.getTicks()));
 #if JUCE_IOS
-    presetsView->canSharePresets = processor.wrapperType != processor.wrapperType_AudioUnitv3;
+    presetsView->canSharePresets = tickProcessor.wrapperType != tickProcessor.wrapperType_AudioUnitv3;
 #endif
     addAndMakeVisible (*presetsView);
 
@@ -203,14 +206,14 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     sidePanelArea.panel = &sidePanel;
     addAndMakeVisible (sidePanelArea);
 
-    aboutView.reset (new AboutView (AudioProcessor::getWrapperTypeDescription (processor.wrapperType)));
+    aboutView.reset (new AboutView (AudioProcessor::getWrapperTypeDescription (tickProcessor.wrapperType)));
     addChildComponent (aboutView.get());
     aboutView->setAlwaysOnTop (true);
 
     // register view state notifications
-    processor.getState().view.isEdit.addListener (this);
-    processor.getState().view.showEditSamples.addListener (this);
-    processor.getState().view.showPresetsView.addListener (this);
+    tickProcessor.getState().view.isEdit.addListener (this);
+    tickProcessor.getState().view.showEditSamples.addListener (this);
+    tickProcessor.getState().view.showPresetsView.addListener (this);
 
 #if ! JUCE_IOS
     auto useOpenGL = appProperties.getUserSettings()->getBoolValue ("opengl", true);
@@ -253,9 +256,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 TickAudioProcessorEditor::~TickAudioProcessorEditor()
 {
     // unregister view state notifications
-    processor.getState().view.isEdit.removeListener (this);
-    processor.getState().view.showEditSamples.removeListener (this);
-    processor.getState().view.showPresetsView.removeListener (this);
+    tickProcessor.getState().view.isEdit.removeListener (this);
+    tickProcessor.getState().view.showEditSamples.removeListener (this);
+    tickProcessor.getState().view.showPresetsView.removeListener (this);
     juce::LookAndFeel::setDefaultLookAndFeel (nullptr);
 }
 
@@ -293,13 +296,13 @@ void TickAudioProcessorEditor::parentHierarchyChanged()
 
 void TickAudioProcessorEditor::resized()
 {
-    const bool transportOnTopBar = processor.wrapperType == TickAudioProcessor::wrapperType_AudioUnitv3 || (getWidth() >= 375 && getHeight() <= 260);
+    const bool transportOnTopBar = tickProcessor.wrapperType == TickAudioProcessor::wrapperType_AudioUnitv3 || (getWidth() >= 375 && getHeight() <= 260);
     // brute force removal before re-adding
     topBar.removeChildComponent (&bottomBar);
     removeChildComponent (&bottomBar);
 
 #if ! JUCE_IOS || ! JUCE_ANDROID
-    processor.getState().view.windowSize.setValue (String (getWidth()) + "," + String (getHeight()));
+    tickProcessor.getState().view.windowSize.setValue (String (getWidth()) + "," + String (getHeight()));
 #endif
     auto safeArea = Desktop::getInstance().getDisplays().getPrimaryDisplay()->safeAreaInsets;
     constexpr auto notchSafeSides = 32; // we are always being safe...
@@ -344,13 +347,13 @@ void TickAudioProcessorEditor::resized()
     performView->setBounds (performViewArea);
     if (samplesView->isVisible())
         samplesView->setBounds (performView->getBounds());
-    presetsView->setBounds (mainArea.getLocalBounds().translated (0, (bool) processor.getState().view.showPresetsView.getValue() == true ? 0 : getHeight()));
+    presetsView->setBounds (mainArea.getLocalBounds().translated (0, (bool) tickProcessor.getState().view.showPresetsView.getValue() == true ? 0 : getHeight()));
     aboutView->setBounds (getLocalBounds());
 }
 
 bool TickAudioProcessorEditor::keyPressed (const juce::KeyPress& key)
 {
-    if (processor.wrapperType == AudioProcessor::wrapperType_Standalone && ! processor.getState().useHostTransport.get())
+    if (tickProcessor.wrapperType == AudioProcessor::wrapperType_Standalone && ! tickProcessor.getState().useHostTransport.get())
     {
         if (key.getKeyCode() == juce::KeyPress::spaceKey)
         {
@@ -360,13 +363,13 @@ bool TickAudioProcessorEditor::keyPressed (const juce::KeyPress& key)
         }
         if (key.getKeyCode() == juce::KeyPress::upKey)
         {
-            auto& bpmVal = processor.getState().transport.bpm;
+            auto& bpmVal = tickProcessor.getState().transport.bpm;
             bpmVal.setValue (bpmVal.get() + 1, nullptr);
             return true;
         }
         if (key.getKeyCode() == juce::KeyPress::downKey)
         {
-            auto& bpmVal = processor.getState().transport.bpm;
+            auto& bpmVal = tickProcessor.getState().transport.bpm;
             bpmVal.setValue (bpmVal.get() - 1, nullptr);
             return true;
         }
@@ -376,7 +379,7 @@ bool TickAudioProcessorEditor::keyPressed (const juce::KeyPress& key)
 
 void TickAudioProcessorEditor::valueChanged (juce::Value& value)
 {
-    auto& state = processor.getState();
+    auto& state = tickProcessor.getState();
 #if JUCE_DEBUG
     // Indicate dirty only while debugging
     repaint();
@@ -426,12 +429,12 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
 
 void TickAudioProcessorEditor::timerCallback()
 {
-    bool useHostTransport = processor.getState().useHostTransport.get();
-    performView->update (processor.getCurrentBeatPos());
+    bool useHostTransport = tickProcessor.getState().useHostTransport.get();
+    performView->update (tickProcessor.getCurrentBeatPos());
     bottomBar.syncIndicator.setVisible (useHostTransport);
     bottomBar.transportButton.setVisible (! useHostTransport);
 #if JUCE_IOS
-    const auto link = processor.m_link.isLinkConnected();
+    const auto link = tickProcessor.m_link.isLinkConnected();
     bottomBar.transportButton.setColour (juce::DrawableButton::backgroundColourId, link ? TickLookAndFeel::Colours::mint : Colours::transparentBlack);
     bottomBar.transportButton.setColour (juce::DrawableButton::backgroundOnColourId, link ? TickLookAndFeel::Colours::mint : Colours::transparentBlack);
 #endif
@@ -439,7 +442,7 @@ void TickAudioProcessorEditor::timerCallback()
     performView->setTapVisibility (! useHostTransport);
     if (useHostTransport)
     {
-        bottomBar.transportPosition.setText (TickUtils::generateTimecodeDisplay (processor.playheadPosition_), dontSendNotification);
+        bottomBar.transportPosition.setText (TickUtils::generateTimecodeDisplay (tickProcessor.playheadPosition_), dontSendNotification);
     }
     else if (isVisible() && isShowing())
     {

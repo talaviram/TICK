@@ -449,11 +449,12 @@ int PresetsView::PresetModel::getNumRows()
     return owner.directoryContents == nullptr || owner.directoryContents->isStillLoading() ? 0 : owner.directoryContents->getNumFiles();
 }
 
-void PresetsView::PresetModel::paintListBoxItem (int rowNumber, juce::Graphics& g, int width, int height, bool selected)
+void PresetsView::PresetModel::paintListBoxItem (int, juce::Graphics&, int, int, bool)
 {
+    // unused
 }
 
-void PresetsView::PresetModel::listBoxItemClicked (int row, const juce::MouseEvent& e)
+void PresetsView::PresetModel::listBoxItemClicked (int row, const juce::MouseEvent&)
 {
     auto* item = static_cast<PresetView*> (owner.list.getComponentForRowNumber (row));
     if (item->data.isFolder)

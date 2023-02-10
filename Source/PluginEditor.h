@@ -49,8 +49,8 @@ public:
     void paintOverChildren (juce::Graphics& g) override
     {
         g.setColour (juce::Colours::green);
-        g.drawFittedText (juce::String (processor.getSampleRate()), getLocalBounds(), juce::Justification::bottom, 1);
-        if (processor.getState().isDirty)
+        g.drawFittedText (juce::String (tickProcessor.getSampleRate()), getLocalBounds(), juce::Justification::bottom, 1);
+        if (tickProcessor.getState().isDirty)
         {
             g.setColour (juce::Colours::red);
             g.drawFittedText ("DIRTY", getLocalBounds(), juce::Justification::centred, 1);
@@ -118,7 +118,7 @@ private:
     juce::ApplicationProperties appProperties;
     juce::OpenGLContext openglContext;
 
-    TickAudioProcessor& processor;
+    TickAudioProcessor& tickProcessor;
     std::unique_ptr<TickSplash> splash;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TickAudioProcessorEditor)

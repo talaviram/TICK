@@ -60,15 +60,17 @@ juce::Path TickLookAndFeel::createTransportIcon (juce::Rectangle<int> b, const b
     return p;
 }
 
-void TickLookAndFeel::drawOpenCloseArrow (juce::Graphics& g, juce::Rectangle<float> area, juce::Colour colour, bool isOpened)
+void TickLookAndFeel::drawOpenCloseArrow (juce::Graphics& g, juce::Rectangle<float> area, juce::Colour, bool isOpened)
 {
     g.strokePath (getArrowPath (area, isOpened ? 2 : 1, false, juce::Justification::centredRight), juce::PathStrokeType (1.0f));
 }
 
 juce::Path TickLookAndFeel::getArrowPath (juce::Rectangle<float> arrowZone, const int direction, bool filled, const juce::Justification justification)
 {
-    auto w = std::min<int> (arrowZone.getWidth(), (direction == 0 || direction == 2) ? 8.0f : filled ? 5.0f : 8.0f);
-    auto h = std::min<int> (arrowZone.getHeight(), (direction == 0 || direction == 2) ? 5.0f : filled ? 8.0f : 5.0f);
+    auto w = std::min<int> (juce::roundToInt (arrowZone.getWidth()), (direction == 0 || direction == 2) ? 8.0f : filled ? 5.0f
+                                                                                                                        : 8.0f);
+    auto h = std::min<int> (juce::roundToInt (arrowZone.getHeight()), (direction == 0 || direction == 2) ? 5.0f : filled ? 8.0f
+                                                                                                                         : 5.0f);
 
     if (justification == juce::Justification::centred)
     {
@@ -272,9 +274,9 @@ void TickLookAndFeel::drawRotarySlider (juce::Graphics& g, int x, int y, int wid
 
     auto bounds = juce::Rectangle<int> (x, y, width, height).toFloat().reduced (10);
 
-    auto radius = std::min<int> (bounds.getWidth(), bounds.getHeight()) / 2.0f;
+    auto radius = std::min (bounds.getWidth(), bounds.getHeight()) / 2.0f;
     auto toAngle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
-    auto lineW = std::min<float> (8.0f, radius * 0.5f);
+    auto lineW = std::min (8.0f, radius * 0.5f);
     auto arcRadius = radius - lineW * 0.5f;
 
     juce::Path backgroundArc;
@@ -370,7 +372,7 @@ void TickLookAndFeel::drawDialogComponent (juce::Graphics& g, DialogComponent& a
     textLayout.draw (g, alertBounds.toFloat());
 }
 
-juce::Array<int> TickLookAndFeel::getWidthsForTextButtons (const juce::Array<juce::TextButton*>& buttons)
+juce::Array<int> TickLookAndFeel::getWidthsForTextButtonsForDialog (const juce::Array<juce::TextButton*>& buttons)
 {
     const int n = buttons.size();
     juce::Array<int> buttonWidths;
@@ -383,7 +385,7 @@ juce::Array<int> TickLookAndFeel::getWidthsForTextButtons (const juce::Array<juc
     return buttonWidths;
 }
 
-juce::Path TickLookAndFeel::getTickShape (float height)
+juce::Path TickLookAndFeel::getTickShape (float)
 {
     auto check = juce::Drawable::createFromImageData (BinaryData::check_circle24px_svg, BinaryData::check_circle24px_svgSize);
     return check->getOutlineAsPath();

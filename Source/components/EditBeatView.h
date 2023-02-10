@@ -21,7 +21,7 @@ class EditBeatView : public juce::Component, juce::ChangeListener
 {
 public:
     EditBeatView (TickSettings& state, TicksHolder& ticksRef);
-    ~EditBeatView(); // default
+    ~EditBeatView() override;
 
     void resized() override;
     void paint (juce::Graphics&) override;

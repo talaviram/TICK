@@ -12,10 +12,10 @@ SamplesPaint::~SamplesPaint()
     ticks.removeChangeListener (this);
 }
 
-void SamplesPaint::changeListenerCallback (juce::ChangeBroadcaster* source)
+void SamplesPaint::changeListenerCallback (juce::ChangeBroadcaster*)
 {
     thumbnails.clear();
-    for (auto i = 0; i < ticks.getNumOfTicks(); i++)
+    for (size_t i = 0; i < ticks.getNumOfTicks(); i++)
     {
         thumbnails.push_back (std::make_unique<juce::AudioThumbnail> (1, audioFormatManager, thumbCache));
         // all tick samples are stored as 44.1khz/32bit upto 2 seconds!
@@ -30,8 +30,9 @@ void SamplesPaint::changeListenerCallback (juce::ChangeBroadcaster* source)
     sendChangeMessage();
 }
 
-void SamplesPaint::drawTick (juce::Graphics& g, juce::Rectangle<int> bounds, const int tickIndex, const float scale, juce::Colour baseColour)
+void SamplesPaint::drawTick (juce::Graphics& g, juce::Rectangle<int> bounds, const int idx, const float scale, juce::Colour baseColour)
 {
+    auto tickIndex = static_cast<size_t> (idx);
     jassert (tickIndex < ticks.getNumOfTicks());
     const auto width = bounds.getWidth();
     const auto& tick = ticks[tickIndex];
@@ -42,8 +43,8 @@ void SamplesPaint::drawTick (juce::Graphics& g, juce::Rectangle<int> bounds, con
     {
         return; // thumbnail isn't ready yet! usually when editing
     }
-    thumbnails[tickIndex]->drawChannels (g, bounds.removeFromLeft (width * (tick.getStartInSec() / totalLengthInSecs)), 0.0, tick.getStartInSec(), gain);
-    thumbnails[tickIndex]->drawChannels (g, bounds.removeFromRight (width * (1.0 - tick.getEndInSec() / totalLengthInSecs)), tick.getEndInSec(), totalLengthInSecs, gain);
+    thumbnails[tickIndex]->drawChannels (g, bounds.removeFromLeft (static_cast<int> (width * (tick.getStartInSec() / totalLengthInSecs))), 0.0, tick.getStartInSec(), gain);
+    thumbnails[tickIndex]->drawChannels (g, bounds.removeFromRight (static_cast<int> (width * (1.0 - tick.getEndInSec() / totalLengthInSecs))), tick.getEndInSec(), totalLengthInSecs, gain);
     g.setColour (baseColour);
     thumbnails[tickIndex]->drawChannels (g, bounds, tick.getStartInSec(), tick.getEndInSec(), gain);
 }

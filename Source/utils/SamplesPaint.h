@@ -8,7 +8,7 @@ class SamplesPaint
 {
 public:
     SamplesPaint (TicksHolder& ticks);
-    ~SamplesPaint();
+    ~SamplesPaint() override;
 
     void drawTick (juce::Graphics& g, juce::Rectangle<int> bounds, int tickIndex, float scale = 1.0f, juce::Colour baseColour = juce::Colours::white.withAlpha (0.3f));
 

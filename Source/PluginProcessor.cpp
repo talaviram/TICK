@@ -119,21 +119,21 @@ int TickAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void TickAudioProcessor::setCurrentProgram (int index)
+void TickAudioProcessor::setCurrentProgram (int /*index*/)
 {
 }
 
-const String TickAudioProcessor::getProgramName (int index)
+const String TickAudioProcessor::getProgramName (int /*index*/)
 {
     return {};
 }
 
-void TickAudioProcessor::changeProgramName (int index, const String& newName)
+void TickAudioProcessor::changeProgramName (int /*index*/, const String& /*newName*/)
 {
 }
 
 //==============================================================================
-void TickAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void TickAudioProcessor::prepareToPlay (double sampleRate, int /*samplesPerBlock*/)
 {
     getState().samplerate = sampleRate;
     ticks.setSampleRate (sampleRate);
@@ -179,7 +179,7 @@ bool TickAudioProcessor::isHostSyncSupported()
     return wrapperType != AudioProcessor::wrapperType_Standalone;
 }
 
-void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
+void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
 {
     ScopedNoDenormals noDenormals;
     //    if (wrapperType != wrapperType_Standalone)
@@ -259,7 +259,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
         const auto bpSmp = getSampleRate() / bps;
         const auto ttq = (4.0 / ts.denominator); // tick to quarter
         const auto tickAt = ttq / tickMultiplier; // tick every (1.0 = 1/4, 0.5 = 1/8, ...)
-        const auto tickLengthInSamples = tickAt * bpSmp;
+        const auto tickLengthInSamples = (int) std::ceil (tickAt * bpSmp);
 
         const auto ppqFromBufStart = fmod (pos, tickAt);
         const double ppqOffset = tickAt - ppqFromBufStart;
@@ -292,11 +292,11 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& mi
             // add tick(s) to current buffer
             currentSampleToTick = roundToInt (ppqPosInBuf * bpSmp);
             ppqPosInBuf += tickAt; // next sample
-            tickState.beat = floor (fmod ((pos + ppqPosInBuf) / ttq, ts.numerator)); // + 1;
+            tickState.beat = juce::roundToInt (floor (fmod ((pos + ppqPosInBuf) / ttq, ts.numerator))); // + 1;
             if (tickState.beat == 0)
                 tickState.beat = ts.numerator;
             const auto& beatAssign = settings.beatAssignments[jlimit (1, TickSettings::kMaxBeatAssignments, tickState.beat) - 1];
-            const auto tickIdx = jlimit (0, jmax ((int) ticks.getNumOfTicks() - 1, 0), beatAssign.tickIdx.get());
+            const auto tickIdx = (size_t) jlimit (0, jmax ((int) ticks.getNumOfTicks() - 1, 0), beatAssign.tickIdx.get());
             tickState.refer[0] = ticks[tickIdx].getTickAudioBuffer();
             tickState.sample.makeCopyOf (AudioSampleBuffer (tickState.refer, 1, ticks[tickIdx].getLengthInSamples()));
             tickState.sample.applyGain (ticks[tickIdx].getGain());
@@ -337,7 +337,7 @@ void TickAudioProcessor::getStateInformation (MemoryBlock& destData)
 
 void TickAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    auto* stream = new MemoryInputStream (data, sizeInBytes, false);
+    auto* stream = new MemoryInputStream (data, (size_t) sizeInBytes, false);
     ZipFile archive (stream, true);
     settings.loadFromArchive (archive, ticks, false);
     auto* cutOff = parameters.getParameter (IDs::filterCutoff);

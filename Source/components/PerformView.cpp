@@ -14,8 +14,8 @@
 #include "EditBeatView.h"
 #include "utils/SamplesPaint.h"
 
-PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, SamplesPaint& samplesPaint)
-    : state (stateToLink), ticks (ticksToLink), samplesPaint (samplesPaint), editView (std::make_unique<EditBeatView> (state, ticks))
+PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, SamplesPaint& paint)
+    : state (stateToLink), ticks (ticksToLink), samplesPaint (paint), editView (std::make_unique<EditBeatView> (state, ticks))
 {
     using namespace juce;
 
@@ -82,10 +82,10 @@ void PerformView::selectionChanged (const int index, const bool propogateToEditV
         std::vector<int> newSelection { index };
         editView->updateSelection (newSelection);
     }
-    for (auto idx = 0; idx < beats.size(); idx++)
+    for (size_t idx = 0; idx < beats.size(); idx++)
     {
         jassert (idx < 64);
-        beats[idx]->isSelected = idx == index;
+        beats[idx]->isSelected = idx == (size_t) index;
     }
 }
 
@@ -111,11 +111,11 @@ void PerformView::resized()
 
     const auto isVertical = state.isVertical.get();
     beatsInRow = juce::jlimit (1, 8, juce::jmin (state.transport.numerator.get(), state.transport.denumerator.get()));
-    const auto beatSize = std::floor<int> (((isVertical ? area.getHeight() : area.getWidth()) - 2 * kMargin) / beatsInRow) - 2 * kMargin;
-    const auto beatHeight = std::min<int> (beatSize, area.getHeight() - 3 * kMargin);
+    const int beatSize = static_cast<int> (std::floor (((isVertical ? area.getHeight() : area.getWidth()) - 2 * kMargin)) / beatsInRow) - 2 * kMargin;
+    const auto beatHeight = (int) std::min (beatSize, area.getHeight() - 3 * kMargin);
     const auto itemWidth = isVertical ? area.getWidth() - 2 * kMargin - viewport.getScrollBarThickness() : beatSize;
     const auto numOfBeats = state.transport.numerator.get();
-    beatsView.setBounds (area.withHeight (std::max<int> (area.getHeight(), (isVertical ? state.transport.numerator.get() : std::ceil (numOfBeats / beatsInRow)) * (beatSize + 2 * kMargin) + kMargin)).withWidth (area.getWidth() - viewport.getScrollBarThickness()));
+    beatsView.setBounds (area.withHeight (std::max (area.getHeight(), (isVertical ? state.transport.numerator.get() : (int) std::ceil (numOfBeats / beatsInRow)) * (beatSize + 2 * kMargin) + kMargin)).withWidth (area.getWidth() - viewport.getScrollBarThickness()));
     juce::FlexBox fb (isVertical ? juce::FlexBox::Direction::column : juce::FlexBox::Direction::row, juce::FlexBox::Wrap::wrap, juce::FlexBox::AlignContent::flexStart, juce::FlexBox::AlignItems::center, juce::FlexBox::JustifyContent::flexStart);
     for (auto& beat : beats)
     {
@@ -134,7 +134,7 @@ void PerformView::update (double currentPos)
 {
     const auto numOfBeats = state.transport.numerator.get();
     const auto denumrator = state.transport.denumerator.get();
-    if (numOfBeats != beats.size() || beatsInRow != denumrator)
+    if ((size_t) numOfBeats != beats.size() || beatsInRow != denumrator)
     {
         beats.clear();
         for (auto beat = 0; beat < numOfBeats; beat++)
@@ -149,12 +149,12 @@ void PerformView::update (double currentPos)
     const auto beatPosExclusive = std::max<double> (0, currentPos - 1.0);
     const auto currentBeat = floor (beatPosExclusive);
     const auto barPos = beatPosExclusive - currentBeat;
-    for (auto num = 0; num < numOfBeats; num++)
+    for (size_t num = 0; num < (size_t) numOfBeats; num++)
     {
         auto& beat = *beats[num];
         beat.isOn = num < currentBeat;
         beat.isCurrent = num == currentBeat;
-        beat.relativePos = beat.isCurrent ? barPos : 0.0;
+        beat.relativePos = static_cast<float> (beat.isCurrent ? barPos : 0.0);
         beat.repaint();
         if (state.transport.isPlaying.get() && ! isEditMode && beat.isCurrent && (viewport.getViewArea().getBottom() < beat.getY() || viewport.getViewArea().getY() > beat.getY()))
         {
@@ -220,7 +220,7 @@ bool PerformView::BeatView::isInterestedInFileDrag (const juce::StringArray& fil
 
     return true;
 }
-void PerformView::BeatView::filesDropped (const juce::StringArray& files, int x, int y)
+void PerformView::BeatView::filesDropped (const juce::StringArray& files, int /*x*/, int /*y*/)
 {
     auto possibleTick = std::unique_ptr<Tick> (owner.ticks.importAudioFile (juce::File (files[0])));
     if (possibleTick)
@@ -232,7 +232,7 @@ void PerformView::BeatView::filesDropped (const juce::StringArray& files, int x,
     repaint();
 }
 
-void PerformView::BeatView::fileDragEnter (const juce::StringArray&, int x, int y)
+void PerformView::BeatView::fileDragEnter (const juce::StringArray&, int /*x*/, int /*y*/)
 {
     hasDraggedItem = true;
     repaint();
@@ -276,16 +276,16 @@ void PerformView::BeatView::paint (juce::Graphics& g)
         g.setColour (juce::Colours::white);
         g.drawRoundedRectangle (getLocalBounds().toFloat().reduced (1.0f), cornerSize, cornerSize);
     }
-    if ((owner.isEditMode || owner.state.showWaveform.get()) && tickIndex < owner.ticks.getNumOfTicks())
+    if ((owner.isEditMode || owner.state.showWaveform.get()) && (size_t) tickIndex < owner.ticks.getNumOfTicks())
         owner.samplesPaint.drawTick (g, getLocalBounds().reduced (10), tickIndex, assignment.gain.get(), juce::Colours::white.withAlpha (isCurrent && ! owner.state.showBeatNumber.get() ? 1.0f : isSelected || owner.state.showBeatNumber.get() ? 0.7f
                                                                                                                                                                                                                                                  : 0.3f));
 
     if (! owner.isEditMode && owner.state.showBeatNumber.get())
     {
-        auto bounds = getLocalBounds();
+        const auto curBounds = getLocalBounds();
         g.setColour (juce::Colours::white.withAlpha (isCurrent ? 1.0f : 0.1f));
-        g.setFont (juce::Font (std::max<int> (4, bounds.getHeight() - 20)));
-        g.drawFittedText (juce::String (index + 1), bounds, juce::Justification::centred, 1);
+        g.setFont (juce::Font (std::max<int> (4, curBounds.getHeight() - 20)));
+        g.drawFittedText (juce::String (index + 1), curBounds, juce::Justification::centred, 1);
     }
 
     if (hasDraggedItem)
@@ -369,7 +369,7 @@ void PerformView::BeatView::mouseDown (const juce::MouseEvent& e)
 #endif
 }
 
-void setupSigLabel (juce::Label& l)
+static void setupSigLabel (juce::Label& l)
 {
     l.setFont (juce::Font (30.0));
     l.setKeyboardType (juce::TextEditor::VirtualKeyboardType::phoneNumberKeyboard);

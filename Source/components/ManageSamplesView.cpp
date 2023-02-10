@@ -14,8 +14,8 @@
 #include "LookAndFeel.h"
 #include "utils/UtilityFunctions.h"
 
-ManageSamplesView::ManageSamplesView (SamplesPaint& samplesPaint, TicksHolder& ticksRef)
-    : ticks (ticksRef), samplesPaint (samplesPaint)
+ManageSamplesView::ManageSamplesView (SamplesPaint& paint, TicksHolder& ticksRef)
+    : ticks (ticksRef), samplesPaint (paint)
 {
     using namespace juce;
 
@@ -29,7 +29,7 @@ ManageSamplesView::ManageSamplesView (SamplesPaint& samplesPaint, TicksHolder& t
 void ManageSamplesView::updateSelection (const int index)
 {
     lastSelection = index;
-    auto* tick = index >= 0 && ticks.getNumOfTicks() > 0 ? &ticks[index] : nullptr;
+    auto* tick = index >= 0 && ticks.getNumOfTicks() > 0 ? &ticks[size_t (index)] : nullptr;
     editSection.setSelectedSample (tick);
 }
 
@@ -136,7 +136,7 @@ ManageSamplesView::CloseButton::CloseButton()
 {
 }
 
-void ManageSamplesView::CloseButton::paintButton (juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown)
+void ManageSamplesView::CloseButton::paintButton (juce::Graphics& g, bool /*shouldDrawButtonAsHighlighted*/, bool /*shouldDrawButtonAsDown*/)
 {
     g.setColour (juce::Colours::grey.withAlpha (0.6f));
     g.fillEllipse (getLocalBounds().toFloat());

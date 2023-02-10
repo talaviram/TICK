@@ -42,7 +42,7 @@ String TickUtils::getPresetHash (InputStream& zipSource)
     return String();
 }
 
-std::unique_ptr<Drawable> replaceColourAndReturnCopy (Drawable* baseImage, Colour newColour, Colour baseColour = Colours::black)
+static std::unique_ptr<Drawable> replaceColourAndReturnCopy (Drawable* baseImage, Colour newColour, Colour baseColour = Colours::black)
 {
     auto colouredImage = baseImage->createCopy();
     colouredImage->replaceColour (baseColour, newColour);
