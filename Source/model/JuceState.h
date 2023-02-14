@@ -81,12 +81,6 @@ struct ConstrainerWrapper
         value = Constrainer::constrain (other);
     }
 
-    ConstrainerWrapper& operator= (const ConstrainerWrapper& other) noexcept
-    {
-        value = Constrainer::constrain (other.value);
-        return *this;
-    }
-
     bool operator== (const ConstrainerWrapper& other) const noexcept { return value == other.value; }
     bool operator!= (const ConstrainerWrapper& other) const noexcept { return value != other.value; }
 
