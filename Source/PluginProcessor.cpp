@@ -233,7 +233,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
 
     // setValue only triggers if value is different
     if (playheadPosition_.getBpm().hasValue())
-        settings.transport.bpm.setValue (*playheadPosition_.getBpm(), nullptr);
+        settings.transport.bpm.setValue ((float) *playheadPosition_.getBpm(), nullptr);
     if (playheadPosition_.getTimeSignature().hasValue())
     {
         const auto ts = *playheadPosition_.getTimeSignature();
