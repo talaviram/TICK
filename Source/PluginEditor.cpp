@@ -109,6 +109,18 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
                           { tickProcessor.m_link.showSettings (settingsButton, nullptr); });
 #endif
         settings.addSeparator();
+        PopupMenu preCountMenu;
+        auto& preCount = tickProcessor.getState().transport.preCount;
+        preCountMenu.addItem ("Off", true, preCount.get() == 0, [&preCount]
+                              { preCount.setValue (0, nullptr); });
+        preCountMenu.addItem ("1BAR", true, preCount.get() == 1, [&preCount]
+                              { preCount.setValue (1, nullptr); });
+        preCountMenu.addItem ("2BAR", true, preCount.get() == 2, [&preCount]
+                              { preCount.setValue (2, nullptr); });
+        preCountMenu.addItem ("3BAR", true, preCount.get() == 3, [&preCount]
+                              { preCount.setValue (3, nullptr); });
+        settings.addSubMenu ("Pre-Count", preCountMenu, ! tickProcessor.getState().useHostTransport.get());
+
         PopupMenu viewSubMenu;
         auto& showWaveform = tickProcessor.getState().showWaveform;
         viewSubMenu.addItem ("Always Show Waveform", true, showWaveform.get(), [&showWaveform]
