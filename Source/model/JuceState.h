@@ -41,6 +41,7 @@ namespace IDs
     DECLARE_ID (denumerator)
     DECLARE_ID (bpm)
     DECLARE_ID (isPlaying)
+    DECLARE_ID (preCount)
 
     DECLARE_ID (numOfTicks)
 
@@ -333,6 +334,7 @@ struct Transport : public juce::Value::Listener
     juce::CachedValue<int> denumerator;
     juce::CachedValue<ConstrainerWrapper<float, BPMConstrainer>> bpm;
     juce::CachedValue<bool> isPlaying;
+    juce::CachedValue<int> preCount;
 
     juce::Value meterAsText;
     // manage meter as text
@@ -529,6 +531,7 @@ public:
                 transport.denumerator.setValue (child.getProperty (IDs::denumerator), nullptr);
                 transport.meterAsText = getMeterAsText();
                 useHostTransport.setValue (loadedUseHostState, nullptr);
+                transport.preCount.setValue (child.getProperty (IDs::preCount), nullptr);
             }
             if (child.getType() == IDs::BEAT)
             {
@@ -614,12 +617,14 @@ private:
             transportTree.setProperty (IDs::numerator, 4, nullptr);
             transportTree.setProperty (IDs::denumerator, 4, nullptr);
             transportTree.setProperty (IDs::bpm, 120, nullptr);
+            transportTree.setProperty (IDs::preCount, 0, nullptr);
             transport.meterAsText.setValue ("4/4");
             state.appendChild (transportTree, nullptr);
             transport.isPlaying.referTo (transportTree, IDs::isPlaying, nullptr);
             transport.numerator.referTo (transportTree, IDs::numerator, nullptr);
             transport.denumerator.referTo (transportTree, IDs::denumerator, nullptr);
             transport.bpm.referTo (transportTree, IDs::bpm, nullptr);
+            transport.preCount.referTo (transportTree, IDs::preCount, nullptr);
         }
         jassert (state.isValid());
     }

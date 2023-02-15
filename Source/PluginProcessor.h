@@ -79,6 +79,7 @@ public:
     AbletonLink m_link;
 #endif
 private:
+    void handlePreCount (double inputPPQ);
     double ppqEndVal;
 
     // audio samples bank

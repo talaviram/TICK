@@ -179,6 +179,19 @@ bool TickAudioProcessor::isHostSyncSupported()
     return wrapperType != AudioProcessor::wrapperType_Standalone;
 }
 
+void TickAudioProcessor::handlePreCount (const double inputPPQ)
+{
+    const int preCount = getState().transport.preCount.get();
+    if (preCount <= 0 || getState().useHostTransport.get())
+        return;
+    // auto stop
+    const auto ts = playheadPosition_.getTimeSignature().orFallback (AudioPlayHead::TimeSignature ({ 4 / 4 }));
+    const auto ttq = (4.0 / ts.denominator); // tick to quarter
+    const auto expectedBar = std::floor (inputPPQ / ttq / ts.numerator);
+    if (expectedBar == preCount)
+        getState().transport.isPlaying.setValue (false, nullptr);
+}
+
 void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
 {
     ScopedNoDenormals noDenormals;
@@ -267,6 +280,9 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
         const auto bufEndInSecs = bufStartInSecs + (buffer.getNumSamples() / getSampleRate());
         ppqEndVal = pos + ((bufEndInSecs - bufStartInSecs) * bps);
         const auto bufLengthInPPQ = bps * (buffer.getNumSamples() / getSampleRate());
+
+        // stop if precount is on and counted enough bars
+        handlePreCount (ppqEndVal + bufLengthInPPQ);
 
         auto ppqToBufEnd = bufLengthInPPQ;
         auto ppqPosInBuf = ppqOffset;
