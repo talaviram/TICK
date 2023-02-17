@@ -27,6 +27,7 @@ namespace IDs
 
     DECLARE_ID (useHostTransport)
     DECLARE_ID (filterCutoff)
+    DECLARE_ID (masterGain)
     DECLARE_ID (showWaveform)
     DECLARE_ID (showBeatNumber)
     DECLARE_ID (isVertical)
@@ -396,6 +397,7 @@ public:
             stateToStore.removeProperty (IDs::isVertical, nullptr);
             // we don't really use APVTS so we manually add it
             stateToStore.removeProperty (IDs::filterCutoff, nullptr);
+            stateToStore.removeProperty (IDs::masterGain, nullptr);
         }
 
         juce::String stateUuid = stateToStore.getProperty (IDs::uuid);
@@ -517,6 +519,7 @@ public:
         if (stateToLoad.hasProperty (IDs::isVertical))
             isVertical.setValue (stateToLoad.getProperty (IDs::isVertical, false), nullptr);
         cutoffFilter.setValue (stateToLoad.getProperty (IDs::filterCutoff, cutoffFilter.getDefault()), nullptr);
+        masterGain.setValue (stateToLoad.getProperty (IDs::masterGain, masterGain.getDefault()), nullptr);
         view.windowSize.setValue (stateToLoad.getProperty (IDs::viewSize));
 
         // only use this if transport data existed
@@ -570,6 +573,7 @@ public:
     juce::CachedValue<bool> showBeatNumber;
     juce::CachedValue<bool> isVertical;
     juce::CachedValue<float> cutoffFilter;
+    juce::CachedValue<float> masterGain;
     juce::CachedValue<int> numOfTicks;
     juce::String presetHash;
     double samplerate { 0 };
@@ -597,6 +601,7 @@ private:
             showBeatNumber.referTo (state, IDs::showBeatNumber, nullptr, false);
             isVertical.referTo (state, IDs::isVertical, nullptr, false);
             cutoffFilter.referTo (state, IDs::filterCutoff, nullptr, 20000.0f);
+            masterGain.referTo (state, IDs::masterGain, nullptr, 0.0f);
             numOfTicks.referTo (state, IDs::numOfTicks, nullptr, 0);
             view.windowSize.referTo (state.getPropertyAsValue (IDs::viewSize, nullptr));
         }

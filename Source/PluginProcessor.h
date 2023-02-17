@@ -111,6 +111,7 @@ private:
     // Parameters
     std::atomic<float> tickMultiplier {1.0f};
     std::atomic<float>* filterCutoff;
+    std::atomic<float>* masterGain;
     juce::AudioProcessorValueTreeState parameters;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TickAudioProcessor)

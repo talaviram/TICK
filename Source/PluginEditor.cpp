@@ -139,6 +139,10 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addSeparator();
         settings.addSectionHeader ("Low-Pass Filter");
         settings.addCustomItem (222, std::move (slider));
+        auto gainSlider = std::make_unique<TickUtils::ParameterSliderItem> (tickProcessor.getAPVTS(), IDs::masterGain.toString());
+        gainSlider->slider.setScrollWheelEnabled (false);
+        settings.addSectionHeader ("Master Gain");
+        settings.addCustomItem (223, std::move (gainSlider));
         settings.addSeparator();
 #if ! JUCE_IOS && ! JUCE_ANDROID
         // for standalone props needs to come from it.

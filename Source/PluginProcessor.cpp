@@ -44,12 +44,20 @@ TickAudioProcessor::TickAudioProcessor()
                                                                                                          20000.0f,
                                                                                                          AudioParameterFloatAttributes().withStringFromValueFunction ([] (auto val, auto)
                                                                                                                                                                       { return String (roundToInt (val)) + "Hz"; })
-                                                                                                             .withLabel ("Hz")) })
+                                                                                                             .withLabel ("Hz")),
+                                                                  std::make_unique<AudioParameterFloat> (ParameterID (IDs::masterGain.toString(), 1), // parameter ID
+                                                                                                         "Master Gain", // parameter name
+                                                                                                         NormalisableRange<float> (-60.0f, 6.0f),
+                                                                                                         0.0f,
+                                                                                                         AudioParameterFloatAttributes().withStringFromValueFunction ([] (auto val, auto)
+                                                                                                                                                                      { return String (roundToInt (val)) + "dB"; })
+                                                                                                             .withLabel ("dB")) })
 {
     // init samples reading
     ticks.clear();
 
     filterCutoff = parameters.getRawParameterValue (IDs::filterCutoff.toString());
+    masterGain = parameters.getRawParameterValue (IDs::masterGain.toString());
 
     // load default preset
     setStateInformation (BinaryData::factory_default_preset, BinaryData::factory_default_presetSize);
@@ -329,6 +337,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
         tickState.fillTickSample (buffer);
         ticks.getLock().unlock();
     }
+    buffer.applyGain (Decibels::decibelsToGain (masterGain->load()));
 }
 
 //==============================================================================
@@ -348,6 +357,7 @@ void TickAudioProcessor::getStateInformation (MemoryBlock& destData)
     // save
     MemoryOutputStream writeStream (destData, false);
     settings.cutoffFilter.setValue (filterCutoff->load(), nullptr);
+    settings.masterGain.setValue (masterGain->load(), nullptr);
     settings.saveToArchive (writeStream, ticks, false, false);
 }
 
@@ -358,6 +368,8 @@ void TickAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
     settings.loadFromArchive (archive, ticks, false);
     auto* cutOff = parameters.getParameter (IDs::filterCutoff);
     cutOff->setValueNotifyingHost (cutOff->convertTo0to1 (settings.cutoffFilter.get()));
+    auto* gain = parameters.getParameter (IDs::masterGain);
+    gain->setValueNotifyingHost (gain->convertTo0to1 (settings.masterGain.get()));
 }
 
 double TickAudioProcessor::getCurrentBeatPos()
