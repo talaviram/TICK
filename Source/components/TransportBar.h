@@ -18,6 +18,6 @@ public:
     TransportBar();
     void resized() override;
     juce::DrawableButton transportButton;
-    juce::DrawableButton syncIndicator;
+    juce::DrawableButton syncIndicator, preCountIndicator;
     juce::Label transportPosition;
 };

@@ -441,10 +441,12 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
 
 void TickAudioProcessorEditor::timerCallback()
 {
-    bool useHostTransport = tickProcessor.getState().useHostTransport.get();
+    const bool useHostTransport = tickProcessor.getState().useHostTransport.get();
+    const int preCount = tickProcessor.getState().transport.preCount.get();
     performView->update (tickProcessor.getCurrentBeatPos());
-    bottomBar.syncIndicator.setVisible (useHostTransport);
     bottomBar.transportButton.setVisible (! useHostTransport);
+    bottomBar.preCountIndicator.setVisible (! useHostTransport && preCount > 0);
+    bottomBar.preCountIndicator.setButtonText (String (preCount) + "BAR");
 #if JUCE_IOS
     const auto link = tickProcessor.m_link.isLinkConnected();
     bottomBar.transportButton.setColour (juce::DrawableButton::backgroundColourId, link ? TickLookAndFeel::Colours::mint : Colours::transparentBlack);

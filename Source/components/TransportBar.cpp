@@ -13,7 +13,7 @@
 using namespace juce;
 
 TransportBar::TransportBar()
-    : transportButton ("transportButton", juce::DrawableButton::ImageFitted), syncIndicator ("syncIndicator", juce::DrawableButton::ImageAboveTextLabel)
+    : transportButton ("transportButton", juce::DrawableButton::ImageFitted), syncIndicator ("syncIndicator", juce::DrawableButton::ImageAboveTextLabel), preCountIndicator ("preCountIndicator", juce::DrawableButton::ImageAboveTextLabel)
 {
     auto syncOn = juce::Drawable::createFromImageData (BinaryData::lock_clock24px_svg, BinaryData::lock_clock24px_svgSize);
     syncOn->replaceColour (Colours::black, Colours::grey);
@@ -23,6 +23,11 @@ TransportBar::TransportBar()
     syncIndicator.setImages (syncOn.get(), nullptr, nullptr, nullptr);
     syncIndicator.setInterceptsMouseClicks (false, false);
     addChildComponent (syncIndicator);
+
+    preCountIndicator.setButtonText ("0BAR");
+    preCountIndicator.setColour (DrawableButton::textColourId, Colours::white);
+    syncIndicator.setInterceptsMouseClicks (false, false);
+    addChildComponent (preCountIndicator);
 
     auto transportIconPlay = Drawable::createFromImageData (BinaryData::playbutton_svg, BinaryData::playbutton_svgSize);
     auto transportIconStop = Drawable::createFromImageData (BinaryData::stopbutton_svg, BinaryData::stopbutton_svgSize);
@@ -46,4 +51,5 @@ void TransportBar::resized()
     transportPosition.setBounds (area);
     transportButton.setBounds (area.reduced (6, 0));
     syncIndicator.setBounds (transportButton.getBounds().removeFromLeft (getHeight()).reduced (4));
+    preCountIndicator.setBounds (transportButton.getBounds());
 }
