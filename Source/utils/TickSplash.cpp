@@ -3,7 +3,7 @@
 bool TickSplash::didShowSplashOnce = false;
 
 // consider JUCE splash...
-static const int millisecondsToDisplaySplash = 2 * 2000;
+constexpr int millisecondsToDisplaySplash = 2 * 1000;
 static uint32 splashDisplayTime = 0;
 
 TickSplash::TickSplash (Component& parent)
