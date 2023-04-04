@@ -24,10 +24,6 @@ public:
     juce::File getFileForIndex (int) const;
     void savePreset (juce::File, bool discardTransport);
 
-    // Used to avoid share on iOS AUv3
-    // Due to JUCE Share not properly supporting sandbox
-    bool canSharePresets = true;
-
 private:
     TickSettings& state;
     TicksHolder& ticks;
@@ -99,4 +95,5 @@ private:
 
     // juce::ChangeListener
     void changeListenerCallback (juce::ChangeBroadcaster*) override;
+    juce::ScopedMessageBox shareBox;
 };

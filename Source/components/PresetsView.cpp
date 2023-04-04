@@ -529,7 +529,7 @@ PresetsView::PresetView::PresetView()
         p.addItem (2, "Delete", true, false, std::move (deleteIcon));
         p.addSeparator();
 #if JUCE_IOS || JUCE_ANDROID
-        p.addItem (3, "Share", presetsView->canSharePresets, false, std::move (shareIcon));
+        p.addItem (3, "Share", true, false, std::move (shareIcon));
 #endif
         auto options = juce::PopupMenu::Options().withParentComponent (getParentComponent()->getParentComponent()->getParentComponent()).withTargetComponent (moreOptions);
         p.showMenuAsync (options, [this] (int value) {
@@ -551,7 +551,11 @@ PresetsView::PresetView::PresetView()
                     break;
                 case 3:
 #if JUCE_IOS || JUCE_ANDROID
-                    juce::ContentSharer::getInstance()->shareFiles ({ presetsView->getFileForIndex (index) }, [] (bool, String) {});
+                {
+                    ScopedMessageBox messageBox = juce::ContentSharer::shareFilesScoped (
+                                                                               { presetsView->getFileForIndex (index) }, [] (bool, String) {}, getTopLevelComponent());
+                    presetsView->shareBox = std::move (messageBox);
+                }
 #endif
                     break;
                 default:

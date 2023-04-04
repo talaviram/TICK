@@ -209,9 +209,6 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     mainArea.addAndMakeVisible (*performView);
 
     presetsView.reset (new PresetsView (tickProcessor.getState(), tickProcessor.getTicks()));
-#if JUCE_IOS
-    presetsView->canSharePresets = tickProcessor.wrapperType != tickProcessor.wrapperType_AudioUnitv3;
-#endif
     addAndMakeVisible (*presetsView);
 
     sidePanelArea.setAlwaysOnTop (true);
