@@ -243,7 +243,7 @@ void DialogComponent::updateLayout()
     {
         auto idealBtnWidth = roundToInt (getWidth() / buttons.size());
         const auto windowHeight = lf.getAlertWindowButtonHeight();
-        auto buttonsArea = getLocalBounds().withY (getHeight() - windowHeight - 1).withHeight (h);
+        auto buttonsArea = getLocalBounds().withY (getHeight() - windowHeight - 1).withHeight (windowHeight);
         for (auto* c : buttons)
         {
             const auto ideal = jmax (lf.getTextButtonWidthToFitText (*c, buttonsArea.getHeight()), idealBtnWidth);
