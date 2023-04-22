@@ -422,7 +422,7 @@ public:
         streamToWrite.flush();
     }
 
-    void loadFromArchive (juce::ZipFile& archive, TicksHolder& ticks, const bool isPreset = true)
+    void loadFromArchive (juce::ZipFile& archive, TicksHolder& ticks, const bool /*isPreset*/)
     {
         if (archive.getNumEntries() == 0)
         {

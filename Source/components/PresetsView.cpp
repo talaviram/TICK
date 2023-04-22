@@ -377,7 +377,7 @@ void PresetsView::renamePreset (juce::File& file, const juce::String& newName, c
 void PresetsView::loadPreset (juce::File presetFile)
 {
     juce::ZipFile preset (new juce::FileInputStream (presetFile), true);
-    state.loadFromArchive (preset, ticks);
+    state.loadFromArchive (preset, ticks, true);
 }
 
 void PresetsView::savePreset (juce::File presetNameToSave, const bool discardTransport)
