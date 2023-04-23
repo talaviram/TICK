@@ -5,7 +5,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <objc/message.h>
 #include <mach/mach_time.h>
-#include "../../JUCE/modules/juce_core/native/juce_mac_ObjCHelpers.h"
+#include "../../JUCE/modules/juce_core/native/juce_ObjCHelpers_mac.h"
 #include "ABLLinkSettingsViewController.h"
 
 using namespace juce;
