@@ -33,6 +33,9 @@ DisableWelcomePage=False
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
+[InstallDelete]
+Type: filesandordirs; Name: "{commoncf}\VST3\TICK.vst3"
+
 [Files]
 Source: "..\build\TICK_artefacts\RelWithDebInfo\Standalone\TICK.exe"; DestDir: "{autopf}\{#MyAppName}"; Flags: ignoreversion; Components: standalone
 Source: "..\build\TICK_artefacts\RelWithDebInfo\VST3\TICK.vst3"; DestDir: "{commoncf}\VST3"; Flags: ignoreversion recursesubdirs; Components: vst3
