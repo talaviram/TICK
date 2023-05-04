@@ -209,7 +209,7 @@
     <ANDROIDSTUDIO targetFolder="Builds/Android" androidPushNotifications="0" androidExtraAssetsFolder="Installer/Factory"
                    androidTheme="@android:style/Theme.NoTitleBar" smallIcon="OKPwIG"
                    bigIcon="OKPwIG" androidEnableContentSharing="1" androidGradleSettingsContent="def task = &quot;cmake -Dlocal_dir=../.. -Doutput_dir=../../Source/utils -P ../../cmake/gitversion.cmake&quot;.execute()&#10;task.waitFor()&#10;println task.text&#10;"
-                   androidVersionCode="4">
+                   androidVersionCode="5">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="TICK"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="TICK"/>
