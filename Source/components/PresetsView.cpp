@@ -553,7 +553,9 @@ PresetsView::PresetView::PresetView()
 #if JUCE_IOS || JUCE_ANDROID
                 {
                     ScopedMessageBox messageBox = juce::ContentSharer::shareFilesScoped (
-                                                                               { presetsView->getFileForIndex (index) }, [] (bool, String) {}, getTopLevelComponent());
+                        { presetsView->getFileForIndex (index) }, [this] (bool, String)
+                        { presetsView->shareBox.close(); },
+                        getTopLevelComponent());
                     presetsView->shareBox = std::move (messageBox);
                 }
 #endif
