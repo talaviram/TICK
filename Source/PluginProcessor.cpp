@@ -234,6 +234,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
         else
         {
             playheadPosition_.setPpqPosition({});
+            playheadPosition_.setPpqPositionOfLastBarStart({});
             playheadPosition_.setTimeInSamples({});
             playheadPosition_.setTimeInSeconds({});
             tickState.clear();
