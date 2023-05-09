@@ -131,6 +131,7 @@ juce_add_plugin(TICK
     ICLOUD_PERMISSIONS_ENABLED TRUE
     NETWORK_MULTICAST_ENABLED TRUE
     REQUIRES_FULL_SCREEN FALSE
+    IPAD_SCREEN_ORIENTATIONS UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
     PLIST_TO_MERGE ${PLIST_ADDITION}
 )
 
