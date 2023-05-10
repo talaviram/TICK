@@ -191,6 +191,11 @@ if(APPLE_IOS)
         Source/model/AbletonLink.mm
         Source/utils/UtilityFunctions.mm
     )
+
+    target_sources(TICK_Standalone PRIVATE "Installer/Factory")
+    set_source_files_properties("Installer/Factory" PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources"
+    )
 endif()
 
 target_sources(TICK_Standalone
@@ -250,8 +255,6 @@ add_custom_target(
 add_dependencies(TICK generate_git_revision)
 
 if(APPLE_IOS)
-    juce_add_bundle_resources_directory(TICK "Installer/Factory")
-
     if(EXISTS "private/LinkKit")
         message("Ableton LinkKit (iOS)")
         set(CMAKE_XCODE_ATTRIBUTE_OTHER_LDFLAGS[sdk=iphoneos*] "${CMAKE_SOURCE_DIR}/private/LinkKit/LinkKit.xcframework/ios-arm64_armv7/libLinkKit.a")
