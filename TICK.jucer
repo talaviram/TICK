@@ -16,7 +16,7 @@
               projectLineFeed="&#10;" defines="JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP&#10;JUCE_DONT_AUTO_OPEN_MIDI_DEVICES_ON_MOBILE=1&#10;JUCE_COREGRAPHICS_RENDER_WITH_MULTIPLE_PAINT_CALLS"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               jucerFormatVersion="1" addUsingNamespaceToJuceHeader="0" headerPath="../../;&#10;../../Source"
-              pluginAUMainType="'aumu'" cppLanguageStandard="17" version="0.6.0"
+              pluginAUMainType="'aumu'" cppLanguageStandard="17" version="0.6.1"
               useAppConfig="0">
   <MAINGROUP id="C2pL3d" name="TICK">
     <FILE id="Qy9ZQb" name="factory_default.preset" compile="0" resource="1"
