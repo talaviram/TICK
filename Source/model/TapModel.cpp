@@ -46,7 +46,7 @@ int TapModel::getXforCurrentRange (const juce::Time& t, int areaWidth) const
     const float range = (tapPoints.front() - start).inMilliseconds();
     const auto pos = t - start;
 
-    const auto x = juce::roundToInt (range == 0 ? 1 : (pos.inMilliseconds() / range) * (areaWidth - 1));
+    const auto x = juce::roundToInt (juce::roundToInt (range) == 0 ? 1 : (pos.inMilliseconds() / range) * (areaWidth - 1));
     jassert (x >= 0 && x < areaWidth);
     return x;
 }

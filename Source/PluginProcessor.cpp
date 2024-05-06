@@ -196,7 +196,7 @@ void TickAudioProcessor::handlePreCount (const double inputPPQ)
     const auto ts = playheadPosition_.getTimeSignature().orFallback (AudioPlayHead::TimeSignature ({ 4 / 4 }));
     const auto ttq = (4.0 / ts.denominator); // tick to quarter
     const auto expectedBar = std::floor (inputPPQ / ttq / ts.numerator);
-    if (expectedBar == preCount)
+    if ((int)expectedBar == preCount)
         getState().transport.isPlaying.setValue (false, nullptr);
 }
 
@@ -275,7 +275,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
         const auto ts = playheadPosition_.getTimeSignature().orFallback(AudioPlayHead::TimeSignature ({4, 4}));
         
         // calculate where tick starts in samples...
-        jassert (lastBarStart == 0 || ppqPosition >= lastBarStart);
+        jassert ((int)lastBarStart == 0 || ppqPosition >= lastBarStart);
         const auto pos = ppqPosition - lastBarStart;
         const auto bps = bpm / 60.0;
         const auto bpSmp = getSampleRate() / bps;
@@ -300,7 +300,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
         // reset tick state
         tickState.tickStartPosition = 0;
 
-        if (ppqFromBufStart == 0)
+        if (juce::roundToInt (ppqFromBufStart) == 0)
         {
             ppqPosInBuf = 0.0;
         }
