@@ -11,6 +11,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#include "model/JsonState.h"
 #include "utils/UtilityFunctions.h"
 
 AudioProcessor::BusesProperties TickAudioProcessor::getDefaultLayout()

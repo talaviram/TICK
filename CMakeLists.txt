@@ -173,6 +173,8 @@ target_sources(TICK
     Source/components/TransportBar.cpp
     Source/model/AbletonLink.h
     Source/model/JuceState.h
+    Source/model/JsonState.h
+    Source/model/JsonState.cpp
     Source/model/TapModel.h
     Source/model/TapModel.cpp
     Source/model/TickModel.h
