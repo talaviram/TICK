@@ -300,7 +300,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
         // reset tick state
         tickState.tickStartPosition = 0;
 
-        if (juce::roundToInt (ppqFromBufStart) == 0)
+        if (ppqFromBufStart == 0.0)
         {
             ppqPosInBuf = 0.0;
         }
