@@ -423,7 +423,7 @@ PerformView::TopBar::TopBar()
 void PerformView::TopBar::resized()
 {
     auto area = getLocalBounds();
-    const auto bpmWidth = tempo.getFont().getStringWidth ("999.99") + 10;
+    const auto bpmWidth = juce::GlyphArrangement::getStringWidthInt (tempo.getFont(), "999.99") + 10;
     tempo.setBounds (area.removeFromLeft (bpmWidth));
     auto signatureArea = area.removeFromRight (bpmWidth);
     auto sigWidth = juce::roundToInt (bpmWidth * 0.5);

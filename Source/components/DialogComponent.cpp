@@ -175,8 +175,8 @@ void DialogComponent::updateLayout()
     auto& lf = getLookAndFeel();
     auto messageFont (lf.getAlertWindowMessageFont());
 
-    auto wid = jmax (messageFont.getStringWidth (text),
-                     messageFont.getStringWidth (getName()));
+    auto wid = jmax (GlyphArrangement::getStringWidthInt (messageFont, text),
+                     GlyphArrangement::getStringWidthInt (messageFont, getName()));
 
     auto sw = (int) std::sqrt (messageFont.getHeight() * wid);
     auto w = jmin (300 + sw * 2, (int) (getParentWidth() * 0.7f));
