@@ -140,7 +140,7 @@ juce::Font TickLookAndFeel::getPopupMenuFont()
 #if JUCE_IOS || JUCE_ANDROID
     return juce::Font (25.0);
 #else
-    return juce::Font (20.0);
+    return juce::Font (juce::FontOptions (20.0));
 #endif
 }
 

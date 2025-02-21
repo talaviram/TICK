@@ -41,7 +41,7 @@ EditBeatView::EditBeatView (TickSettings& stateRef, TicksHolder& ticksRef)
     beatVolume.setTextBoxStyle (juce::Slider::NoTextBox, true, 0, 0);
     beatVolume.setRange (0.0, 1.0);
 
-    hintText.setFont (juce::Font (30.0f));
+    hintText.setFont (juce::Font (FontOptions (30.0f)));
     hintText.setJustificationType (juce::Justification::centred);
     hintText.setText ("Select beat(s) to Edit", juce::dontSendNotification);
 
@@ -154,7 +154,7 @@ void EditBeatView::updateSelection (const std::vector<int>& newSelection)
     beatVolume.setColour (juce::Slider::ColourIds::trackColourId, currentColour.darker());
     beatVolume.setColour (juce::Slider::ColourIds::thumbColourId, currentColour);
 
-    beatLabel.setFont (juce::Font (20));
+    beatLabel.setFont (juce::Font (FontOptions (20)));
     beatLabel.setText ("Beat #" + juce::String (newSelection.front() + 1), juce::dontSendNotification);
     samplesList.setVisible (true);
     hintText.setVisible (false);
@@ -203,7 +203,7 @@ void EditBeatView::SamplesModel::paintListBoxItem (int rowNumber, juce::Graphics
         g.fillAll (owner.currentColour);
 
     g.setColour (rowIsSelected ? juce::Colours::black.withAlpha (0.9f) : juce::Colours::white);
-    g.setFont (juce::Font (30.0f));
+    g.setFont (juce::Font (juce::FontOptions (30.0f)));
 
     g.drawFittedText (isLast ? "Add new sample..." : owner.ticks[(size_t) rowNumber].getName(), 20, 0, width - 20, height, juce::Justification::centredLeft, 1);
     if (! rowIsSelected)

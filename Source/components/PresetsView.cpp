@@ -513,7 +513,7 @@ PresetsView::PresetView::PresetView()
     moreOptions.setImages (more.get(), nullptr, nullptr, nullptr, moreInverted.get());
     addAndMakeVisible (moreOptions);
     name.setInterceptsMouseClicks (false, true);
-    name.setFont (16.0f);
+    name.setFont (FontOptions (16.0f));
     addAndMakeVisible (name);
     setInterceptsMouseClicks (false, true);
 

@@ -9,7 +9,7 @@ TopBar::TopBar() : leftButton ("LeftButton", juce::DrawableButton::ImageFitted),
     addAndMakeVisible (leftButton);
     addAndMakeVisible (rightButton);
 
-    centerLabel.setFont (TickLookAndFeel::topBarTextSize);
+    centerLabel.setFont (FontOptions (TickLookAndFeel::topBarTextSize));
     centerLabel.setJustificationType (juce::Justification::left);
     addAndMakeVisible (centerLabel);
 }

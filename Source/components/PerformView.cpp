@@ -284,7 +284,7 @@ void PerformView::BeatView::paint (juce::Graphics& g)
     {
         const auto curBounds = getLocalBounds();
         g.setColour (juce::Colours::white.withAlpha (isCurrent ? 1.0f : 0.1f));
-        g.setFont (juce::Font (std::max<int> (4, curBounds.getHeight() - 20)));
+        g.setFont (juce::Font (juce::FontOptions (std::max<int> (4, curBounds.getHeight() - 20))));
         g.drawFittedText (juce::String (index + 1), curBounds, juce::Justification::centred, 1);
     }
 
@@ -371,7 +371,7 @@ void PerformView::BeatView::mouseDown (const juce::MouseEvent& e)
 
 static void setupSigLabel (juce::Label& l)
 {
-    l.setFont (juce::Font (30.0));
+    l.setFont (juce::Font (juce::FontOptions (30.0)));
     l.setKeyboardType (juce::TextEditor::VirtualKeyboardType::phoneNumberKeyboard);
     l.setJustificationType (juce::Justification::centred);
     l.onEditorShow = [&l] {
@@ -384,10 +384,10 @@ PerformView::TopBar::TopBar()
     setFocusContainerType (FocusContainerType::focusContainer);
     setInterceptsMouseClicks (false, true);
     tempoLabel.setText ("BPM", juce::dontSendNotification);
-    tempoLabel.setFont (juce::Font (30.0));
+    tempoLabel.setFont (juce::Font (juce::FontOptions (30.0)));
     tempoLabel.setJustificationType (juce::Justification::centred);
     tempo.setKeyboardType (juce::TextEditor::VirtualKeyboardType::numericKeyboard);
-    tempo.setFont (juce::Font (30.0));
+    tempo.setFont (juce::Font (juce::FontOptions (30.0)));
     tempo.setJustificationType (juce::Justification::centred);
     tempo.onEditorShow = [this] {
         tempo.getCurrentTextEditor()->setInputRestrictions (6, "0123456789.");
@@ -403,7 +403,7 @@ PerformView::TopBar::TopBar()
     sigDivider.setText ("/", juce::dontSendNotification);
     sigDivider.setAccessible (false);
 
-    tapMode.setFont (juce::Font (30.0));
+    tapMode.setFont (juce::Font (juce::FontOptions (30.0)));
     tapMode.setJustificationType (juce::Justification::centred);
     tapMode.setText ("TAP", juce::dontSendNotification);
     tapMode.setDescription ("Tap Tempo Button");

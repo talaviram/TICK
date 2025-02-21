@@ -65,7 +65,7 @@ public:
         if (isHorizontal)
             area = area.removeFromLeft (juce::roundToInt (getWidth() * 0.3));
         logo->drawWithin (g, area.toFloat(), juce::RectanglePlacement(), 1.0f);
-        g.setFont (juce::Font (15.0f));
+        g.setFont (juce::Font (juce::FontOptions (15.0f)));
         g.setColour (juce::Colours::white);
         juce::String version = JucePlugin_VersionString " (" + juce::String (GIT_REVISION) + ")\n" + juce::String (BUILD_TIMESTAMP) +"\n";
         auto textArea = getLocalBounds();
