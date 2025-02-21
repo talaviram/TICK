@@ -6,7 +6,7 @@
 class AboutView : public juce::Component
 {
 public:
-    AboutView (String wrapperTypeName) : about (aboutText, nullptr), wrapperType (wrapperTypeName)
+    AboutView (juce::String wrapperTypeName) : about (aboutText, nullptr), wrapperType (wrapperTypeName)
     {
         using namespace juce;
         background = Drawable::createFromImageData (BinaryData::background_png, BinaryData::background_pngSize);
@@ -32,9 +32,9 @@ public:
     {
         const auto isHorizontal = getWidth() > getHeight();
         auto area = getLocalBounds();
-        background->setTransformToFit (area.toFloat(), RectanglePlacement (RectanglePlacement::stretchToFit));
+        background->setTransformToFit (area.toFloat(), juce::RectanglePlacement (juce::RectanglePlacement::stretchToFit));
         if (isHorizontal)
-            area.removeFromLeft (roundToInt (getWidth() * 0.3));
+            area.removeFromLeft (juce::roundToInt (getWidth() * 0.3));
         else
         {
             area.removeFromTop (150);
@@ -63,15 +63,15 @@ public:
         const auto isHorizontal = getWidth() > getHeight();
         auto area = getLocalBounds().removeFromTop (150);
         if (isHorizontal)
-            area = area.removeFromLeft (roundToInt (getWidth() * 0.3));
-        logo->drawWithin (g, area.toFloat(), RectanglePlacement(), 1.0f);
-        g.setFont (Font (15.0f));
-        g.setColour (Colours::white);
+            area = area.removeFromLeft (juce::roundToInt (getWidth() * 0.3));
+        logo->drawWithin (g, area.toFloat(), juce::RectanglePlacement(), 1.0f);
+        g.setFont (juce::Font (15.0f));
+        g.setColour (juce::Colours::white);
         juce::String version = JucePlugin_VersionString " (" + juce::String (GIT_REVISION) + ")\n" + juce::String (BUILD_TIMESTAMP) +"\n";
         auto textArea = getLocalBounds();
         if (isHorizontal)
-            textArea = textArea.removeFromLeft (roundToInt (getWidth() * 0.3));
-        g.drawFittedText (version + wrapperType + arch + (JucePlugin_Manufacturer ", Copyright 2019-2023"), textArea.removeFromBottom (80), Justification::centred, 1);
+            textArea = textArea.removeFromLeft (juce::roundToInt (getWidth() * 0.3));
+        g.drawFittedText (version + wrapperType + arch + (JucePlugin_Manufacturer ", Copyright 2019-2023"), textArea.removeFromBottom (80), juce::Justification::centred, 1);
     }
 
 private:

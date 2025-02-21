@@ -91,7 +91,7 @@ private:
 
     TopBar topBar;
     TransportBar bottomBar;
-    SidePanel sidePanel;
+    juce::SidePanel sidePanel;
     struct SidePanelArea : Component
     {
         bool hitTest (int, int) override
@@ -102,7 +102,7 @@ private:
         {
             panel->showOrHide (false);
         }
-        SidePanel* panel;
+        juce::SidePanel* panel;
     } sidePanelArea;
 
     // views
