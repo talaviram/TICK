@@ -179,8 +179,6 @@ target_sources(TICK
     Source/model/TickModel.cpp
     Source/utils/SamplesPaint.h
     Source/utils/SamplesPaint.cpp
-    Source/utils/TickSplash.h
-    Source/utils/TickSplash.cpp
     Source/utils/UtilityFunctions.h
     Source/utils/UtilityFunctions.cpp
 )

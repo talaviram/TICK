@@ -152,8 +152,6 @@
         <FILE id="FFXxDs" name="SamplesPaint.cpp" compile="1" resource="0"
               file="Source/utils/SamplesPaint.cpp"/>
         <FILE id="Hx6bKo" name="SamplesPaint.h" compile="0" resource="0" file="Source/utils/SamplesPaint.h"/>
-        <FILE id="N2pg0t" name="TickSplash.cpp" compile="1" resource="0" file="Source/utils/TickSplash.cpp"/>
-        <FILE id="RfUf0j" name="TickSplash.h" compile="0" resource="0" file="Source/utils/TickSplash.h"/>
         <FILE id="w83WXp" name="UtilityFunctions.cpp" compile="1" resource="0"
               file="Source/utils/UtilityFunctions.cpp"/>
         <FILE id="mEK5cs" name="UtilityFunctions.h" compile="0" resource="0"

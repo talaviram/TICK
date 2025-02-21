@@ -17,7 +17,6 @@
 #include "components/PerformView.h"
 #include "components/TopBar.h"
 #include "components/TransportBar.h"
-#include "utils/TickSplash.h"
 
 //==============================================================================
 /**
@@ -119,7 +118,6 @@ private:
     juce::OpenGLContext openglContext;
 
     TickAudioProcessor& tickProcessor;
-    std::unique_ptr<TickSplash> splash;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TickAudioProcessorEditor)
 };

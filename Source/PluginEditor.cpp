@@ -22,11 +22,6 @@
 TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     : AudioProcessorEditor (&p), samplesButton ("Sounds", juce::DrawableButton::ButtonStyle::ImageFitted), settingsButton ("settingsButton", juce::DrawableButton::ImageFitted), sidePanel ("TICK", 280, true), tickProcessor (p)
 {
-// splash is a 'nicer way' to make JUCE splash requirement for non-GPL builds.
-// this is needed for any non-GPL compliant build...
-#if ! JUCE_DISPLAY_SPLASH_SCREEN
-    TickSplash::didShowSplashOnce = true;
-#endif
     initAppProperties();
     auto& state = tickProcessor.getState();
     background.setBufferedToImage (true);
@@ -248,10 +243,6 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
             }
         });
 #endif
-
-    if (! TickSplash::didShowSplashOnce)
-        splash.reset (new TickSplash (*this));
-
     setResizable (true, true);
     //    375 x 667 iPhone 6
 #if JUCE_WINDOWS || JUCE_MAC || JUCE_LINUX
