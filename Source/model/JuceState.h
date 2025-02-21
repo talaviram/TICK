@@ -11,8 +11,11 @@
 
 #pragma once
 
-#include "JuceHeader.h"
 #include "TickModel.h"
+#include <juce_audio_formats/juce_audio_formats.h>
+#include <juce_core/juce_core.h>
+#include <juce_events/juce_events.h>
+#include <juce_gui_basics/juce_gui_basics.h>
 
 namespace IDs
 {
@@ -83,14 +86,15 @@ struct ConstrainerWrapper
         value = Constrainer::constrain (other);
     }
 
-    bool operator== (const ConstrainerWrapper& other) const noexcept { return value == other.value; }
-    bool operator!= (const ConstrainerWrapper& other) const noexcept { return value != other.value; }
+    bool operator== (const ConstrainerWrapper& other) const noexcept { return juce::approximatelyEqual (value, other.value); }
+    bool operator!= (const ConstrainerWrapper& other) const noexcept { return ! juce::approximatelyEqual (value, other.value); }
 
     operator juce::var() const noexcept
     {
-        const auto current = Constrainer::constrain (value);
-        const auto rounded = juce::roundToInt (current);
-        return juce::String (value, rounded == current ? 0 : 2);
+        const auto current = (double) Constrainer::constrain (value);
+        const auto rounded = std::round (current);
+
+        return juce::String (value, juce::approximatelyEqual (rounded, current) ? 0 : 2);
     }
     operator Type() const noexcept { return Constrainer::constrain (value); }
 
@@ -155,7 +159,7 @@ public:
 
     void setSampleRate (double newSampleRate)
     {
-        if (sampleRate == newSampleRate)
+        if (juce::approximatelyEqual (sampleRate, newSampleRate))
             return;
 
         sampleRate = newSampleRate;

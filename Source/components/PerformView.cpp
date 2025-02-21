@@ -13,6 +13,7 @@
 
 #include "EditBeatView.h"
 #include "utils/SamplesPaint.h"
+#include <juce_core/juce_core.h>
 
 PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, SamplesPaint& paint)
     : state (stateToLink), ticks (ticksToLink), samplesPaint (paint), editView (std::make_unique<EditBeatView> (state, ticks))
@@ -153,7 +154,7 @@ void PerformView::update (double currentPos)
     {
         auto& beat = *beats[num];
         beat.isOn = num < currentBeat;
-        beat.isCurrent = num == currentBeat;
+        beat.isCurrent = juce::approximatelyEqual ((double) num, currentBeat);
         beat.relativePos = static_cast<float> (beat.isCurrent ? barPos : 0.0);
         beat.repaint();
         if (state.transport.isPlaying.get() && ! isEditMode && beat.isCurrent && (viewport.getViewArea().getBottom() < beat.getY() || viewport.getViewArea().getY() > beat.getY()))
