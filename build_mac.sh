@@ -1,10 +1,7 @@
 #!/bin/sh
-echo "Building GPL formats"
-cmake -B ./build -G "Xcode" -DCOPY_AFTER_BUILD="FALSE" -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -DJUCE_DISPLAY_SPLASH_SCREEN=0"
-cmake --build ./build --clean-first --target TICK_Standalone TICK_AUv3 TICK_AU TICK_VST3 --config RelWithDebInfo
-echo "Building non-GPL with Splash"
-cmake -B ./build -G "Xcode" -DCOPY_AFTER_BUILD="FALSE" -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -DJUCE_DISPLAY_SPLASH_SCREEN=1"
-cmake --build ./build --target TICK_VST TICK_AAX --config RelWithDebInfo
+echo "Building...."
+cmake -B ./build -G "Xcode" -DCOPY_AFTER_BUILD="FALSE" -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}"
+cmake --build ./build --clean-first --target TICK_Standalone TICK_AUv3 TICK_AU TICK_VST3 TICK_VST TICK_AAX --config RelWithDebInfo
 
 echo Copying built binaries...
 mkdir -p result/mac
