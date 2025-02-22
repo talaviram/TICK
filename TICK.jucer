@@ -192,6 +192,8 @@
         <FILE id="wCFZud" name="TapModel.h" compile="0" resource="0" file="Source/model/TapModel.h"/>
         <FILE id="ooJcfs" name="TickModel.cpp" compile="1" resource="0" file="Source/model/TickModel.cpp"/>
         <FILE id="avYeWX" name="TickModel.h" compile="0" resource="0" file="Source/model/TickModel.h"/>
+        <FILE id="GSRMHj" name="TicksHolder.cpp" compile="1" resource="0" file="Source/model/TicksHolder.cpp"/>
+        <FILE id="RgSsTm" name="TicksHolder.h" compile="0" resource="0" file="Source/model/TicksHolder.h"/>
       </GROUP>
       <FILE id="BFLDLi" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

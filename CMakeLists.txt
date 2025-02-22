@@ -177,6 +177,8 @@ target_sources(TICK
     Source/model/TapModel.cpp
     Source/model/TickModel.h
     Source/model/TickModel.cpp
+    Source/model/TicksHolder.h
+    Source/model/TicksHolder.cpp
     Source/utils/SamplesPaint.h
     Source/utils/SamplesPaint.cpp
     Source/utils/UtilityFunctions.h
