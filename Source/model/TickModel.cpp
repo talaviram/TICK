@@ -150,21 +150,21 @@ void Tick::setGain (float newGain)
 
 void Ticks::addTick (std::unique_ptr<Tick>&& tickToAdd)
 {
-    const scoped_lock sl (inuseLock);
+    const std::scoped_lock sl { inuseLock };
     ticks.push_back (std::move (tickToAdd));
     printf ("Tick was added!\n");
 }
 
 void Ticks::replaceTick (const int idx, std::unique_ptr<Tick>&& newTick)
 {
-    const scoped_lock sl (inuseLock);
+    const std::scoped_lock sl (inuseLock);
     ticks[(size_t) idx] = std::move (newTick);
     printf ("Tick was replaced!\n");
 }
 
 void Ticks::removeTick (int idx)
 {
-    const scoped_lock sl (inuseLock);
+    const std::scoped_lock sl (inuseLock);
     assert (idx >= 0 && idx < (int) ticks.size());
     ticks.erase (ticks.begin() + idx);
     printf ("Tick was removed!\n");
@@ -172,14 +172,14 @@ void Ticks::removeTick (int idx)
 
 void Ticks::clear()
 {
-    const scoped_lock sl (inuseLock);
+    const std::scoped_lock sl (inuseLock);
     ticks.clear();
     printf ("Tick was cleared!\n");
 }
 
 void Ticks::addTicks (std::vector<std::unique_ptr<Tick>> ticksToAdd, const double samplerate, const bool clearTicks)
 {
-    const scoped_lock sl (inuseLock);
+    const std::scoped_lock sl (inuseLock);
     if (clearTicks)
         ticks.clear();
 

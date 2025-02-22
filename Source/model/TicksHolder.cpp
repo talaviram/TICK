@@ -83,7 +83,7 @@ Tick* TicksHolder::importAudioStream (const juce::String& name, std::unique_ptr<
     return convertAudioToTick (name, reader.get());
 }
 
-spin_lock& TicksHolder::getLock() { return ticks.inuseLock; }
+std::mutex& TicksHolder::getLock() { return ticks.inuseLock; }
 
 size_t TicksHolder::getNumOfTicks() { return ticks.getNumOfTicks(); }
 

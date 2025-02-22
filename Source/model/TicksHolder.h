@@ -24,7 +24,7 @@ public:
     Tick* importURL (juce::URL url);
     Tick* importAudioStream (const juce::String& name, std::unique_ptr<juce::InputStream> stream);
 
-    spin_lock& getLock();
+    std::mutex& getLock();
 
     size_t getNumOfTicks();
 
