@@ -164,10 +164,10 @@ void EditBeatView::updateSelection (const std::vector<int>& newSelection)
         samplesList.selectRow (assignment.tickIdx.get());
         beatLabel.setVisible (true);
         beatVolume.setVisible (true);
-        if (state.view.showEditSamples.getValue())
+        if (state.view[IDs::showEditSamples].getValue())
         {
-            state.view.showEditSamples.setValue (false);
-            state.view.showEditSamples.setValue (true);
+            state.view[IDs::showEditSamples].setValue (false);
+            state.view[IDs::showEditSamples].setValue (true);
         }
     }
     else
@@ -195,7 +195,7 @@ void EditBeatView::SamplesModel::paintListBoxItem (int rowNumber, juce::Graphics
 {
     // no need to draw, also samples might be updated
     // as we draw...
-    if (owner.state.view.showEditSamples.getValue())
+    if (owner.state.view[IDs::showEditSamples].getValue())
         return;
 
     const auto isLast = isLastRow (rowNumber);
@@ -255,7 +255,7 @@ void EditBeatView::SamplesModel::SampleOption::mouseDown (const juce::MouseEvent
             switch (value)
             {
                 case 1:
-                    owner.state.view.showEditSamples = true;
+                    owner.state.view[IDs::showEditSamples] = true;
                     break;
                 case 2:
                 {

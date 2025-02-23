@@ -117,8 +117,9 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
         topBar->centerLabel.isOpen = true;
         topBar->centerLabel.setColour (juce::Label::textColourId, TickLookAndFeel::Colours::mint);
         topBar->centerLabel.getTextValue().referTo (state.presetName.getPropertyAsValue());
-        topBar->centerLabel.onClick = [this] {
-            state.view.showPresetsView.setValue (false);
+        topBar->centerLabel.onClick = [this]
+        {
+            state.view[IDs::showPresetsView].setValue (false);
         };
         topBar->centerLabel.setDescription ("Click to close presets view");
         auto moreImage = Drawable::createFromImageData (BinaryData::more_horiz24px_svg, BinaryData::more_horiz24px_svgSize);
@@ -291,7 +292,7 @@ void PresetsView::backToParent()
     // fail safe...
     if (isRoot())
     {
-        state.view.showPresetsView.setValue (false);
+        state.view[IDs::showPresetsView].setValue (false);
     }
     else if (directoryContents != nullptr)
     {

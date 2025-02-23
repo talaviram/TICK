@@ -28,6 +28,9 @@ namespace IDs
     DECLARE_ID (presetName)
     DECLARE_ID (uuid)
 
+    DECLARE_ID (isEdit)
+    DECLARE_ID (showEditSamples)
+    DECLARE_ID (showPresetsView)
     DECLARE_ID (viewSize)
 
     DECLARE_ID (useHostTransport)
@@ -121,14 +124,6 @@ struct BeatAssignment
     juce::CachedValue<float> gain;
 };
 
-struct View
-{
-    juce::Value windowSize; // desktop only
-    juce::Value isEdit;
-    juce::Value showEditSamples;
-    juce::Value showPresetsView;
-};
-
 // Transport State
 // can be pulled from host or be internal
 struct Transport : public juce::Value::Listener
@@ -187,7 +182,7 @@ public:
     double samplerate { 0 };
     int selectedEdit { -1 };
 
-    View view;
+    std::map<juce::Identifier, juce::Value> view;
     Transport transport;
     juce::UndoManager undoManager;
     juce::ValueTree state;

@@ -58,11 +58,11 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     editModeButton.setColour (juce::TextButton::ColourIds::textColourOffId, TickLookAndFeel::Colours::mint);
     editModeButton.setColour (juce::TextButton::ColourIds::textColourOnId, TickLookAndFeel::Colours::mint);
     editModeButton.setColour (juce::TextButton::ColourIds::textColourOffId, TickLookAndFeel::Colours::mint);
-    editModeButton.setToggleState (static_cast<bool> (state.view.isEdit.getValue()), juce::dontSendNotification);
-    editModeButton.getToggleStateValue().referTo (state.view.isEdit);
+    editModeButton.setToggleState (static_cast<bool> (state.view[IDs::isEdit].getValue()), juce::dontSendNotification);
+    editModeButton.getToggleStateValue().referTo (state.view[IDs::isEdit]);
     samplesButton.setClickingTogglesState (true);
     samplesButton.setColour (DrawableButton::backgroundOnColourId, Colours::transparentBlack);
-    samplesButton.getToggleStateValue().referTo (state.view.showEditSamples);
+    samplesButton.getToggleStateValue().referTo (state.view[IDs::showEditSamples]);
     addAndMakeVisible (editModeButton);
 
     auto samplesIcon = juce::DrawablePath::createFromImageData (BinaryData::sampleicon_svg, BinaryData::sampleicon_svgSize);
@@ -179,7 +179,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     samplesView = std::make_unique<ManageSamplesView> (*samplesPaint, tickProcessor.getTicks());
     samplesView->closeButton.onClick = [&state]
     {
-        state.view.showEditSamples = false;
+        state.view[IDs::showEditSamples] = false;
     };
     mainArea.addChildComponent (*samplesView);
 
@@ -188,7 +188,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     topBar.centerLabel.getTextValue().referTo (state.presetName.getPropertyAsValue());
     topBar.centerLabel.onClick = [this]
     {
-        auto& showPresetValue = tickProcessor.getState().view.showPresetsView;
+        auto& showPresetValue = tickProcessor.getState().view[IDs::showPresetsView];
         const bool value = showPresetValue.getValue();
         showPresetValue.setValue (! value);
     };
@@ -219,9 +219,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     aboutView->setAlwaysOnTop (true);
 
     // register view state notifications
-    tickProcessor.getState().view.isEdit.addListener (this);
-    tickProcessor.getState().view.showEditSamples.addListener (this);
-    tickProcessor.getState().view.showPresetsView.addListener (this);
+    tickProcessor.getState().view[IDs::isEdit].addListener (this);
+    tickProcessor.getState().view[IDs::showEditSamples].addListener (this);
+    tickProcessor.getState().view[IDs::showPresetsView].addListener (this);
 
 #if ! JUCE_IOS
     auto useOpenGL = appProperties.getUserSettings()->getBoolValue ("opengl", true);
@@ -246,7 +246,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     setResizable (true, true);
     //    375 x 667 iPhone 6
 #if JUCE_WINDOWS || JUCE_MAC || JUCE_LINUX
-    const auto size = VariantConverter<ViewDiemensions>::fromVar (state.view.windowSize.getValue());
+    const auto size = VariantConverter<ViewDiemensions>::fromVar (state.view[IDs::viewSize].getValue());
     setSize (size.x, size.y);
     setResizeLimits (280, 260, 2048, 4096);
 #else
@@ -260,9 +260,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 TickAudioProcessorEditor::~TickAudioProcessorEditor()
 {
     // unregister view state notifications
-    tickProcessor.getState().view.isEdit.removeListener (this);
-    tickProcessor.getState().view.showEditSamples.removeListener (this);
-    tickProcessor.getState().view.showPresetsView.removeListener (this);
+    tickProcessor.getState().view[IDs::isEdit].removeListener (this);
+    tickProcessor.getState().view[IDs::showEditSamples].removeListener (this);
+    tickProcessor.getState().view[IDs::showPresetsView].removeListener (this);
     juce::LookAndFeel::setDefaultLookAndFeel (nullptr);
 }
 
@@ -306,7 +306,7 @@ void TickAudioProcessorEditor::resized()
     removeChildComponent (&bottomBar);
 
 #if ! JUCE_IOS || ! JUCE_ANDROID
-    tickProcessor.getState().view.windowSize.setValue (String (getWidth()) + "," + String (getHeight()));
+    tickProcessor.getState().view[IDs::viewSize].setValue (String (getWidth()) + "," + String (getHeight()));
 #endif
     auto safeArea = Desktop::getInstance().getDisplays().getPrimaryDisplay()->safeAreaInsets;
     constexpr auto notchSafeSides = 32; // we are always being safe...
@@ -351,7 +351,7 @@ void TickAudioProcessorEditor::resized()
     performView->setBounds (performViewArea);
     if (samplesView->isVisible())
         samplesView->setBounds (performView->getBounds());
-    presetsView->setBounds (mainArea.getLocalBounds().translated (0, (bool) tickProcessor.getState().view.showPresetsView.getValue() == true ? 0 : getHeight()));
+    presetsView->setBounds (mainArea.getLocalBounds().translated (0, (bool) tickProcessor.getState().view[IDs::showPresetsView].getValue() == true ? 0 : getHeight()));
     aboutView->setBounds (getLocalBounds());
 }
 
@@ -388,14 +388,14 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
     // Indicate dirty only while debugging
     repaint();
 #endif
-    if (value.refersToSameSourceAs (state.view.isEdit))
+    if (value.refersToSameSourceAs (state.view[IDs::isEdit]))
     {
         if (static_cast<bool> (value.getValue()))
         {
             editModeButton.setButtonText ("Done");
             performView->setEditMode (true);
-            if (static_cast<bool> (state.view.showPresetsView.getValue()) == true)
-                state.view.showPresetsView.setValue (false);
+            if (static_cast<bool> (state.view[IDs::showPresetsView].getValue()) == true)
+                state.view[IDs::showPresetsView].setValue (false);
         }
         else
         {
@@ -406,7 +406,7 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
             samplesButton.setToggleState (false, juce::dontSendNotification);
         }
     }
-    else if (value.refersToSameSourceAs (state.view.showEditSamples))
+    else if (value.refersToSameSourceAs (state.view[IDs::showEditSamples]))
     {
         samplesView->updateSelection (state.selectedEdit);
         if (value.getValue())
@@ -416,7 +416,7 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
         const auto to = value.getValue() ? baseBounds : baseBounds.translated (0, mainArea.getHeight());
         juce::Desktop::getInstance().getAnimator().animateComponent (samplesView.get(), to, 1.0f, 200, false, 1.0, 1.0);
     }
-    else if (value.refersToSameSourceAs (state.view.showPresetsView))
+    else if (value.refersToSameSourceAs (state.view[IDs::showPresetsView]))
     {
         settingsButton.setAccessible (! value.getValue());
         editModeButton.setAccessible (! value.getValue());

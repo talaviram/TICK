@@ -330,7 +330,7 @@ void PerformView::mouseUp (const juce::MouseEvent& e)
 {
     if (e.originalComponent == &beatsView && isEditMode)
     {
-        state.view.isEdit.setValue (false);
+        state.view[IDs::isEdit].setValue (false);
         return;
     }
 
