@@ -24,13 +24,11 @@ PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, S
     viewport.setScrollBarsShown (true, false);
     viewport.setViewedComponent (&beatsView);
     addAndMakeVisible (viewport);
-
-    topBar.tempo.setText (state.transport.bpm.getPropertyAsValue().toString(), dontSendNotification);
-    topBar.tempo.getTextValue().referTo (state.transport.bpm.getPropertyAsValue());
-    topBar.num.getTextValue().referTo (state.transport.numerator.getPropertyAsValue());
-    topBar.num.setText (juce::String (state.transport.numerator.get()), dontSendNotification);
-    topBar.denum.getTextValue().referTo (state.transport.denumerator.getPropertyAsValue());
-    topBar.denum.setText (juce::String (state.transport.denumerator.get()), dontSendNotification);
+    topBar.tempo.getTextValue().referTo (state.transport[IDs::bpm]);
+    topBar.num.getTextValue().referTo (state.transport[IDs::numerator]);
+    topBar.num.setText (juce::String (state.transport[IDs::numerator].getValue()), dontSendNotification);
+    topBar.denum.getTextValue().referTo (state.transport[IDs::denumerator]);
+    topBar.denum.setText (juce::String (state.transport[IDs::denumerator].getValue()), dontSendNotification);
     addAndMakeVisible (topBar);
 
     editView->onBeatUpdate = [this] (std::vector<int>& selection) {
@@ -41,22 +39,25 @@ PerformView::PerformView (TickSettings& stateToLink, TicksHolder& ticksToLink, S
     beatsView.addMouseListener (this, false);
     topBar.tapMode.addMouseListener (this, true);
     // draggable labels...
-    tempoDrag.onStep = [this] (bool isUp) {
-        const float bpm = state.transport.bpm.get();
+    tempoDrag.onStep = [this] (bool isUp)
+    {
+        const float bpm = state.transport[IDs::bpm].getValue();
         const int step = isUp ? +1 : -1;
-        state.transport.bpm.setValue (bpm + step, nullptr);
+        state.transport[IDs::bpm].setValue (BPMValue (bpm + step));
     };
 
-    numDrag.onStep = [this] (bool isUp) {
-        const int num = state.transport.numerator.get();
+    numDrag.onStep = [this] (bool isUp)
+    {
+        const int num = state.transport[IDs::numerator].getValue();
         const int step = isUp ? +1 : -1;
-        state.transport.numerator.setValue (jlimit (1, TickSettings::kMaxBeatAssignments, num + step), nullptr);
+        state.transport[IDs::numerator].setValue (jlimit (1, TickSettings::kMaxBeatAssignments, num + step));
     };
 
-    denumDrag.onStep = [this] (bool isUp) {
-        const int denum = state.transport.denumerator.get();
+    denumDrag.onStep = [this] (bool isUp)
+    {
+        const int denum = state.transport[IDs::denumerator].getValue();
         const int step = isUp ? +1 : -1;
-        state.transport.denumerator.setValue (jlimit (1, 128, denum + step), nullptr);
+        state.transport[IDs::denumerator].setValue (jlimit (1, 128, denum + step));
     };
 
     topBar.tempo.addMouseListener (this, true);
@@ -111,12 +112,12 @@ void PerformView::resized()
     viewport.setBounds (area);
 
     const auto isVertical = state.isVertical.get();
-    beatsInRow = juce::jlimit (1, 8, juce::jmin (state.transport.numerator.get(), state.transport.denumerator.get()));
+    beatsInRow = juce::jlimit (1, 8, juce::jmin ((int) state.transport[IDs::numerator].getValue(), (int) state.transport[IDs::denumerator].getValue()));
     const int beatSize = static_cast<int> (std::floor (((isVertical ? area.getHeight() : area.getWidth()) - 2 * kMargin)) / beatsInRow) - 2 * kMargin;
     const auto beatHeight = (int) std::min (beatSize, area.getHeight() - 3 * kMargin);
     const auto itemWidth = isVertical ? area.getWidth() - 2 * kMargin - viewport.getScrollBarThickness() : beatSize;
-    const auto numOfBeats = state.transport.numerator.get();
-    beatsView.setBounds (area.withHeight (std::max (area.getHeight(), (isVertical ? state.transport.numerator.get() : (int) std::ceil (numOfBeats / beatsInRow)) * (beatSize + 2 * kMargin) + kMargin)).withWidth (area.getWidth() - viewport.getScrollBarThickness()));
+    const int numOfBeats = state.transport[IDs::numerator].getValue();
+    beatsView.setBounds (area.withHeight (std::max (area.getHeight(), (isVertical ? (int) state.transport[IDs::numerator].getValue() : (int) std::ceil (numOfBeats / beatsInRow)) * (beatSize + 2 * kMargin) + kMargin)).withWidth (area.getWidth() - viewport.getScrollBarThickness()));
     juce::FlexBox fb (isVertical ? juce::FlexBox::Direction::column : juce::FlexBox::Direction::row, juce::FlexBox::Wrap::wrap, juce::FlexBox::AlignContent::flexStart, juce::FlexBox::AlignItems::center, juce::FlexBox::JustifyContent::flexStart);
     for (auto& beat : beats)
     {
@@ -133,8 +134,8 @@ void PerformView::resized()
 
 void PerformView::update (double currentPos)
 {
-    const auto numOfBeats = state.transport.numerator.get();
-    const auto denumrator = state.transport.denumerator.get();
+    const int numOfBeats = state.transport[IDs::numerator].getValue();
+    const int denumrator = state.transport[IDs::denumerator].getValue();
     if ((size_t) numOfBeats != beats.size() || beatsInRow != denumrator)
     {
         beats.clear();
@@ -157,15 +158,15 @@ void PerformView::update (double currentPos)
         beat.isCurrent = juce::approximatelyEqual ((double) num, currentBeat);
         beat.relativePos = static_cast<float> (beat.isCurrent ? barPos : 0.0);
         beat.repaint();
-        if (state.transport.isPlaying.get() && ! isEditMode && beat.isCurrent && (viewport.getViewArea().getBottom() < beat.getY() || viewport.getViewArea().getY() > beat.getY()))
+        if (state.transport[IDs::isPlaying].getValue() && ! isEditMode && beat.isCurrent && (viewport.getViewArea().getBottom() < beat.getY() || viewport.getViewArea().getY() > beat.getY()))
         {
             viewport.setViewPosition (0, beat.getY());
         }
     }
     const bool isStandalone = ! state.useHostTransport.get();
-    topBar.tempo.setDescription (juce::String (state.transport.bpm.get()) + "BPM");
-    topBar.num.setDescription (juce::String (state.transport.numerator.get()) + " beats numerator");
-    topBar.denum.setDescription (juce::String (state.transport.denumerator.get()) + " beats denumerator");
+    topBar.tempo.setDescription (juce::String (state.transport[IDs::bpm].getValue()) + "BPM");
+    topBar.num.setDescription (juce::String (state.transport[IDs::numerator].getValue()) + " beats numerator");
+    topBar.denum.setDescription (juce::String (state.transport[IDs::denumerator].getValue()) + " beats denumerator");
     topBar.tempo.setEnabled (isStandalone);
     topBar.num.setEnabled (isStandalone);
     topBar.denum.setEnabled (isStandalone);
@@ -303,7 +304,7 @@ void PerformView::mouseDown (const juce::MouseEvent& e)
         topBar.tapMode.setColour (juce::Label::backgroundColourId, TickLookAndFeel::Colours::wood);
         tapModel.pushTap (e.eventTime);
         if (tapModel.getLastDetectedBPM() > 0)
-            state.transport.bpm.setValue ((float) tapModel.getLastDetectedBPM(), nullptr);
+            state.transport[IDs::bpm].setValue (BPMValue (tapModel.getLastDetectedBPM()));
         return;
     }
 

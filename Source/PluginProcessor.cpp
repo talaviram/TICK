@@ -189,15 +189,15 @@ bool TickAudioProcessor::isHostSyncSupported()
 
 void TickAudioProcessor::handlePreCount (const double inputPPQ)
 {
-    const int preCount = getState().transport.preCount.get();
-    if (preCount <= 0 || getState().useHostTransport.get())
+    const int preCount = getState().transport[IDs::preCount].getValue();
+    if (preCount <= 0 || getState().transport[IDs::useHostTransport].getValue())
         return;
     // auto stop
     const auto ts = playheadPosition_.getTimeSignature().orFallback (AudioPlayHead::TimeSignature ({ 4 / 4 }));
     const auto ttq = (4.0 / ts.denominator); // tick to quarter
     const auto expectedBar = std::floor (inputPPQ / ttq / ts.numerator);
     if ((int)expectedBar == preCount)
-        getState().transport.isPlaying.setValue (false, nullptr);
+        getState().transport[IDs::isPlaying].setValue (false);
 }
 
 void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
@@ -220,9 +220,9 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
             requests.bpm = settings.transport.bpm.get();
 #endif
 
-        playheadPosition_.setIsPlaying (settings.transport.isPlaying.get());
-        playheadPosition_.setTimeSignature(AudioPlayHead::TimeSignature ({(int)settings.transport.numerator.get(), (int)settings.transport.denumerator.get()}));
-        playheadPosition_.setBpm (settings.transport.bpm.get());
+        playheadPosition_.setIsPlaying (settings.transport[IDs::isPlaying].getValue());
+        playheadPosition_.setTimeSignature (AudioPlayHead::TimeSignature ({ (int) settings.transport[IDs::numerator].getValue(), (int) settings.transport[IDs::denumerator].getValue() }));
+        playheadPosition_.setBpm (settings.transport[IDs::bpm].getValue());
         if (playheadPosition_.getIsPlaying() && ! tickState.isClear)
         {
             const double bufInSecs = buffer.getNumSamples() / getSampleRate();
@@ -255,12 +255,12 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
 
     // setValue only triggers if value is different
     if (playheadPosition_.getBpm().hasValue())
-        settings.transport.bpm.setValue ((float) *playheadPosition_.getBpm(), nullptr);
+        settings.transport[IDs::bpm].setValue (BPMValue ((float) *playheadPosition_.getBpm()));
     if (playheadPosition_.getTimeSignature().hasValue())
     {
         const auto ts = *playheadPosition_.getTimeSignature();
-        settings.transport.numerator.setValue (ts.numerator, nullptr);
-        settings.transport.denumerator.setValue (ts.denominator, nullptr);
+        settings.transport[IDs::numerator].setValue (ts.numerator);
+        settings.transport[IDs::denumerator].setValue (ts.denominator);
     }
 
 

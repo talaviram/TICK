@@ -88,7 +88,7 @@ struct ConstrainerWrapper
     template <typename OtherType>
     ConstrainerWrapper (const OtherType& other)
     {
-        value = Constrainer::constrain (other);
+        value = Constrainer::constrain (static_cast<float> (other));
     }
 
     bool operator== (const ConstrainerWrapper& other) const noexcept { return juce::approximatelyEqual (value, other.value); }
@@ -118,32 +118,16 @@ struct BPMConstrainer
     }
 };
 
+using BPMValue = ConstrainerWrapper<float, BPMConstrainer>;
+
 struct BeatAssignment
 {
     juce::CachedValue<int> tickIdx;
     juce::CachedValue<float> gain;
 };
 
-// Transport State
-// can be pulled from host or be internal
-struct Transport : public juce::Value::Listener
-{
-    Transport();
-    ~Transport() override;
-
-    juce::CachedValue<int> numerator;
-    juce::CachedValue<int> denumerator;
-    juce::CachedValue<ConstrainerWrapper<float, BPMConstrainer>> bpm;
-    juce::CachedValue<bool> isPlaying;
-    juce::CachedValue<int> preCount;
-
-    juce::Value meterAsText;
-    // manage meter as text
-    void valueChanged (juce::Value& value) override;
-};
-
 // Contains settings of current click/ticks
-class TickSettings : public juce::ValueTree::Listener, public juce::ChangeListener
+class TickSettings : public juce::ValueTree::Listener, public juce::Value::Listener, public juce::ChangeListener
 {
 public:
     static const auto kMaxBeatAssignments = 64;
@@ -167,6 +151,8 @@ public:
     void load (const juce::ValueTree& stateToLoad);
     void valueTreePropertyChanged (juce::ValueTree&, const juce::Identifier& vid) override;
     void changeListenerCallback (juce::ChangeBroadcaster*) override;
+    // manage meter as text
+    void valueChanged (juce::Value& value) override;
 
     BeatAssignment beatAssignments[kMaxBeatAssignments];
     juce::CachedValue<juce::String> presetName;
@@ -183,7 +169,9 @@ public:
     int selectedEdit { -1 };
 
     std::map<juce::Identifier, juce::Value> view;
-    Transport transport;
+    std::map<juce::Identifier, juce::Value> transport;
+    juce::Value meterAsText;
+
     juce::UndoManager undoManager;
     juce::ValueTree state;
 

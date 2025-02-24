@@ -62,13 +62,13 @@ EditBeatView::EditBeatView (TickSettings& stateRef, TicksHolder& ticksRef)
     beatScrollForward.setTitle ("Next Sample");
     beatScrollBack.onClick = [this] {
         jassert (selection.size() > 0);
-        const auto availableBeats = state.transport.numerator.get();
+        const int availableBeats = state.transport[IDs::numerator].getValue();
         const auto idx = selection.front() - 1;
         updateSelection ({ (idx >= 0 ? idx : (int) (availableBeats - 1)) % availableBeats });
     };
     beatScrollForward.onClick = [this] {
         jassert (selection.size() > 0);
-        updateSelection ({ (selection.front() + 1) % state.transport.numerator.get() });
+        updateSelection ({ (selection.front() + 1) % (int) state.transport[IDs::numerator].getValue() });
     };
 
     addChildComponent (beatScrollBack);

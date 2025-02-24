@@ -105,15 +105,15 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
 #endif
         settings.addSeparator();
         PopupMenu preCountMenu;
-        auto& preCount = tickProcessor.getState().transport.preCount;
-        preCountMenu.addItem ("Off", true, preCount.get() == 0, [&preCount]
-                              { preCount.setValue (0, nullptr); });
-        preCountMenu.addItem ("1BAR", true, preCount.get() == 1, [&preCount]
-                              { preCount.setValue (1, nullptr); });
-        preCountMenu.addItem ("2BAR", true, preCount.get() == 2, [&preCount]
-                              { preCount.setValue (2, nullptr); });
-        preCountMenu.addItem ("3BAR", true, preCount.get() == 3, [&preCount]
-                              { preCount.setValue (3, nullptr); });
+        auto& preCount = tickProcessor.getState().transport[IDs::preCount];
+        preCountMenu.addItem ("Off", true, (int) preCount.getValue() == 0, [&preCount]
+                              { preCount.setValue (0); });
+        preCountMenu.addItem ("1BAR", true, (int) preCount.getValue() == 1, [&preCount]
+                              { preCount.setValue (1); });
+        preCountMenu.addItem ("2BAR", true, (int) preCount.getValue() == 2, [&preCount]
+                              { preCount.setValue (2); });
+        preCountMenu.addItem ("3BAR", true, (int) preCount.getValue() == 3, [&preCount]
+                              { preCount.setValue (3); });
         settings.addSubMenu ("Pre-Count", preCountMenu, ! tickProcessor.getState().useHostTransport.get());
 
         PopupMenu viewSubMenu;
@@ -197,7 +197,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
     settingsButton.toFront (false);
     editModeButton.toFront (false);
 
-    bottomBar.transportButton.getToggleStateValue().referTo (state.transport.isPlaying.getPropertyAsValue());
+    bottomBar.transportButton.getToggleStateValue().referTo (state.transport[IDs::isPlaying]);
     // bottomBar add on resize
 
     performView.reset (new PerformView (tickProcessor.getState(), tickProcessor.getTicks(), *samplesPaint));
@@ -367,14 +367,14 @@ bool TickAudioProcessorEditor::keyPressed (const juce::KeyPress& key)
         }
         if (key.getKeyCode() == juce::KeyPress::upKey)
         {
-            auto& bpmVal = tickProcessor.getState().transport.bpm;
-            bpmVal.setValue (bpmVal.get() + 1, nullptr);
+            auto& bpmVal = tickProcessor.getState().transport[IDs::bpm];
+            bpmVal.setValue ((float) bpmVal.getValue() + 1);
             return true;
         }
         if (key.getKeyCode() == juce::KeyPress::downKey)
         {
-            auto& bpmVal = tickProcessor.getState().transport.bpm;
-            bpmVal.setValue (bpmVal.get() - 1, nullptr);
+            auto& bpmVal = tickProcessor.getState().transport[IDs::bpm];
+            bpmVal.setValue ((float) bpmVal.getValue() - 1);
             return true;
         }
     }
@@ -434,7 +434,7 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
 void TickAudioProcessorEditor::timerCallback()
 {
     const bool useHostTransport = tickProcessor.getState().useHostTransport.get();
-    const int preCount = tickProcessor.getState().transport.preCount.get();
+    const int preCount = tickProcessor.getState().transport[IDs::preCount].getValue();
     performView->update (tickProcessor.getCurrentBeatPos());
     bottomBar.transportButton.setVisible (! useHostTransport);
     bottomBar.preCountIndicator.setVisible (! useHostTransport && preCount > 0);
