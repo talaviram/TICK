@@ -162,11 +162,11 @@ void TickSettings::load (const juce::ValueTree& stateToLoad)
     presetName.setValue (stateToLoad.getProperty (IDs::presetName), nullptr);
     numOfTicks.setValue (stateToLoad.getProperty (IDs::numOfTicks), nullptr);
     if (stateToLoad.hasProperty (IDs::showWaveform))
-        showWaveform.setValue (stateToLoad.getProperty (IDs::showWaveform, false), nullptr);
+        view[IDs::showWaveform].setValue (stateToLoad.getProperty (IDs::showWaveform, false));
     if (stateToLoad.hasProperty (IDs::showBeatNumber))
-        showBeatNumber.setValue (stateToLoad.getProperty (IDs::showBeatNumber, false), nullptr);
+        view[IDs::showBeatNumber].setValue (stateToLoad.getProperty (IDs::showBeatNumber, false));
     if (stateToLoad.hasProperty (IDs::isVertical))
-        isVertical.setValue (stateToLoad.getProperty (IDs::isVertical, false), nullptr);
+        view[IDs::isVertical].setValue (stateToLoad.getProperty (IDs::isVertical, false));
     cutoffFilter.setValue (stateToLoad.getProperty (IDs::filterCutoff, cutoffFilter.getDefault()), nullptr);
     masterGain.setValue (stateToLoad.getProperty (IDs::masterGain, masterGain.getDefault()), nullptr);
     view[IDs::viewSize].setValue (stateToLoad.getProperty (IDs::viewSize));
@@ -224,9 +224,6 @@ void TickSettings::setCachedValues()
     {
         presetName.referTo (state, IDs::presetName, nullptr, "Empty");
         useHostTransport.referTo (state, IDs::useHostTransport, nullptr, true);
-        showWaveform.referTo (state, IDs::showWaveform, nullptr, false);
-        showBeatNumber.referTo (state, IDs::showBeatNumber, nullptr, false);
-        isVertical.referTo (state, IDs::isVertical, nullptr, false);
         cutoffFilter.referTo (state, IDs::filterCutoff, nullptr, 20000.0f);
         masterGain.referTo (state, IDs::masterGain, nullptr, 0.0f);
         numOfTicks.referTo (state, IDs::numOfTicks, nullptr, 0);

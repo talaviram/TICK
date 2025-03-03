@@ -117,18 +117,18 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         settings.addSubMenu ("Pre-Count", preCountMenu, ! tickProcessor.getState().useHostTransport.get());
 
         PopupMenu viewSubMenu;
-        auto& showWaveform = tickProcessor.getState().showWaveform;
-        viewSubMenu.addItem ("Always Show Waveform", true, showWaveform.get(), [&showWaveform]
-                             { showWaveform.setValue (! showWaveform.get(), nullptr); });
-        auto& showBeatNumber = tickProcessor.getState().showBeatNumber;
-        viewSubMenu.addItem ("Show Beat Number", true, showBeatNumber.get(), [&showBeatNumber]
-                             { showBeatNumber.setValue (! showBeatNumber.get(), nullptr); });
-        auto& isVertical = tickProcessor.getState().isVertical;
+        auto& showWaveform = tickProcessor.getState().view[IDs::showWaveform];
+        viewSubMenu.addItem ("Always Show Waveform", true, showWaveform.getValue(), [&showWaveform]
+                             { showWaveform.setValue (! showWaveform.getValue()); });
+        auto& showBeatNumber = tickProcessor.getState().view[IDs::showBeatNumber];
+        viewSubMenu.addItem ("Show Beat Number", true, showBeatNumber.getValue(), [&showBeatNumber]
+                             { showBeatNumber.setValue (! showBeatNumber.getValue()); });
+        auto& isVertical = tickProcessor.getState().view[IDs::isVertical];
         jassert (performView);
         auto& performViewRef = *performView;
-        viewSubMenu.addItem ("Vertical Layout", true, isVertical.get(), [&isVertical, &performViewRef]
+        viewSubMenu.addItem ("Vertical Layout", true, isVertical.getValue(), [&isVertical, &performViewRef]
                              {
-            isVertical.setValue (! isVertical.get(), nullptr);
+            isVertical.setValue (! isVertical.getValue());
             performViewRef.resized(); });
         settings.addSubMenu ("View", viewSubMenu);
         settings.addSeparator();

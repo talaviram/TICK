@@ -111,7 +111,7 @@ void PerformView::resized()
     }
     viewport.setBounds (area);
 
-    const auto isVertical = state.isVertical.get();
+    const auto isVertical = state.view[IDs::isVertical].getValue();
     beatsInRow = juce::jlimit (1, 8, juce::jmin ((int) state.transport[IDs::numerator].getValue(), (int) state.transport[IDs::denumerator].getValue()));
     const int beatSize = static_cast<int> (std::floor (((isVertical ? area.getHeight() : area.getWidth()) - 2 * kMargin)) / beatsInRow) - 2 * kMargin;
     const auto beatHeight = (int) std::min (beatSize, area.getHeight() - 3 * kMargin);
@@ -278,11 +278,11 @@ void PerformView::BeatView::paint (juce::Graphics& g)
         g.setColour (juce::Colours::white);
         g.drawRoundedRectangle (getLocalBounds().toFloat().reduced (1.0f), cornerSize, cornerSize);
     }
-    if ((owner.isEditMode || owner.state.showWaveform.get()) && (size_t) tickIndex < owner.ticks.getNumOfTicks())
-        owner.samplesPaint.drawTick (g, getLocalBounds().reduced (10), tickIndex, assignment.gain.get(), juce::Colours::white.withAlpha (isCurrent && ! owner.state.showBeatNumber.get() ? 1.0f : isSelected || owner.state.showBeatNumber.get() ? 0.7f
-                                                                                                                                                                                                                                                 : 0.3f));
+    if ((owner.isEditMode || owner.state.view[IDs::showWaveform].getValue()) && (size_t) tickIndex < owner.ticks.getNumOfTicks())
+        owner.samplesPaint.drawTick (g, getLocalBounds().reduced (10), tickIndex, assignment.gain.get(), juce::Colours::white.withAlpha (isCurrent && ! owner.state.view[IDs::showBeatNumber].getValue() ? 1.0f : isSelected || owner.state.view[IDs::showBeatNumber].getValue() ? 0.7f
+                                                                                                                                                                                                                                                                                 : 0.3f));
 
-    if (! owner.isEditMode && owner.state.showBeatNumber.get())
+    if (! owner.isEditMode && owner.state.view[IDs::showBeatNumber].getValue())
     {
         const auto curBounds = getLocalBounds();
         g.setColour (juce::Colours::white.withAlpha (isCurrent ? 1.0f : 0.1f));

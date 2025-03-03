@@ -158,9 +158,6 @@ public:
     juce::CachedValue<juce::String> presetName;
 
     juce::CachedValue<bool> useHostTransport;
-    juce::CachedValue<bool> showWaveform;
-    juce::CachedValue<bool> showBeatNumber;
-    juce::CachedValue<bool> isVertical;
     juce::CachedValue<float> cutoffFilter;
     juce::CachedValue<float> masterGain;
     juce::CachedValue<int> numOfTicks;
