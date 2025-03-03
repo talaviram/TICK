@@ -85,10 +85,9 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
         slider->slider.setScrollWheelEnabled (false);
         PopupMenu settings;
         settings.addSectionHeader ("Sync");
-        auto& transport = tickProcessor.getState().useHostTransport;
-        settings.addItem ("Internal", true, ! transport.get(), [&transport] {
-            transport.setValue (false, nullptr);
-        });
+        auto& transport = tickProcessor.getState().transport[IDs::useHostTransport];
+        settings.addItem ("Internal", true, ! transport.getValue(), [&transport]
+                          { transport.setValue (false); });
         const bool canExternal =
 #if JUCE_DEBUG
             true
@@ -96,9 +95,8 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
             processor.wrapperType != AudioProcessor::wrapperType_Standalone
 #endif
             ;
-        settings.addItem ("External (Host)", canExternal, transport.get(), [&transport] {
-            transport.setValue (true, nullptr);
-        });
+        settings.addItem ("External (Host)", canExternal, transport.getValue(), [&transport]
+                          { transport.setValue (true); });
 #if JUCE_IOS
         settings.addItem ("Ableton Link..", true, tickProcessor.m_link.isLinkConnected(), [this]
                           { tickProcessor.m_link.showSettings (settingsButton, nullptr); });
@@ -114,7 +112,7 @@ TickAudioProcessorEditor::TickAudioProcessorEditor (TickAudioProcessor& p)
                               { preCount.setValue (2); });
         preCountMenu.addItem ("3BAR", true, (int) preCount.getValue() == 3, [&preCount]
                               { preCount.setValue (3); });
-        settings.addSubMenu ("Pre-Count", preCountMenu, ! tickProcessor.getState().useHostTransport.get());
+        settings.addSubMenu ("Pre-Count", preCountMenu, ! tickProcessor.getState().transport[IDs::useHostTransport].getValue());
 
         PopupMenu viewSubMenu;
         auto& showWaveform = tickProcessor.getState().view[IDs::showWaveform];
@@ -357,7 +355,7 @@ void TickAudioProcessorEditor::resized()
 
 bool TickAudioProcessorEditor::keyPressed (const juce::KeyPress& key)
 {
-    if (tickProcessor.wrapperType == AudioProcessor::wrapperType_Standalone && ! tickProcessor.getState().useHostTransport.get())
+    if (tickProcessor.wrapperType == AudioProcessor::wrapperType_Standalone && ! tickProcessor.getState().transport[IDs::useHostTransport].getValue())
     {
         if (key.getKeyCode() == juce::KeyPress::spaceKey)
         {
@@ -433,7 +431,7 @@ void TickAudioProcessorEditor::valueChanged (juce::Value& value)
 
 void TickAudioProcessorEditor::timerCallback()
 {
-    const bool useHostTransport = tickProcessor.getState().useHostTransport.get();
+    const bool useHostTransport = tickProcessor.getState().transport[IDs::useHostTransport].getValue();
     const int preCount = tickProcessor.getState().transport[IDs::preCount].getValue();
     performView->update (tickProcessor.getCurrentBeatPos());
     bottomBar.transportButton.setVisible (! useHostTransport);

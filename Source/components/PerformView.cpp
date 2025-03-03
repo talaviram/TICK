@@ -163,7 +163,7 @@ void PerformView::update (double currentPos)
             viewport.setViewPosition (0, beat.getY());
         }
     }
-    const bool isStandalone = ! state.useHostTransport.get();
+    const bool isStandalone = ! state.transport[IDs::useHostTransport].getValue();
     topBar.tempo.setDescription (juce::String (state.transport[IDs::bpm].getValue()) + "BPM");
     topBar.num.setDescription (juce::String (state.transport[IDs::numerator].getValue()) + " beats numerator");
     topBar.denum.setDescription (juce::String (state.transport[IDs::denumerator].getValue()) + " beats denumerator");

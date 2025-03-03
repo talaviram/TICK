@@ -157,7 +157,6 @@ public:
     BeatAssignment beatAssignments[kMaxBeatAssignments];
     juce::CachedValue<juce::String> presetName;
 
-    juce::CachedValue<bool> useHostTransport;
     juce::CachedValue<float> cutoffFilter;
     juce::CachedValue<float> masterGain;
     juce::CachedValue<int> numOfTicks;

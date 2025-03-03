@@ -182,7 +182,7 @@ void TickSettings::load (const juce::ValueTree& stateToLoad)
             transport[IDs::numerator].setValue (child.getProperty (IDs::numerator));
             transport[IDs::denumerator].setValue (child.getProperty (IDs::denumerator));
             transport["meterAsText"] = getMeterAsText();
-            useHostTransport.setValue (loadedUseHostState, nullptr);
+            transport[IDs::useHostTransport].setValue (loadedUseHostState);
             transport[IDs::preCount].setValue (child.getProperty (IDs::preCount));
         }
         if (child.getType() == IDs::BEAT)
@@ -223,7 +223,6 @@ void TickSettings::setCachedValues()
 {
     {
         presetName.referTo (state, IDs::presetName, nullptr, "Empty");
-        useHostTransport.referTo (state, IDs::useHostTransport, nullptr, true);
         cutoffFilter.referTo (state, IDs::filterCutoff, nullptr, 20000.0f);
         masterGain.referTo (state, IDs::masterGain, nullptr, 0.0f);
         numOfTicks.referTo (state, IDs::numOfTicks, nullptr, 0);

@@ -143,7 +143,7 @@ PresetsView::PresetsView (TickSettings& stateRef, TicksHolder& ticksRef)
                                                 juce::String(),
                                                 this);
                 aw->addTextEditor ("PresetNameInput", fileToSave.getFileNameWithoutExtension(), juce::String(), false);
-                aw->addToggle ("keepTransport", "Include Tempo & Meter Data", ! state.useHostTransport.get());
+                aw->addToggle ("keepTransport", "Include Tempo & Meter Data", ! state.transport[IDs::useHostTransport].getValue());
                 aw->addButton (TRANS ("Save"), 1, juce::KeyPress (juce::KeyPress::returnKey));
                 aw->addButton (TRANS ("Cancel"), 0, juce::KeyPress (juce::KeyPress::escapeKey));
                 setDialogBounds (*aw, getLocalBounds());

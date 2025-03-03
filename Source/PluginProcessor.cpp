@@ -62,7 +62,7 @@ TickAudioProcessor::TickAudioProcessor()
     // load default preset
     setStateInformation (BinaryData::factory_default_preset, BinaryData::factory_default_presetSize);
 
-    settings.useHostTransport.setValue (wrapperType != WrapperType::wrapperType_Standalone, nullptr);
+    settings.transport[IDs::useHostTransport].setValue (wrapperType != WrapperType::wrapperType_Standalone);
     playheadPosition_ = juce::AudioPlayHead::PositionInfo();
     settings.isDirty = false;
 }
@@ -209,7 +209,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
     buffer.clear();
 
     // standalone mode
-    if (! isHostSyncSupported() || ! getState().useHostTransport.get())
+    if (! isHostSyncSupported() || ! getState().transport[IDs::useHostTransport].getValue())
     {
 #if JUCE_IOS
         AbletonLink::Requests requests;
