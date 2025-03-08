@@ -263,6 +263,7 @@ void TickAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&)
         settings.transport[IDs::denumerator].setValue (ts.denominator);
     }
 
+    settings.updateTransport (playheadPosition_);
 
     if (playheadPosition_.getIsPlaying())
     {

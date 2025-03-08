@@ -164,6 +164,8 @@ public:
     double samplerate { 0 };
     int selectedEdit { -1 };
 
+    void updateTransport (const juce::AudioPlayHead::PositionInfo&);
+
     juce::String getViewAsJson();
     juce::String getTransportAsJson();
 

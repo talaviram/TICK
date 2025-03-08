@@ -272,6 +272,16 @@ namespace
     }
 } // namespace
 
+void TickSettings::updateTransport (const juce::AudioPlayHead::PositionInfo& pos)
+{
+    transport["isPlaying"] = pos.getIsPlaying();
+    transport["isRecording"] = pos.getIsRecording();
+    if (auto ppq = pos.getPpqPosition(); ppq.hasValue())
+        transport["ppq"] = *ppq;
+    if (auto timeInSecs = pos.getTimeInSeconds(); timeInSecs.hasValue())
+        transport["timeInSeconds"] = *timeInSecs;
+}
+
 juce::String TickSettings::getViewAsJson()
 {
     auto obj = juce::JSONUtils::makeObjectWithKeyFirst (toVarMaps (view), "view");
