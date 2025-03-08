@@ -164,6 +164,9 @@ public:
     double samplerate { 0 };
     int selectedEdit { -1 };
 
+    juce::String getViewAsJson();
+    juce::String getTransportAsJson();
+
     std::map<juce::Identifier, juce::Value> view;
     std::map<juce::Identifier, juce::Value> transport;
     juce::Value meterAsText;

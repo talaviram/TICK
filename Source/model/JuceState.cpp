@@ -256,3 +256,30 @@ void TickSettings::setCachedValues()
     }
     jassert (state.isValid());
 }
+
+namespace
+{
+    std::map<juce::Identifier, juce::var> toVarMaps (std::map<juce::Identifier, juce::Value> source)
+    {
+        std::map<juce::Identifier, juce::var> vars;
+        for (const auto& [k, v] : source)
+        {
+            if (v.getValue().isVoid())
+                continue;
+            vars[k] = v.getValue();
+        }
+        return vars;
+    }
+} // namespace
+
+juce::String TickSettings::getViewAsJson()
+{
+    auto obj = juce::JSONUtils::makeObjectWithKeyFirst (toVarMaps (view), "view");
+    return juce::JSON::toString (obj);
+}
+
+juce::String TickSettings::getTransportAsJson()
+{
+    auto obj = juce::JSONUtils::makeObjectWithKeyFirst (toVarMaps (transport), "transport");
+    return juce::JSON::toString (obj);
+}
