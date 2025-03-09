@@ -293,3 +293,19 @@ juce::String TickSettings::getTransportAsJson()
     auto obj = juce::JSONUtils::makeObjectWithKeyFirst (toVarMaps (transport), "transport");
     return juce::JSON::toString (obj);
 }
+
+juce::String TickSettings::getBeatAssignmentsAsJson()
+{
+    const int numerator = transport[IDs::numerator].getValue();
+    const int maxAssignments = kMaxBeatAssignments;
+    juce::var assignments;
+    for (int i = 0; i < std::min (numerator, maxAssignments); ++i)
+    {
+        std::map<juce::Identifier, juce::var> beatAssignment;
+        const auto& [tickIndex, gain] = beatAssignments[i];
+        beatAssignment[IDs::index] = tickIndex.get();
+        beatAssignment[IDs::gain] = gain.get();
+        assignments.insert (i, juce::JSONUtils::makeObject (beatAssignment));
+    }
+    return juce::JSON::toString (assignments);
+}

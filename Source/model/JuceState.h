@@ -168,6 +168,7 @@ public:
 
     juce::String getViewAsJson();
     juce::String getTransportAsJson();
+    juce::String getBeatAssignmentsAsJson();
 
     std::map<juce::Identifier, juce::Value> view;
     std::map<juce::Identifier, juce::Value> transport;
