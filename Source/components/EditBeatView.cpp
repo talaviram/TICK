@@ -244,54 +244,47 @@ void EditBeatView::SamplesModel::SampleOption::paint (juce::Graphics& g)
 void EditBeatView::SamplesModel::SampleOption::mouseDown (const juce::MouseEvent&)
 {
     {
+        auto editSample = [this]
+        {
+            owner.state.view[IDs::showEditSamples] = true;
+        };
+        auto replaceSample = [this]
+        {
+            // TODO: DRY with code below for adding new samples
+            auto addSamplesMenu = owner.getAddSamplesMenu (row);
+            owner.listboxMenu.reset (new jux::ListBoxMenu());
+            owner.listboxMenu->setRowHeight (50);
+            owner.listboxMenu->setMenuFromPopup (std::move (addSamplesMenu));
+            owner.listboxMenu->setShouldCloseOnItemClick (true);
+            owner.getParentComponent()->addAndMakeVisible (owner.listboxMenu.get());
+            owner.listboxMenu->setBounds (owner.getParentComponent()->getLocalBounds());
+            owner.listboxMenu->setOnRootBackToParent ([this]()
+                                                      { owner.getParentComponent()->removeChildComponent (owner.listboxMenu.get()); });
+            owner.getParentComponent()->addAndMakeVisible (owner.listboxMenu.get());
+            owner.listboxMenu->setBounds (owner.getParentComponent()->getLocalBounds());
+            owner.listboxMenu->setAlwaysOnTop (true);
+        };
+        auto deleteSample = [this]
+        {
+            auto& assignment = owner.state.beatAssignments[owner.selection.front()];
+            assignment.tickIdx.setValue (std::max (0, assignment.tickIdx.get() - 1), nullptr);
+            owner.ticks.removeTick (row);
+        };
+        auto setSampleToThisBeatOnWard = [this]
+        {
+            const auto currentSelection = owner.selection[0];
+            for (auto i = currentSelection; i < TickSettings::kMaxBeatAssignments; ++i)
+                owner.state.beatAssignments[i].tickIdx = row;
+        };
+
         juce::PopupMenu menu;
-        menu.addItem (1, "Edit Sample...");
-        menu.addItem (2, "Replace Sample...");
-        menu.addItem (3, "Delete Sample...");
+        menu.addItem ("Edit Sample...", editSample);
+        menu.addItem ("Replace Sample...", replaceSample);
+        menu.addItem ("Delete Sample...", deleteSample);
         menu.addSeparator();
-        menu.addItem (4, "Set sample to this beat and onward...");
+        menu.addItem ("Set sample to this beat and onward...", setSampleToThisBeatOnWard);
         auto options = juce::PopupMenu::Options().withParentComponent (owner.getParentComponent()).withTargetScreenArea (getScreenBounds().removeFromRight (getHeight()));
-        menu.showMenuAsync (options, [this] (int value) {
-            switch (value)
-            {
-                case 1:
-                    owner.state.view[IDs::showEditSamples] = true;
-                    break;
-                case 2:
-                {
-                    // TODO: DRY with code below for adding new samples
-                    auto addSamplesMenu = owner.getAddSamplesMenu (row);
-                    owner.listboxMenu.reset (new jux::ListBoxMenu());
-                    owner.listboxMenu->setRowHeight (50);
-                    owner.listboxMenu->setMenuFromPopup (std::move (addSamplesMenu));
-                    owner.listboxMenu->setShouldCloseOnItemClick (true);
-                    owner.getParentComponent()->addAndMakeVisible (owner.listboxMenu.get());
-                    owner.listboxMenu->setBounds (owner.getParentComponent()->getLocalBounds());
-                    owner.listboxMenu->setOnRootBackToParent ([this]() {
-                        owner.getParentComponent()->removeChildComponent (owner.listboxMenu.get());
-                    });
-                    owner.getParentComponent()->addAndMakeVisible (owner.listboxMenu.get());
-                    owner.listboxMenu->setBounds (owner.getParentComponent()->getLocalBounds());
-                    owner.listboxMenu->setAlwaysOnTop (true);
-                }
-                break;
-                case 3:
-                {
-                    auto& assignment = owner.state.beatAssignments[owner.selection.front()];
-                    assignment.tickIdx.setValue (std::max (0, assignment.tickIdx.get() - 1), nullptr);
-                    owner.ticks.removeTick (row);
-                    break;
-                }
-                case 4:
-                {
-                    const auto currentSelection = owner.selection[0];
-                    for (auto i = currentSelection; i < TickSettings::kMaxBeatAssignments; ++i)
-                        owner.state.beatAssignments[i].tickIdx = row;
-                }
-                default:
-                    break;
-            }
-        });
+        menu.showMenuAsync (options);
     }
 }
 
