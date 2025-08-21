@@ -76,7 +76,7 @@ def main():
     factory_path.mkdir(parents=True)
     factory_src = root_path.joinpath("Installer/Factory")
     print("Copy factory presets to be packed..")
-    shutil.copytree(factory_src, factory_path.joinpath("Factory"))
+    shutil.copytree(factory_src, factory_path.joinpath("Presets"))
     print("Copy license")
     license_path = deb_make_path.joinpath("usr/share/doc/tick-metronome")
     license_path.mkdir(parents=True)
